@@ -23,6 +23,7 @@ const {
   postAppActionRoutine,
   postAppDataRoutine,
   postAppSettingRoutine,
+  uploadAppSettingFileRoutine,
 } = ROUTINES;
 
 const EXCLUDED_NOTIFICATION_TYPES: string[] = [
@@ -36,6 +37,7 @@ const EXCLUDED_NOTIFICATION_TYPES: string[] = [
   deleteAppSettingRoutine.SUCCESS,
   postAppActionRoutine.SUCCESS,
   getLocalContextRoutine.SUCCESS,
+  uploadAppSettingFileRoutine.SUCCESS,
 ];
 
 export const notifier: Notifier = (data) => {

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { Box } from '@mui/material';
 
-import { useLocalContext } from '@graasp/apps-query-client';
+import { ROUTINES, useLocalContext } from '@graasp/apps-query-client';
 
 import Uppy, { UploadResult } from '@uppy/core';
 import '@uppy/core/dist/style.css';
@@ -13,13 +13,14 @@ import { FILE_UPLOAD_MAX_FILES } from '@/config/constants';
 import { useNameFrameTranslation } from '@/config/i18n';
 import { NAME_THE_FRAME } from '@/langs/constants';
 
-import { hooks, mutations } from '../../config/queryClient';
+import { hooks, mutations, notifier } from '../../config/queryClient';
 import { DASHBOARD_UPLOADER_ID } from '../../config/selectors';
 import configureUppy from '../../utils/uppy';
 
 type Props = {
   onUploadComplete?: () => void;
 };
+const { uploadAppSettingFileRoutine } = ROUTINES;
 const UploadImage = ({ onUploadComplete }: Props): JSX.Element | null => {
   const { t } = useNameFrameTranslation();
   const { itemId, apiHost } = useLocalContext();
@@ -40,7 +41,7 @@ const UploadImage = ({ onUploadComplete }: Props): JSX.Element | null => {
   };
 
   const onUpload = (): void => {
-    // notifier({ type: 'SUCCESS' });
+    notifier({ type: uploadAppSettingFileRoutine.SUCCESS });
   };
 
   const onError = (error: Error): void => {
