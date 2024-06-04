@@ -38,7 +38,7 @@ const EXCLUDED_NOTIFICATION_TYPES: string[] = [
   getLocalContextRoutine.SUCCESS,
 ];
 
-const notifier: Notifier = (data) => {
+export const notifier: Notifier = (data) => {
   const { payload } = data;
   if (payload) {
     // axios error
