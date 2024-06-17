@@ -14,14 +14,9 @@ export enum NameTheFrameSettingsNames {
   SettingsData = 'settings-data',
 }
 
-export type Tip = {
-  id: string;
-  position: { top: number; left: number };
-  content: string;
-};
-
 export type Choice = { content: string; id: string };
-export type TipGroup = {
+
+export type DraggableLabel = {
   // top and left are relative to image size
   top: string;
   left: string;

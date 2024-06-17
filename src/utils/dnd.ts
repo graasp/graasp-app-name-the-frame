@@ -2,11 +2,6 @@ import { DraggableLocation } from 'react-beautiful-dnd';
 
 import { Choice } from '@/@types';
 
-export const frameItem = {
-  img: 'https://www.verywellhealth.com/thmb/hLc8SR3CnccDNOJ7W284Ls9len8=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-616098099-a9d404d50fa641229ae5f3f7ad18fcbd.jpg',
-  title: 'Frame',
-};
-
 export const reorder = (
   list: Choice[],
   startIndex: number,

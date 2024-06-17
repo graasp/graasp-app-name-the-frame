@@ -4,8 +4,11 @@ import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 import { Box } from '@mui/material';
 
 import { useLocalContext } from '@graasp/apps-query-client';
+import { PermissionLevel } from '@graasp/sdk';
 
-import { TipGroup } from '@/@types';
+import { v4 } from 'uuid';
+
+import { DraggableLabel } from '@/@types';
 
 import AddLabelForm from './AddLabelForm';
 import ImageFrame from './ImageFrame';
@@ -13,24 +16,24 @@ import LabelPin from './LabelPin';
 
 type Props = {
   isDragging: boolean;
-  labelGroups: TipGroup[];
-  setLabelGroups: (l: TipGroup[]) => void;
+  labels: DraggableLabel[];
+  setLabels: (l: DraggableLabel[]) => void;
   imageSettingId: string;
 };
 const DraggableFrameWithLabels = ({
   isDragging,
-  labelGroups,
-  setLabelGroups,
+  labels,
+  setLabels,
   imageSettingId,
 }: Props): JSX.Element => {
-  const [openForm, setOpenForm] = useState(false);
-  const [formPosition, setFormPosition] = useState({ top: '0%', left: '0%' });
   const { permission } = useLocalContext();
-
-  const [formInput, setFormInput] = useState('');
   const imageRef = useRef<HTMLImageElement>(null);
 
-  const handleAddPin = (
+  const [openForm, setOpenForm] = useState(false);
+  const [formPosition, setFormPosition] = useState({ top: '0%', left: '0%' });
+  const [labelText, setLabelText] = useState('');
+
+  const handleAddLabel = (
     event: React.MouseEvent<HTMLImageElement, MouseEvent>,
   ): void => {
     if (imageRef.current) {
@@ -51,82 +54,113 @@ const DraggableFrameWithLabels = ({
   };
 
   const handleFormSubmit = (): void => {
-    const labelId = `tip-${Date.now()}`;
-    const newTip = {
-      id: labelId,
-      content: formInput,
-    };
+    const editingIndex = labels.findIndex(
+      ({ top, left }) => top === formPosition.top && left === formPosition.left,
+    );
+    const isEditing = editingIndex > -1;
+    // editing existing label
+    if (isEditing) {
+      const labelToEdit = labels[editingIndex];
+      const newLabel = {
+        ...labelToEdit,
+        choices: [{ id: labelToEdit.labelId, content: labelText }],
+      };
 
-    const [firstGroup] = labelGroups;
-    const modFirstGroup = {
-      ...firstGroup,
-      choices: [...(firstGroup?.choices || []), newTip],
-    };
+      const newLabelGroups = [
+        ...labels.slice(0, editingIndex),
+        newLabel,
+        ...labels.slice(editingIndex + 1),
+      ];
+      setLabels(newLabelGroups);
+    } else {
+      // adding new label
+      const labelId = v4();
+      const newLabel = {
+        id: labelId,
+        content: labelText,
+      };
 
-    setLabelGroups([
-      modFirstGroup,
-      ...labelGroups.slice(1),
-      { ...formPosition, choices: [], ind: labelGroups.length, labelId },
-    ]);
+      setLabels([
+        ...labels,
+        {
+          ...formPosition,
+          choices: [newLabel],
+          ind: labels.length,
+          labelId,
+        },
+      ]);
+    }
     setOpenForm(false);
-    setFormInput('');
+    setLabelText('');
   };
 
   const handleFormInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ): void => {
-    setFormInput(event.target.value);
+    setLabelText(event.target.value);
+  };
+
+  const deleteLabel = (labelIdToDelete: string): void => {
+    const filteredLabels = labels.filter(
+      ({ labelId }) => labelId !== labelIdToDelete,
+    );
+
+    setLabels(filteredLabels);
+  };
+
+  const editLabel = (el: DraggableLabel): void => {
+    // open form with label text to edit
+    const { top, left, choices } = el;
+    setFormPosition({ top, left });
+    setOpenForm(true);
+    setLabelText(choices?.[0].content);
   };
 
   return (
-    <TransformWrapper
-      initialScale={1}
-      panning={{ disabled: isDragging }}
-      pinch={{ disabled: isDragging }}
-      wheel={{ disabled: isDragging }}
-      zoomAnimation={{ disabled: isDragging }}
-      alignmentAnimation={{ disabled: isDragging }}
-      velocityAnimation={{ disabled: isDragging }}
-    >
-      <TransformComponent
-        contentStyle={{
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
+    <Box sx={{ position: 'relative' }}>
+      <TransformWrapper
+        initialScale={1}
+        panning={{ disabled: isDragging }}
+        pinch={{ disabled: isDragging }}
+        wheel={{ disabled: isDragging }}
+        zoomAnimation={{ disabled: isDragging }}
+        alignmentAnimation={{ disabled: isDragging }}
+        velocityAnimation={{ disabled: isDragging }}
       >
-        <Box sx={{ position: 'relative' }}>
+        <TransformComponent
+          contentStyle={{
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
           <ImageFrame
             appSettingId={imageSettingId}
-            handleAddPin={handleAddPin}
+            handleAddLabel={handleAddLabel}
             ref={imageRef}
           />
-          {labelGroups.slice(1).map((el) => (
+          {labels.map((label) => (
             <LabelPin
-              key={el.ind}
-              el={el}
-              // deleteLabel={deleteLabel}
-              // editLabel={editLabel}
-              // imageSize={{
-              //   clientHeight: imageRef.current?.clientHeight || 0,
-              //   clientWidth: imageRef.current?.clientWidth || 0,
-              // }}
+              key={label.ind}
+              label={label}
+              deleteLabel={deleteLabel}
+              editLabel={editLabel}
             />
           ))}
-        </Box>
-        {permission === 'admin' && openForm && (
-          <AddLabelForm
-            value={formInput}
-            formPosition={formPosition}
-            onChange={handleFormInputChange}
-            onSubmit={handleFormSubmit}
-            onClose={() => setOpenForm(false)}
-          />
-        )}
-      </TransformComponent>
-    </TransformWrapper>
+        </TransformComponent>
+      </TransformWrapper>
+      {permission === PermissionLevel.Admin && openForm && (
+        <AddLabelForm
+          value={labelText}
+          formPosition={formPosition}
+          onChange={handleFormInputChange}
+          onSubmit={handleFormSubmit}
+          onClose={() => setOpenForm(false)}
+        />
+      )}
+    </Box>
   );
 };
 

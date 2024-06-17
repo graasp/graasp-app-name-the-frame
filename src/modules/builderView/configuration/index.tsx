@@ -21,6 +21,10 @@ const Configurations = (): JSX.Element => {
     ({ name }) => name === NameTheFrameSettingsNames.File,
   );
 
+  const settingsData = appSettings?.find(
+    ({ name }) => name === NameTheFrameSettingsNames.SettingsData,
+  );
+
   const steps = [
     {
       label: t(NAME_THE_FRAME.ADD_IMAGE_STEP_LABEL),
@@ -29,10 +33,19 @@ const Configurations = (): JSX.Element => {
     },
     {
       label: t(NAME_THE_FRAME.ADD_LABELS_STEP_LABEL),
-      component: <AddLabelsStep />,
+      component: (
+        <AddLabelsStep
+          moveToNextStep={() => setActiveStep(2)}
+          moveToPrevStep={() => setActiveStep(0)}
+        />
+      ),
       disabled: !image?.id,
     },
-    { label: t(NAME_THE_FRAME.PREVIEW_STEP_LABEL), component: <PreviewStep /> },
+    {
+      label: t(NAME_THE_FRAME.PREVIEW_STEP_LABEL),
+      component: <PreviewStep />,
+      disabled: !settingsData?.data.labels || !image?.id,
+    },
   ];
 
   return (

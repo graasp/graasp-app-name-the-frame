@@ -7,14 +7,13 @@ import { hooks } from '@/config/queryClient';
 
 type Props = {
   appSettingId: string;
-  handleAddPin: (
+  handleAddLabel: (
     event: React.MouseEvent<HTMLImageElement, MouseEvent>,
-    // d: { clientHeight: number; clientWidth: number },
   ) => void;
 };
 // eslint-disable-next-line react/display-name
 const ImageFrame = forwardRef<HTMLImageElement, Props>(
-  ({ appSettingId, handleAddPin }, imageRef) => {
+  ({ appSettingId, handleAddLabel }, imageRef) => {
     const { data: dataFile } = hooks.useAppSettingFile({
       appSettingId,
     });
@@ -30,7 +29,7 @@ const ImageFrame = forwardRef<HTMLImageElement, Props>(
           pointerEvents: 'auto',
           cursor: 'cell',
         }}
-        onClick={handleAddPin}
+        onClick={handleAddLabel}
         ref={imageRef}
       />
     ) : null;

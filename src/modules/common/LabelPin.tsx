@@ -1,6 +1,3 @@
-/* eslint-disable arrow-body-style */
-
-/* eslint-disable prettier/prettier */
 import React from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 
@@ -9,80 +6,58 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, IconButton, styled } from '@mui/material';
 
 import { useLocalContext } from '@graasp/apps-query-client';
+import { PermissionLevel } from '@graasp/sdk';
 
-import { TipGroup } from '@/@types';
+import { DraggableLabel } from '@/@types';
 import { buildLabelActionsID } from '@/config/selectors';
 
-const Label = styled('div')<{ isDragging: boolean }>(({
-  theme,
-  isDragging,
-}) => {
-  return {
-    background: isDragging ? 'red' : theme.palette.primary.main,
-    padding: theme.spacing(1),
-    color: 'white',
-    minWidth: '8ch',
-    minHeight: '32px',
-    borderRadius: theme.spacing(1),
-    userSelect: 'none',
-    // ...(isDragging && {
-    //   position: 'relative',
-    //   top: 0,
-    //   left: 0,
-    // }),
-  };
-});
+const Label = styled('div')(({ theme }) => ({
+  background: theme.palette.primary.main,
+  color: 'white',
+  borderRadius: theme.spacing(1),
+  userSelect: 'none',
+  padding: theme.spacing(0.5),
+}));
 
 const GroupContainer = styled('div')<{
-  isDraggingOver: boolean;
   top: string;
   left: string;
-  isAllGroup: boolean;
-}>(({ theme, isDraggingOver, top, left, isAllGroup }) => ({
-  minWidth: '8ch',
-  minHeight: '32px',
+}>(({ theme, top, left }) => ({
   borderRadius: theme.spacing(1),
-  background: isAllGroup ? 'white' : 'white',
-  position: isAllGroup ? 'relative' : 'absolute',
-  ...(!isAllGroup && { top, left }),
+  background: 'white',
+  position: 'absolute',
+  top,
+  left,
   display: 'flex',
   gap: theme.spacing(1),
-  border: isAllGroup ? 'none' : '1px solid black',
+  border: '1px solid black',
 }));
 
 type Props = {
-  el: TipGroup;
+  label: DraggableLabel;
   deleteLabel?: (labelId: string) => void;
-  editLabel?: (labelId: string) => void;
-  // imageSize: { clientHeight: number; clientWidth: number };
+  editLabel?: (el: DraggableLabel) => void;
 };
-const LabelPin = ({ el, deleteLabel, editLabel }: Props): JSX.Element => {
+
+const LabelPin = ({ label, deleteLabel, editLabel }: Props): JSX.Element => {
   const { permission } = useLocalContext();
 
   return (
-    <Droppable droppableId={`${el.ind}`}>
-      {(provided, snapshot) => (
+    <Droppable droppableId={`${label.ind}`}>
+      {(provided) => (
         <GroupContainer
           ref={provided.innerRef}
           {...provided.droppableProps}
-          top={el.top}
-          left={el.left}
-          isDraggingOver={snapshot.isDraggingOver}
-          isAllGroup={el.ind === 0}
+          top={label.top}
+          left={label.left}
         >
-          {el.choices?.map((item, index) => (
+          {label.choices?.map((item, index) => (
             <Draggable key={item?.id} draggableId={item?.id} index={index}>
-              {(dragProvided, dragSnapshot) => (
+              {(dragProvided) => (
                 <Label
                   ref={dragProvided.innerRef}
                   {...dragProvided.draggableProps}
                   {...dragProvided.dragHandleProps}
-                  isDragging={dragSnapshot.isDragging}
-                  // left={
-                  //   (dragProvided.draggableProps.style as DraggingStyle).left -
-                  //   parseFloat(el.left.replace('%', ''))
-                  // }
-                  // top={el.top}
                 >
                   <Box
                     display="flex"
@@ -96,14 +71,15 @@ const LabelPin = ({ el, deleteLabel, editLabel }: Props): JSX.Element => {
                     }}
                   >
                     {item.content}
-                    {permission === 'admin' && (
+                    {permission === PermissionLevel.Admin && (
                       <Box
                         display="flex"
                         sx={{
                           position: 'absolute',
-                          top: -15,
+                          top: -24,
                           right: -10,
                           display: 'none',
+                          width: 'max-content',
                         }}
                         id={buildLabelActionsID(item.id)}
                       >
@@ -114,7 +90,7 @@ const LabelPin = ({ el, deleteLabel, editLabel }: Props): JSX.Element => {
                               background: '#00000085',
                               borderRadius: '50%',
                             }}
-                            onClick={() => editLabel(item.id)}
+                            onClick={() => editLabel(label)}
                           >
                             <Edit sx={{ color: 'white' }} fontSize="small" />
                           </IconButton>

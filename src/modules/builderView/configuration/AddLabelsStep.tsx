@@ -1,38 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
-import { Box, Button } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 
 import {
   Choice,
+  DraggableLabel,
   NameTheFrameSettings,
   NameTheFrameSettingsNames,
-  TipGroup,
 } from '@/@types';
 import { useNameFrameTranslation } from '@/config/i18n';
 import { hooks, mutations } from '@/config/queryClient';
 import { NAME_THE_FRAME } from '@/langs/constants';
 import DraggableFrameWithLabels from '@/modules/common/DraggableFrameWithLabels';
-import LabelPin from '@/modules/common/LabelPin';
 import { move, reorder } from '@/utils/dnd';
 
-/*
-Things to finalize:
-- control react-pinch zoom to prevent over dragging (done)
-- save data
-- edit label
+type Props = {
+  moveToNextStep: () => void;
+  moveToPrevStep: () => void;
+};
 
-*/
-
-const AddLabelsStep = (): JSX.Element => {
+const AddLabelsStep = ({
+  moveToNextStep,
+  moveToPrevStep,
+}: Props): JSX.Element => {
   const { t } = useNameFrameTranslation();
 
-  const [labelGroups, setLabelGroups] = useState<TipGroup[]>([]);
-
+  const [labels, setLabels] = useState<DraggableLabel[]>([]);
   const [isDragging, setIsDragging] = useState(false);
 
   const { data: appSettings } = hooks.useAppSettings<NameTheFrameSettings>();
-  // const { mutate: postSetting } = mutations.usePostAppSetting();
   const { mutate: patchSetting } = mutations.usePatchAppSetting();
 
   const image = appSettings?.find(
@@ -44,31 +41,17 @@ const AddLabelsStep = (): JSX.Element => {
 
   useEffect(() => {
     if (settingsData?.data.labels) {
-      const choices = settingsData?.data.labels?.map(({ content, id }) => ({
-        content,
-        id,
-      }));
-
-      const labelsG = settingsData?.data.labels?.map(
-        ({ top, left, id }, ind) => ({
+      const draggableLabels = settingsData?.data.labels?.map(
+        ({ top, left, id, content }, ind) => ({
           top,
           left,
-          ind: ind + 1,
+          ind,
           labelId: id,
-          choices: [],
+          choices: [{ content, id }],
         }),
       );
 
-      const allLabels = [
-        { top: '0%', left: '0%', choices, ind: 0, labelId: 'all-choices' },
-        ...labelsG,
-      ];
-
-      setLabelGroups(allLabels);
-    } else {
-      setLabelGroups([
-        { top: '0%', left: '0%', choices: [], ind: 0, labelId: 'all-choices' },
-      ]);
+      setLabels(draggableLabels);
     }
   }, [settingsData?.data.labels]);
 
@@ -76,8 +59,8 @@ const AddLabelsStep = (): JSX.Element => {
     setIsDragging(true);
   };
 
-  const onDragEnd = (result: DropResult): void => {
-    const { source, destination } = result;
+  const onDragEnd = (draggable: DropResult): void => {
+    const { source, destination } = draggable;
     setIsDragging(false);
 
     // dropped outside the list
@@ -88,7 +71,7 @@ const AddLabelsStep = (): JSX.Element => {
     const sInd = +source.droppableId;
     const dInd = +destination.droppableId;
     // prevent drop to a filled destination
-    const isDestinationFilled = labelGroups.find(
+    const isDestinationFilled = labels.find(
       ({ ind }) => dInd === ind && ind !== 0,
     )?.choices.length;
 
@@ -98,35 +81,35 @@ const AddLabelsStep = (): JSX.Element => {
 
     if (sInd === dInd) {
       const items = reorder(
-        labelGroups[sInd].choices,
+        labels[sInd].choices,
         source.index,
         destination.index,
       );
-      const newState = [...labelGroups];
+      const newState = [...labels];
       newState[sInd].choices = items;
-      setLabelGroups(newState);
+      setLabels(newState);
     } else {
-      const result5 = move(
-        labelGroups[sInd].choices,
-        labelGroups[dInd].choices,
+      const result = move(
+        labels[sInd].choices,
+        labels[dInd].choices,
         source,
         destination,
       );
 
-      const newState = [...labelGroups];
-      newState[sInd].choices = result5[sInd];
-      newState[dInd].choices = result5[dInd];
-      setLabelGroups(newState);
+      const newState = [...labels];
+      newState[sInd].choices = result[sInd];
+      newState[dInd].choices = result[dInd];
+      setLabels(newState);
     }
   };
 
   const saveData = (): void => {
-    const choices = labelGroups.reduce(
+    const choices = labels.reduce(
       (acc: Choice[], curr) => [...acc, ...curr.choices],
       [],
     );
     const labelsWithPositions = choices.map((c) => {
-      const choiceGroup = labelGroups.find(({ labelId }) => labelId === c.id);
+      const choiceGroup = labels.find(({ labelId }) => labelId === c.id);
       if (choiceGroup) {
         const { top, left } = choiceGroup;
         return { ...c, top, left };
@@ -137,58 +120,36 @@ const AddLabelsStep = (): JSX.Element => {
       const data = { ...settingsData.data, labels: labelsWithPositions };
       patchSetting({ id: settingsData?.id, data });
     }
-  };
 
-  const deleteLabel = (labelIdToDelete: string): void => {
-    const newGroups = labelGroups.filter(
-      ({ labelId, ind }) => labelId !== labelIdToDelete && ind !== 0,
-    );
-
-    const newChoices = labelGroups[0].choices.filter(
-      ({ id }) => id !== labelIdToDelete,
-    );
-    setLabelGroups([{ ...labelGroups[0], choices: newChoices }, ...newGroups]);
-  };
-
-  const editLabel = (labelId: string): void => {
-    console.log(labelId);
+    moveToNextStep();
   };
 
   return (
-    <Box sx={{ paddingY: '48px' }}>
+    <Stack direction="row" flexWrap="wrap" spacing={2} padding={2}>
       {image && (
         <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
-          {labelGroups.slice(0, 1).map((el) => (
-            <LabelPin
-              key={el.ind}
-              el={el}
-              deleteLabel={deleteLabel}
-              editLabel={editLabel}
-              // imageSize={{
-              //   clientHeight: imageRef.current?.clientHeight || 0,
-              //   clientWidth: imageRef.current?.clientWidth || 0,
-              // }}
-            />
-          ))}
           <DraggableFrameWithLabels
             isDragging={isDragging}
             imageSettingId={image.id}
-            labelGroups={labelGroups}
-            setLabelGroups={setLabelGroups}
+            labels={labels}
+            setLabels={setLabels}
           />
         </DragDropContext>
       )}
-      <Box alignSelf="end">
+      <Stack direction="row" gap={1} width="100%" justifyContent="flex-end">
+        <Button size="large" onClick={moveToPrevStep}>
+          {t(NAME_THE_FRAME.BACK)}
+        </Button>
         <Button
           variant="contained"
           size="large"
           onClick={saveData}
-          disabled={!image?.id}
+          disabled={!settingsData?.data.labels && !labels.length}
         >
           {t(NAME_THE_FRAME.NEXT)}
         </Button>
-      </Box>
-    </Box>
+      </Stack>
+    </Stack>
   );
 };
 
