@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import FindReplaceIcon from '@mui/icons-material/FindReplace';
 import {
   Box,
   Button,
@@ -25,6 +26,7 @@ const AddImageStep = ({ moveToNextStep }: Props): JSX.Element => {
   const { data: appSettings } = hooks.useAppSettings();
   const { mutate: postSetting } = mutations.usePostAppSetting();
   const { mutate: patchSetting } = mutations.usePatchAppSetting();
+  const { mutate: deleteAppSettings } = mutations.useDeleteAppSetting();
 
   const data = appSettings?.find(
     ({ name }) => name === NameTheFrameSettingsNames.SettingsData,
@@ -47,6 +49,12 @@ const AddImageStep = ({ moveToNextStep }: Props): JSX.Element => {
       });
     }
     moveToNextStep();
+  };
+
+  const deleteImage = (): void => {
+    if (image?.id) {
+      deleteAppSettings({ id: image?.id });
+    }
   };
 
   return (
@@ -74,7 +82,18 @@ const AddImageStep = ({ moveToNextStep }: Props): JSX.Element => {
         />
       </Box>
       {image ? (
-        <ImageDisplay appSettingId={image.id} />
+        <Stack spacing={1}>
+          <Box>
+            <Button
+              variant="outlined"
+              startIcon={<FindReplaceIcon />}
+              onClick={deleteImage}
+            >
+              {t(NAME_THE_FRAME.REPLACE_IMAGE)}
+            </Button>
+          </Box>
+          <ImageDisplay appSettingId={image.id} />
+        </Stack>
       ) : (
         <Box>
           <Typography variant="h6">
