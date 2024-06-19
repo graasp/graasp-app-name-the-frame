@@ -28,9 +28,11 @@ const AddLabelsStep = ({
 
   const [labels, setLabels] = useState<DraggableLabel[]>([]);
   const [isDragging, setIsDragging] = useState(false);
+  const [openForm, setOpenForm] = useState(false);
 
   const { data: appSettings } = hooks.useAppSettings<NameTheFrameSettings>();
   const { mutate: patchSetting } = mutations.usePatchAppSetting();
+  const [mousePosition, setMousePosition] = useState({ top: '0%', left: '0%' });
 
   const image = appSettings?.find(
     ({ name }) => name === NameTheFrameSettingsNames.File,
@@ -60,11 +62,25 @@ const AddLabelsStep = ({
   };
 
   const onDragEnd = (draggable: DropResult): void => {
-    const { source, destination } = draggable;
+    const { source, destination, type } = draggable;
     setIsDragging(false);
-
+    setOpenForm(false);
     // dropped outside the list
     if (!destination) {
+      return;
+    }
+
+    if (type === 'GROUP') {
+      const label = labels[source.index];
+
+      const newLabel = { ...label, ...mousePosition };
+
+      const newLabelGroups = [
+        ...labels.slice(0, source.index),
+        newLabel,
+        ...labels.slice(source.index + 1),
+      ];
+      setLabels(newLabelGroups);
       return;
     }
 
@@ -133,6 +149,9 @@ const AddLabelsStep = ({
             imageSettingId={image.id}
             labels={labels}
             setLabels={setLabels}
+            setMousePosition={setMousePosition}
+            openForm={openForm}
+            setOpenForm={setOpenForm}
           />
         </DragDropContext>
       )}

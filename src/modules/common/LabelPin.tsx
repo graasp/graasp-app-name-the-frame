@@ -11,13 +11,19 @@ import { PermissionLevel } from '@graasp/sdk';
 import { DraggableLabel } from '@/@types';
 import { buildLabelActionsID } from '@/config/selectors';
 
-const Label = styled('div')(({ theme }) => ({
-  background: theme.palette.primary.main,
-  color: 'white',
-  borderRadius: theme.spacing(1),
-  userSelect: 'none',
-  padding: theme.spacing(0.5),
-}));
+const Label = styled('div')<{ isDraggable: boolean }>(
+  ({ theme, isDraggable }) => ({
+    background: theme.palette.primary.main,
+    color: 'white',
+    borderRadius: theme.spacing(1),
+    userSelect: 'none',
+    padding: theme.spacing(0.5),
+    ...(isDraggable && {
+      left: 'auto !important',
+      top: 'auto !important',
+    }),
+  }),
+);
 
 const GroupContainer = styled('div')<{
   top: string;
@@ -30,96 +36,136 @@ const GroupContainer = styled('div')<{
   left,
   display: 'flex',
   gap: theme.spacing(1),
-  border: '1px solid black',
+  border: '1px solid white',
 }));
 
 type Props = {
   label: DraggableLabel;
   deleteLabel?: (labelId: string) => void;
   editLabel?: (el: DraggableLabel) => void;
+  draggingOverItem?: boolean;
 };
 
-const LabelPin = ({ label, deleteLabel, editLabel }: Props): JSX.Element => {
+const LabelPin = ({
+  label,
+  deleteLabel,
+  editLabel,
+  draggingOverItem = true,
+}: Props): JSX.Element => {
   const { permission } = useLocalContext();
 
   return (
-    <Droppable droppableId={`${label.ind}`}>
-      {(provided) => (
+    <Draggable draggableId={`droppable-${label.ind}`} index={label.ind}>
+      {(allDroppableProvided) => (
         <GroupContainer
-          ref={provided.innerRef}
-          {...provided.droppableProps}
+          ref={allDroppableProvided.innerRef}
           top={label.top}
           left={label.left}
+          {...allDroppableProvided.dragHandleProps}
+          {...allDroppableProvided.draggableProps}
+          style={{
+            ...allDroppableProvided.draggableProps.style,
+            top: `${label.top}%`,
+            left: `${label.left}%`,
+            position: 'absolute',
+          }}
         >
-          {label.choices?.map((item, index) => (
-            <Draggable key={item?.id} draggableId={item?.id} index={index}>
-              {(dragProvided) => (
-                <Label
-                  ref={dragProvided.innerRef}
-                  {...dragProvided.draggableProps}
-                  {...dragProvided.dragHandleProps}
-                >
-                  <Box
-                    display="flex"
-                    sx={{
-                      position: 'relative',
-                      '&:hover': {
-                        [`#${buildLabelActionsID(item.id)}`]: {
-                          display: 'inline-block',
-                        },
-                      },
-                    }}
+          <Droppable
+            droppableId={`${label.ind}`}
+            type="ITEM"
+            isDropDisabled={!draggingOverItem}
+            isCombineEnabled={false}
+          >
+            {(provided) => (
+              <div ref={provided.innerRef} {...provided.droppableProps}>
+                {label.choices?.map((item, index) => (
+                  <Draggable
+                    key={item?.id}
+                    draggableId={item?.id}
+                    index={index}
+                    isDragDisabled={!draggingOverItem}
                   >
-                    {item.content}
-                    {permission === PermissionLevel.Admin && (
-                      <Box
-                        display="flex"
-                        sx={{
-                          position: 'absolute',
-                          top: -24,
-                          right: -10,
-                          display: 'none',
-                          width: 'max-content',
-                        }}
-                        id={buildLabelActionsID(item.id)}
+                    {(dragProvided, dragSnapshot) => (
+                      <Label
+                        ref={dragProvided.innerRef}
+                        {...dragProvided.draggableProps}
+                        {...dragProvided.dragHandleProps}
+                        isDraggable={dragSnapshot.isDragging}
                       >
-                        {editLabel && (
-                          <IconButton
-                            sx={{
-                              padding: '4px',
-                              background: '#00000085',
-                              borderRadius: '50%',
-                            }}
-                            onClick={() => editLabel(label)}
-                          >
-                            <Edit sx={{ color: 'white' }} fontSize="small" />
-                          </IconButton>
-                        )}
-                        {deleteLabel && (
-                          <IconButton
-                            sx={{
-                              padding: '4px',
-                              background: '#00000085',
-                              borderRadius: '50%',
-                            }}
-                            onClick={() => deleteLabel(item.id)}
-                          >
-                            <DeleteIcon
-                              sx={{ color: 'white' }}
-                              fontSize="small"
-                            />
-                          </IconButton>
-                        )}
-                      </Box>
+                        <Box
+                          display="flex"
+                          sx={{
+                            position: 'relative',
+                            '&:hover': {
+                              [`#${buildLabelActionsID(item.id)}`]: {
+                                display: 'inline-block',
+                              },
+                            },
+                          }}
+                        >
+                          {item.content}
+                          {permission === PermissionLevel.Admin && (
+                            <Box
+                              display="flex"
+                              sx={{
+                                position: 'absolute',
+                                top: -24,
+                                right: -10,
+                                display: 'none',
+                                width: 'max-content',
+                              }}
+                              id={buildLabelActionsID(item.id)}
+                            >
+                              {editLabel && (
+                                <IconButton
+                                  sx={{
+                                    padding: '4px',
+                                    background: '#00000085',
+                                    borderRadius: '50%',
+                                  }}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    editLabel(label);
+                                  }}
+                                >
+                                  <Edit
+                                    sx={{ color: 'white' }}
+                                    fontSize="small"
+                                  />
+                                </IconButton>
+                              )}
+                              {deleteLabel && (
+                                <IconButton
+                                  sx={{
+                                    padding: '4px',
+                                    background: '#00000085',
+                                    borderRadius: '50%',
+                                  }}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    deleteLabel(item.id);
+                                  }}
+                                >
+                                  <DeleteIcon
+                                    sx={{ color: 'white' }}
+                                    fontSize="small"
+                                  />
+                                </IconButton>
+                              )}
+                            </Box>
+                          )}
+                        </Box>
+                      </Label>
                     )}
-                  </Box>
-                </Label>
-              )}
-            </Draggable>
-          ))}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
         </GroupContainer>
       )}
-    </Droppable>
+    </Draggable>
   );
 };
 

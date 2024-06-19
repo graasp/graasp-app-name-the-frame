@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { Droppable } from 'react-beautiful-dnd';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 
 import { Box } from '@mui/material';
@@ -19,25 +20,30 @@ type Props = {
   labels: DraggableLabel[];
   setLabels: (l: DraggableLabel[]) => void;
   imageSettingId: string;
+  setMousePosition: (e: { top: string; left: string }) => void;
+  openForm: boolean;
+  setOpenForm: (v: boolean) => void;
 };
 const DraggableFrameWithLabels = ({
   isDragging,
   labels,
   setLabels,
   imageSettingId,
+  setMousePosition,
+  openForm,
+  setOpenForm,
 }: Props): JSX.Element => {
   const { permission } = useLocalContext();
-  const imageRef = useRef<HTMLImageElement>(null);
 
-  const [openForm, setOpenForm] = useState(false);
   const [formPosition, setFormPosition] = useState({ top: '0%', left: '0%' });
   const [labelText, setLabelText] = useState('');
+  const droppableRef = useRef<HTMLDivElement | null>(null);
 
   const handleAddLabel = (
     event: React.MouseEvent<HTMLImageElement, MouseEvent>,
   ): void => {
-    if (imageRef.current) {
-      const { clientHeight, clientWidth } = imageRef.current;
+    if (droppableRef.current) {
+      const { clientHeight, clientWidth } = droppableRef.current;
 
       const target = event.target as HTMLImageElement;
       const rect = target.getBoundingClientRect();
@@ -116,6 +122,20 @@ const DraggableFrameWithLabels = ({
     setLabelText(choices?.[0].content);
   };
 
+  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>): void => {
+    if (droppableRef.current) {
+      const target = event.target as HTMLDivElement;
+      const rect = target.getBoundingClientRect();
+      const clickX = event.clientX - rect.left;
+      const clickY = event.clientY - rect.top;
+
+      setMousePosition({
+        top: `${(clickY / droppableRef.current.clientHeight) * 100}%`,
+        left: `${(clickX / droppableRef.current.clientWidth) * 100}%`,
+      });
+    }
+  };
+
   return (
     <Box sx={{ position: 'relative' }}>
       <TransformWrapper
@@ -136,22 +156,42 @@ const DraggableFrameWithLabels = ({
             alignItems: 'center',
           }}
         >
-          <ImageFrame
-            appSettingId={imageSettingId}
-            handleAddLabel={handleAddLabel}
-            ref={imageRef}
-          />
-          {labels.map((label) => (
-            <LabelPin
-              key={label.ind}
-              label={label}
-              deleteLabel={deleteLabel}
-              editLabel={editLabel}
-            />
-          ))}
+          <ImageFrame appSettingId={imageSettingId} />
+          <Droppable droppableId="all-droppables" type="GROUP">
+            {(provided) => (
+              <div
+                role="presentation"
+                ref={(el) => {
+                  droppableRef.current = el;
+                  provided.innerRef(el);
+                }}
+                {...provided.droppableProps}
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  height: '100%',
+                  width: '100%',
+                }}
+                onMouseMove={handleMouseMove}
+                onClick={handleAddLabel}
+              >
+                {labels.map((label) => (
+                  <LabelPin
+                    key={label.ind}
+                    label={label}
+                    deleteLabel={deleteLabel}
+                    editLabel={editLabel}
+                    draggingOverItem={false}
+                  />
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
         </TransformComponent>
       </TransformWrapper>
-      {permission === PermissionLevel.Admin && openForm && (
+      {permission === PermissionLevel.Admin && openForm && !isDragging && (
         <AddLabelForm
           value={labelText}
           formPosition={formPosition}
