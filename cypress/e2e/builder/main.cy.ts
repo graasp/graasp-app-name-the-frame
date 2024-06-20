@@ -1,10 +1,6 @@
 import { Context, PermissionLevel } from '@graasp/sdk';
 
-import {
-  BUILDER_VIEW_CY,
-  CONFIGURATION_TAB_ID,
-  buildDataCy,
-} from '../../../src/config/selectors';
+import { CONFIGURATION_TAB_ID } from '../../../src/config/selectors';
 
 describe('Builder View', () => {
   beforeEach(() => {
