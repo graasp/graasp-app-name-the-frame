@@ -7,14 +7,12 @@ import fr from '../langs/fr.json';
 
 const i18n = buildI18n().use(initReactI18next);
 
-export const NAME_THE_FRAME_NAMESPACE = 'name_the_frame';
+export const APP_NAMESPACE = 'name_the_frame';
 
-i18n.addResourceBundle('en', NAME_THE_FRAME_NAMESPACE, en);
-i18n.addResourceBundle('fr', NAME_THE_FRAME_NAMESPACE, fr);
+i18n.addResourceBundle('en', APP_NAMESPACE, en);
+i18n.addResourceBundle('fr', APP_NAMESPACE, fr);
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export const useNameFrameTranslation = () =>
-  useTranslation(NAME_THE_FRAME_NAMESPACE);
+export const useAppTranslation = () => useTranslation(APP_NAMESPACE);
 
-export const DEFAULT_LANGUAGE = 'en';
 export default i18n;

@@ -2,37 +2,36 @@ import React, { useState } from 'react';
 
 import { Stack, Step, StepButton, Stepper } from '@mui/material';
 
-import { NameTheFrameSettings, NameTheFrameSettingsNames } from '@/@types';
-import { useNameFrameTranslation } from '@/config/i18n';
+import { SettingsKeys } from '@/@types';
+import { useAppTranslation } from '@/config/i18n';
 import { hooks } from '@/config/queryClient';
-import { NAME_THE_FRAME } from '@/langs/constants';
+import { APP } from '@/langs/constants';
 
 import AddImageStep from './AddImageStep';
 import AddLabelsStep from './AddLabelsStep';
 import PreviewStep from './PreviewStep';
 
 const Configurations = (): JSX.Element => {
-  const { t } = useNameFrameTranslation();
+  const { t } = useAppTranslation();
   const [activeStep, setActiveStep] = useState(0);
 
-  const { data: appSettings } = hooks.useAppSettings<NameTheFrameSettings>();
+  const { data: imageSetting } = hooks.useAppSettings({
+    name: SettingsKeys.File,
+  });
 
-  const image = appSettings?.find(
-    ({ name }) => name === NameTheFrameSettingsNames.File,
-  );
+  const image = imageSetting?.[0];
 
   const steps = [
     {
-      label: t(NAME_THE_FRAME.ADD_IMAGE_STEP_LABEL),
+      label: t(APP.ADD_IMAGE_STEP_LABEL),
       component: <AddImageStep moveToNextStep={() => setActiveStep(1)} />,
-      disabled: false,
     },
     {
-      label: t(NAME_THE_FRAME.ADD_LABELS_STEP_LABEL),
+      label: t(APP.ADD_LABELS_STEP_LABEL),
       component: <AddLabelsStep />,
       disabled: !image?.id,
     },
-    { label: t(NAME_THE_FRAME.PREVIEW_STEP_LABEL), component: <PreviewStep /> },
+    { label: t(APP.PREVIEW_STEP_LABEL), component: <PreviewStep /> },
   ];
 
   return (

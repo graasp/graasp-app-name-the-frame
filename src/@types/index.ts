@@ -1,8 +1,8 @@
-export type NameTheFrameSettings = {
+export type Settings = {
   description: string;
 };
 
-export enum NameTheFrameSettingsNames {
+export enum SettingsKeys {
   File = 'file',
   SettingsData = 'settings-data',
 }
