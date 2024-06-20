@@ -7,7 +7,7 @@ import { useAppTranslation } from '@/config/i18n';
 import { BUILDER_VIEW_CY } from '@/config/selectors';
 import { APP } from '@/langs/constants';
 
-import Configurations from '../builderView/configuration';
+import Configurations from '../builder/configuration';
 
 enum BuilderTabs {
   CONFIGURATION_VIEW = 'CONFIGURATION_VIEW',

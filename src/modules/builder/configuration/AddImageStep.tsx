@@ -14,7 +14,7 @@ import { useAppTranslation } from '@/config/i18n';
 import { hooks } from '@/config/queryClient';
 import { DESCRIPTION_INPUT_ID } from '@/config/selectors';
 import { APP } from '@/langs/constants';
-import ImageDisplay from '@/modules/common/ImageDisplay';
+import ImageDisplay from '@/modules/builder/ImageDisplay';
 import UploadImage from '@/modules/common/UploadImage';
 import { SettingsContext } from '@/modules/context/SettingsContext';
 
