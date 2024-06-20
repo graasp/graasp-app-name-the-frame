@@ -5,6 +5,7 @@ import { Stack, Step, StepButton, Stepper } from '@mui/material';
 import { SettingsKeys } from '@/@types';
 import { useAppTranslation } from '@/config/i18n';
 import { hooks } from '@/config/queryClient';
+import { CONFIGURATION_TAB_ID } from '@/config/selectors';
 import { APP } from '@/langs/constants';
 
 import AddImageStep from './AddImageStep';
@@ -35,7 +36,7 @@ const Configurations = (): JSX.Element => {
   ];
 
   return (
-    <Stack spacing={1}>
+    <Stack spacing={1} id={CONFIGURATION_TAB_ID}>
       <Stepper activeStep={activeStep} nonLinear>
         {steps.map(({ label, disabled }, index) => (
           <Step key={label}>
