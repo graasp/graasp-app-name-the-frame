@@ -7,7 +7,7 @@ describe('Builder View', () => {
     cy.setUpApi(
       {},
       {
-        context: Context.Analytics,
+        context: Context.Builder,
         permission: PermissionLevel.Admin,
       },
     );
