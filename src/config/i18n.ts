@@ -1,37 +1,18 @@
-import { initReactI18next } from 'react-i18next';
+import { initReactI18next, useTranslation } from 'react-i18next';
 
-import i18n from 'i18next';
+import buildI18n from '@graasp/translations';
 
 import en from '../langs/en.json';
 import fr from '../langs/fr.json';
 
-export const DEFAULT_LANGUAGE = 'en';
-export const defaultNS = 'translations';
-export const resources = {
-  en,
-  fr,
-} as const;
+const i18n = buildI18n().use(initReactI18next);
 
-declare module 'react-i18next' {
-  interface CustomTypeOptions {
-    defaultNS: typeof defaultNS;
-    resources: (typeof resources)['en'];
-  }
-}
+export const APP_NAMESPACE = 'name_the_frame';
 
-i18n.use(initReactI18next).init({
-  resources,
-  lng: DEFAULT_LANGUAGE,
-  fallbackLng: DEFAULT_LANGUAGE,
-  // debug only when not in production
-  debug: import.meta.env.DEV,
-  ns: [defaultNS],
-  defaultNS,
-  keySeparator: false,
-  interpolation: {
-    escapeValue: false,
-    formatSeparator: ',',
-  },
-});
+i18n.addResourceBundle('en', APP_NAMESPACE, en);
+i18n.addResourceBundle('fr', APP_NAMESPACE, fr);
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export const useAppTranslation = () => useTranslation(APP_NAMESPACE);
 
 export default i18n;

@@ -1,20 +1,16 @@
 {
-  "translations": {
-    "Welcome to the Graasp App Starter Kit": "Welcome to the Graasp App Starter Kit",
-    "ERROR_BOUNDARY": {
-      "FALLBACK": {
-        "MESSAGE_TITLE": "Sorry, something went wrong with this application",
-        "MESSAGE_FEEDBACK": "Our team has been notified. If you would like to help, please, tell us what happened below.",
-        "ERROR_DETAILS": "Details of the error",
-        "NAME_LABEL": "Name",
-        "NAME_HELPER": "Provide your name (optional)",
-        "EMAIL_LABEL": "Email",
-        "EMAIL_HELPER": "Provide your email (optional)",
-        "COMMENT_LABEL": "Comment",
-        "COMMENT_HELPER": "Tell us what happened (optional)",
-        "THANKS_FOR_FEEDBACK": "Thank you for your feedback!",
-        "SEND": "Send your feedback"
-      }
-    }
-  }
+  "BUILDER_TAB_CONFIGURATION": "Configuration",
+  "ADD_IMAGE_STEP_LABEL": "Add the image",
+  "ADD_LABELS_STEP_LABEL": "Add the labels",
+  "PREVIEW_STEP_LABEL": "Preview",
+  "DESCRIPTION_LABEL": "Description",
+  "DESCRIPTION_DETAILS": "Add a description for your frame (optional)",
+  "DROP_IMAGE_LABEL": "Upload image",
+  "DROP_IMAGE_DESCRIPTION": "Add the image you want to add labels for",
+  "UPLOAD_IMAGE_NOTE_one": "You can upload up to {{FILE_UPLOAD_MAX_FILES}} file at a time",
+  "UPLOAD_IMAGE_NOTE_other": "You can upload up to {{FILE_UPLOAD_MAX_FILES}} files at a time",
+  "DROP_HERE": "Drop here or",
+  "NEXT": "Next",
+  "BACK": "Back",
+  "REPLACE_IMAGE": "Replace the image"
 }

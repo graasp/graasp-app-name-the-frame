@@ -1,22 +1,26 @@
 import { FC, ReactElement, createContext, useContext } from 'react';
 
+import { Settings, SettingsKeys } from '@/@types';
+
 import { hooks, mutations } from '../../config/queryClient';
 import Loader from '../common/Loader';
 
 // mapping between Setting names and their data type
 // eslint-disable-next-line @typescript-eslint/ban-types
-type AllSettingsType = {};
+type AllSettingsType = {
+  [SettingsKeys.SettingsData]: Settings;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [SettingsKeys.File]: any;
+};
 
 // default values for the data property of settings by name
-const defaultSettingsValues: AllSettingsType = {};
-
-// list of the settings names
-const ALL_SETTING_NAMES = [
-  // name of your settings
-] as const;
+const defaultSettingsValues: AllSettingsType = {
+  [SettingsKeys.SettingsData]: { description: '' },
+  [SettingsKeys.File]: {},
+};
 
 // automatically generated types
-type AllSettingsNameType = (typeof ALL_SETTING_NAMES)[number];
+type AllSettingsNameType = SettingsKeys;
 type AllSettingsDataType = AllSettingsType[keyof AllSettingsType];
 
 export type SettingsContextType = AllSettingsType & {
@@ -31,7 +35,8 @@ const defaultContextValue = {
   saveSettings: () => null,
 };
 
-const SettingsContext = createContext<SettingsContextType>(defaultContextValue);
+export const SettingsContext =
+  createContext<SettingsContextType>(defaultContextValue);
 
 type Prop = {
   children: ReactElement | ReactElement[];
@@ -73,6 +78,7 @@ export const SettingsProvider: FC<Prop> = ({ children }) => {
 
   const getContextValue = (): SettingsContextType => {
     if (isSuccess) {
+      const ALL_SETTING_NAMES = Object.values(SettingsKeys);
       const allSettings: AllSettingsType = ALL_SETTING_NAMES.reduce(
         <T extends AllSettingsNameType>(acc: AllSettingsType, key: T) => {
           // todo: types are not inferred correctly here
@@ -82,7 +88,7 @@ export const SettingsProvider: FC<Prop> = ({ children }) => {
           acc[key] = settingData as AllSettingsType[T];
           return acc;
         },
-        {},
+        {} as AllSettingsType,
       );
       return {
         ...allSettings,

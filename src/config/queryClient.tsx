@@ -23,6 +23,7 @@ const {
   postAppActionRoutine,
   postAppDataRoutine,
   postAppSettingRoutine,
+  uploadAppSettingFileRoutine,
 } = ROUTINES;
 
 const EXCLUDED_NOTIFICATION_TYPES: string[] = [
@@ -36,9 +37,10 @@ const EXCLUDED_NOTIFICATION_TYPES: string[] = [
   deleteAppSettingRoutine.SUCCESS,
   postAppActionRoutine.SUCCESS,
   getLocalContextRoutine.SUCCESS,
+  uploadAppSettingFileRoutine.SUCCESS,
 ];
 
-const notifier: Notifier = (data) => {
+export const notifier: Notifier = (data) => {
   const { payload } = data;
   if (payload) {
     // axios error
