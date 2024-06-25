@@ -19,10 +19,10 @@
     "@mui/icons-material": "5.15.20",
     "@mui/lab": "5.0.0-alpha.170",
     "@mui/material": "5.15.20",
-    "@sentry/react": "7.117.0",
+    "@sentry/react": "7.118.0",
     "@tanstack/react-query": "^4.36.1",
     "@tanstack/react-query-devtools": "^4.36.1",
-    "@types/node": "20.14.6",
+    "@types/node": "20.14.8",
     "@types/react": "18.3.3",
     "@types/react-dom": "18.3.0",
     "@uppy/core": "^3.11.3",
@@ -38,7 +38,7 @@
     "react-i18next": "14.1.2",
     "react-toastify": "10.0.5",
     "react-zoom-pan-pinch": "^3.4.4",
-    "typescript": "5.4.5"
+    "typescript": "5.5.2"
   },
   "scripts": {
     "dev": "yarn vite",
@@ -69,8 +69,8 @@
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/i18n": "0.13.12",
     "@types/uuid": "9.0.8",
-    "@typescript-eslint/eslint-plugin": "7.13.1",
-    "@typescript-eslint/parser": "7.13.1",
+    "@typescript-eslint/eslint-plugin": "7.14.1",
+    "@typescript-eslint/parser": "7.14.1",
     "@vitejs/plugin-react": "^4.2.1",
     "axios": "1.7.2",
     "concurrently": "8.2.2",
@@ -84,7 +84,7 @@
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-cypress": "2.15.2",
     "eslint-plugin-import": "2.29.1",
-    "eslint-plugin-jsx-a11y": "6.8.0",
+    "eslint-plugin-jsx-a11y": "6.9.0",
     "eslint-plugin-prettier": "5.1.3",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "4.6.2",
@@ -119,7 +119,7 @@
       "src/**/*.d.ts"
     ]
   },
-  "packageManager": "yarn@4.3.0",
+  "packageManager": "yarn@4.3.1",
   "msw": {
     "workerDirectory": "public"
   }
