@@ -12,4 +12,5 @@ export const APP = {
   NEXT: 'NEXT',
   BACK: 'BACK',
   REPLACE_IMAGE: 'REPLACE_IMAGE',
+  ADD: 'ADD',
 };
