@@ -8,7 +8,7 @@ import { useAppTranslation } from '@/config/i18n';
 import { APP } from '@/langs/constants';
 
 type Props = {
-  formPosition: { top: number; left: number };
+  formPosition: { y: number; x: number };
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: () => void;
@@ -30,8 +30,8 @@ const AddLabelForm = ({
         position: 'absolute',
 
         zIndex: 500,
-        top: formPosition.top,
-        left: formPosition.left,
+        top: formPosition.y,
+        left: formPosition.x,
       }}
       gap={1}
     >
@@ -70,6 +70,7 @@ const AddLabelForm = ({
                 border: 0,
                 width: '15ch',
               }}
+              multiline
             />
             <Button size="small" variant="contained" onClick={onSubmit}>
               {t(APP.ADD)}

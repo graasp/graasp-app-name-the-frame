@@ -9,8 +9,8 @@ export enum SettingsKeys {
 }
 
 export type Label = {
-  top: number;
-  left: number;
+  y: number;
+  x: number;
   content: string;
   id: string;
 };

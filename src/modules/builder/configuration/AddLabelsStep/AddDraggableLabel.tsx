@@ -54,8 +54,8 @@ const AddDraggableLabel = ({
   const [openForm, setOpenForm] = useState(false);
   const [labelText, setLabelText] = useState('');
   const [formPosition, setFormPosition] = useState({
-    top: 0,
-    left: 0,
+    y: 0,
+    x: 0,
   });
 
   const [isDragging, setIsDragging] = useState(false);
@@ -69,7 +69,7 @@ const AddDraggableLabel = ({
 
   const handleFormSubmit = (): void => {
     const editingIndex = labels.findIndex(
-      ({ top, left }) => top === formPosition.top && left === formPosition.left,
+      ({ y, x }) => y === formPosition.y && x === formPosition.x,
     );
     const isEditing = editingIndex > -1;
     // editing existing label
@@ -89,8 +89,8 @@ const AddDraggableLabel = ({
     } else {
       const id = v4();
       const p = {
-        top: (formPosition.top - positionY) / scale,
-        left: (formPosition.left - positionX) / scale,
+        y: (formPosition.y - positionY) / scale,
+        x: (formPosition.x - positionX) / scale,
       };
       const newLabel = { ...p, id, content: labelText };
       setLabels([...labels, newLabel]);
@@ -106,8 +106,8 @@ const AddDraggableLabel = ({
       const { offsetX, offsetY } = event.nativeEvent;
 
       setFormPosition({
-        top: offsetY,
-        left: offsetX,
+        y: offsetY,
+        x: offsetX,
       });
 
       setOpenForm(true);
@@ -120,7 +120,7 @@ const AddDraggableLabel = ({
     labelId: string,
   ): void => {
     setIsDragging(true);
-
+    e.stopPropagation();
     const { x, y } = position;
     const labelInd = labels.findIndex(({ id }) => id === labelId);
     if (labelInd > -1) {
@@ -149,10 +149,10 @@ const AddDraggableLabel = ({
   const editLabel = (labelId: string): void => {
     const ele = labels.find(({ id }) => id === labelId);
     if (ele) {
-      const { top, left, content } = ele;
+      const { x, y, content } = ele;
       setFormPosition({
-        top: top * scale + positionY,
-        left: left * scale + positionX,
+        y: y * scale + positionY,
+        x: x * scale + positionX,
       });
 
       setOpenForm(true);
@@ -181,12 +181,10 @@ const AddDraggableLabel = ({
         {labels.map((ele) => (
           <DraggableLabel
             key={ele.id}
-            labelId={ele.id}
-            position={{ x: ele.left, y: ele.top }}
+            label={ele}
             onStop={(e: DraggableEvent, p: DraggableData) =>
               onStop(e, p, ele.id)
             }
-            content={ele.content}
             deleteLabel={deleteLabel}
             editLabel={editLabel}
             scale={scale}

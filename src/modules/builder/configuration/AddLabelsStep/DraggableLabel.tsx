@@ -3,20 +3,19 @@ import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
 import { Delete, Edit } from '@mui/icons-material';
 import { Box, IconButton, styled } from '@mui/material';
 
+import { Label } from '@/@types';
 import { buildLabelActionsID } from '@/config/selectors';
 
 type Props = {
-  position: { x: number; y: number };
   onStop: (e: DraggableEvent, p: DraggableData) => void;
-  content: string;
-  labelId: string;
   deleteLabel: (id: string) => void;
   editLabel: (id: string) => void;
   scale: number;
   setIsDragging: (b: boolean) => void;
+  label: Label;
 };
 
-const Label = styled(Box)<{ labelId: string }>(({ theme, labelId }) => ({
+const StyledLabel = styled(Box)<{ labelId: string }>(({ theme, labelId }) => ({
   background: theme.palette.primary.main,
   color: 'white',
   borderRadius: theme.spacing(1),
@@ -24,6 +23,7 @@ const Label = styled(Box)<{ labelId: string }>(({ theme, labelId }) => ({
   padding: theme.spacing(0.5),
   position: 'absolute',
   cursor: 'grab',
+  maxWidth: '12ch',
   '&:hover': {
     [`#${buildLabelActionsID(labelId)}`]: {
       display: 'inline-block',
@@ -33,17 +33,16 @@ const Label = styled(Box)<{ labelId: string }>(({ theme, labelId }) => ({
 }));
 
 const DraggableLabel = ({
-  position,
   onStop,
-  content,
-  labelId,
+
   deleteLabel,
   editLabel,
   scale,
   setIsDragging,
+  label,
 }: Props): JSX.Element => (
   <Draggable
-    position={position}
+    position={{ x: label.x, y: label.y }}
     onDrag={onStop}
     axis="none"
     onStop={() => {
@@ -53,10 +52,11 @@ const DraggableLabel = ({
     }}
     scale={scale}
   >
-    <Label labelId={labelId}>
-      {content}
+    <StyledLabel labelId={label.id}>
+      {label.content}
       <Box
         display="flex"
+        id={buildLabelActionsID(label.id)}
         sx={{
           position: 'absolute',
           top: -24,
@@ -64,7 +64,6 @@ const DraggableLabel = ({
           display: 'none',
           width: 'max-content',
         }}
-        id={buildLabelActionsID(labelId)}
       >
         <IconButton
           sx={{
@@ -74,7 +73,7 @@ const DraggableLabel = ({
           }}
           onClick={(e) => {
             e.stopPropagation();
-            editLabel(labelId);
+            editLabel(label.id);
           }}
         >
           <Edit sx={{ color: 'white' }} fontSize="small" />
@@ -88,13 +87,13 @@ const DraggableLabel = ({
           }}
           onClick={(e) => {
             e.stopPropagation();
-            deleteLabel(labelId);
+            deleteLabel(label.id);
           }}
         >
           <Delete sx={{ color: 'white' }} fontSize="small" />
         </IconButton>
       </Box>
-    </Label>
+    </StyledLabel>
   </Draggable>
 );
 
