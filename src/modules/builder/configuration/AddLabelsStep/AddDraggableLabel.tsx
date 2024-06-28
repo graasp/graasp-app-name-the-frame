@@ -1,0 +1,221 @@
+import { useState } from 'react';
+import { DraggableData, DraggableEvent } from 'react-draggable';
+import {
+  TransformComponent,
+  TransformWrapper,
+  useControls,
+} from 'react-zoom-pan-pinch';
+
+import { Box, styled } from '@mui/material';
+
+import { useLocalContext } from '@graasp/apps-query-client';
+import { PermissionLevel } from '@graasp/sdk';
+
+import { v4 } from 'uuid';
+
+import { Label } from '@/@types';
+import {
+  ADD_LABEL_FRAME_HEIGHT,
+  ADD_LABEL_FRAME_WIDTH,
+} from '@/config/constants';
+
+import AddLabelForm from './AddLabelForm';
+import DraggableLabel from './DraggableLabel';
+import ImageFrame from './ImageFrame';
+
+type Props = {
+  imageSettingId: string;
+  labels: Label[];
+  setLabels: (l: Label[]) => void;
+};
+
+const TransformContainer = styled(TransformWrapper)(() => ({
+  width: '100%',
+  height: '100%',
+  border: 'none',
+  margin: 'auto',
+}));
+
+const Container = styled('div')(() => ({
+  width: '100%',
+  height: '100%',
+  position: 'absolute',
+  top: '0px',
+  left: '0px',
+}));
+
+const AddDraggableLabel = ({
+  labels,
+  setLabels,
+  imageSettingId,
+}: Props): JSX.Element => {
+  const { instance } = useControls();
+  const { permission } = useLocalContext();
+  const [openForm, setOpenForm] = useState(false);
+  const [labelText, setLabelText] = useState('');
+  const [formPosition, setFormPosition] = useState({
+    top: 0,
+    left: 0,
+  });
+
+  const [isDragging, setIsDragging] = useState(false);
+  const { scale, positionX, positionY } = instance.transformState;
+
+  const handleFormInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
+    setLabelText(event.target.value);
+  };
+
+  const handleFormSubmit = (): void => {
+    const editingIndex = labels.findIndex(
+      ({ top, left }) => top === formPosition.top && left === formPosition.left,
+    );
+    const isEditing = editingIndex > -1;
+    // editing existing label
+    if (isEditing) {
+      const labelToEdit = labels[editingIndex];
+      const newLabel = {
+        ...labelToEdit,
+        content: labelText,
+      };
+
+      const newLabelGroups = [
+        ...labels.slice(0, editingIndex),
+        newLabel,
+        ...labels.slice(editingIndex + 1),
+      ];
+      setLabels(newLabelGroups);
+    } else {
+      const id = v4();
+      const p = {
+        top: (formPosition.top - positionY) / scale,
+        left: (formPosition.left - positionX) / scale,
+      };
+      const newLabel = { ...p, id, content: labelText };
+      setLabels([...labels, newLabel]);
+    }
+    setOpenForm(false);
+    setLabelText('');
+  };
+
+  const handleAddLabel = (
+    event: React.MouseEvent<HTMLImageElement, MouseEvent>,
+  ): void => {
+    if (!isDragging) {
+      const { offsetX, offsetY } = event.nativeEvent;
+
+      setFormPosition({
+        top: offsetY,
+        left: offsetX,
+      });
+
+      setOpenForm(true);
+    }
+  };
+
+  const onStop = (
+    e: DraggableEvent,
+    position: DraggableData,
+    labelId: string,
+  ): void => {
+    setIsDragging(true);
+
+    const { x, y } = position;
+    const labelInd = labels.findIndex(({ id }) => id === labelId);
+    if (labelInd > -1) {
+      const label = labels[labelInd];
+
+      const p = {
+        left: x,
+        top: y,
+      };
+
+      const newLabel = { ...label, ...p };
+      const newLabelGroups = [
+        ...labels.slice(0, labelInd),
+        newLabel,
+        ...labels.slice(labelInd + 1),
+      ];
+      setLabels(newLabelGroups);
+    }
+  };
+
+  const deleteLabel = (labelId: string): void => {
+    const filteredLabels = labels.filter(({ id }) => labelId !== id);
+    setLabels(filteredLabels);
+  };
+
+  const editLabel = (labelId: string): void => {
+    const ele = labels.find(({ id }) => id === labelId);
+    if (ele) {
+      const { top, left, content } = ele;
+      setFormPosition({
+        top: top * scale + positionY,
+        left: left * scale + positionX,
+      });
+
+      setOpenForm(true);
+      setLabelText(content);
+    }
+  };
+
+  return (
+    <Box
+      sx={{
+        height: `${ADD_LABEL_FRAME_HEIGHT}px`,
+        width: `${ADD_LABEL_FRAME_WIDTH}px`,
+      }}
+    >
+      {permission === PermissionLevel.Admin && openForm && !isDragging && (
+        <AddLabelForm
+          value={labelText}
+          formPosition={formPosition}
+          onChange={handleFormInputChange}
+          onSubmit={handleFormSubmit}
+          onClose={() => setOpenForm(false)}
+        />
+      )}
+      <ImageFrame appSettingId={imageSettingId} />
+      <Container onClick={handleAddLabel}>
+        {labels.map((ele) => (
+          <DraggableLabel
+            key={ele.id}
+            labelId={ele.id}
+            position={{ x: ele.left, y: ele.top }}
+            onStop={(e: DraggableEvent, p: DraggableData) =>
+              onStop(e, p, ele.id)
+            }
+            content={ele.content}
+            deleteLabel={deleteLabel}
+            editLabel={editLabel}
+            scale={scale}
+            setIsDragging={setIsDragging}
+          />
+        ))}
+      </Container>
+    </Box>
+  );
+};
+
+const AddDraggableLabelWrapper = ({
+  imageSettingId,
+  labels,
+  setLabels,
+}: Props): JSX.Element => (
+  <TransformContainer doubleClick={{ disabled: true }} centerOnInit>
+    <TransformComponent
+      wrapperStyle={{
+        maxWidth: '100%',
+        maxHeight: '100%',
+      }}
+    >
+      <AddDraggableLabel
+        labels={labels}
+        setLabels={setLabels}
+        imageSettingId={imageSettingId}
+      />
+    </TransformComponent>
+  </TransformContainer>
+);
+export default AddDraggableLabelWrapper;
