@@ -1,5 +1,33 @@
 # Changelog
 
+## 1.0.0 (2024-07-01)
+
+
+### Features
+
+* create upload image builder step ([d6f9cc1](https://github.com/graasp/graasp-app-name-the-frame/commit/d6f9cc1efc95291ee500f701f905691daf7e00de))
+* get rid of toaster msg in case of uploading settings file ([f69d76f](https://github.com/graasp/graasp-app-name-the-frame/commit/f69d76f695dae350f4792ffa3f0fcf8f6593ac0e))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @graasp/translations to v1.28.2 ([6e1d1fe](https://github.com/graasp/graasp-app-name-the-frame/commit/6e1d1fe5a09c1dc3548df4022ba0612e47338f2f))
+* **deps:** update dependency @types/node to v20.14.9 ([ca49b76](https://github.com/graasp/graasp-app-name-the-frame/commit/ca49b76ed33848b264569f9f68adf4e046a82684))
+* **deps:** update dependency @uppy/xhr-upload to v3.6.8 ([28f366f](https://github.com/graasp/graasp-app-name-the-frame/commit/28f366f849f38edb63229f61b28a5aec029b95dd))
+* **deps:** update dependency i18next to v23.11.5 ([571cb38](https://github.com/graasp/graasp-app-name-the-frame/commit/571cb3827769cb88135e6530b567227eb8c902f7))
+* **deps:** update dependency react-zoom-pan-pinch to v3.6.0 ([c9b83e6](https://github.com/graasp/graasp-app-name-the-frame/commit/c9b83e6be3aed08e6aafc4bc055954c43986b05b))
+* **deps:** update dependency react-zoom-pan-pinch to v3.6.1 ([14897e0](https://github.com/graasp/graasp-app-name-the-frame/commit/14897e07e57ead7b2cdd5588b2ea2374d04860fa))
+* **deps:** update mui (non-major) to v5.15.21 ([1939619](https://github.com/graasp/graasp-app-name-the-frame/commit/193961953f8b780c153ccfb3f48e191641201236))
+* **deps:** update uppy packages ([a053f4d](https://github.com/graasp/graasp-app-name-the-frame/commit/a053f4d27c93bb7fa63271093dfe2573ca8f0ba9))
+* fix builder test ([4a3722a](https://github.com/graasp/graasp-app-name-the-frame/commit/4a3722a95a7e7298788de4aa6043098427dd1062))
+* fix builder test ([b4bbca6](https://github.com/graasp/graasp-app-name-the-frame/commit/b4bbca673890375c1faa5eafa3a3b9dc4fbf9249))
+* remove unused vars ([a1cc388](https://github.com/graasp/graasp-app-name-the-frame/commit/a1cc38895ee505680d56915e44dabc50beb712b4))
+* rename builderView folser to builder ([53081eb](https://github.com/graasp/graasp-app-name-the-frame/commit/53081eb86132dd43f51a2ae752c087625b2f2827))
+* renaming and fix review comments ([99b6794](https://github.com/graasp/graasp-app-name-the-frame/commit/99b6794673e3ebe1f21157208cb854785527de92))
+* update app id vars in deploy-dev ([41ba302](https://github.com/graasp/graasp-app-name-the-frame/commit/41ba302d064e915f005dbca0d86a2d3c3199ebcc))
+* update app id vars in deploy-prod ([d37a6ae](https://github.com/graasp/graasp-app-name-the-frame/commit/d37a6ae47e77fb718515d0312a7fd4a31a0a474a))
+* update app id vars in deploy-stage ([b08010d](https://github.com/graasp/graasp-app-name-the-frame/commit/b08010d402b68c3d1018c380b911c07c881dbb33))
+
 ## [1.2.5](https://github.com/graasp/graasp-app-starter-ts-vite/compare/v1.2.4...v1.2.5) (2024-05-13)
 
 
