@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import Uppy, {
   ErrorCallback,
   FileAddedCallback,
@@ -68,6 +69,7 @@ const configureUppy = ({
   uppy.on('upload', onUpload);
 
   if (onProgress) {
+    console.log('progress ..');
     uppy.on('progress', onProgress);
   }
 

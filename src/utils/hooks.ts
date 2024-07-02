@@ -72,6 +72,7 @@ export const useUploadImage = ({ onUploadComplete }: Props): Uppy | null => {
   };
 
   const onError = (error: Error): void => {
+    console.log(error, 'on error');
     onFileUploadComplete({ error });
   };
 
