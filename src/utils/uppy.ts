@@ -59,6 +59,7 @@ const configureUppy = ({
   });
 
   uppy.on('file-added', (file) => {
+    console.log('file added');
     onFileAdded?.(file);
   });
 
@@ -78,8 +79,10 @@ const configureUppy = ({
   });
 
   if (onError) {
+    console.log('error from uppy');
     uppy.on('error', onError);
     uppy.on('upload-error', (_, error) => {
+      console.log('upload error', error);
       onError(error);
     });
   }

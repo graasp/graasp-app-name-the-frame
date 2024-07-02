@@ -77,7 +77,7 @@ export const useUploadImage = ({ onUploadComplete }: Props): Uppy | null => {
   };
 
   const applyUppy = (): void => {
-    console.log('apply uppy');
+    console.log('apply uppy...');
     if (typeof token !== 'undefined') {
       setUppy(
         configureUppy({
@@ -91,7 +91,7 @@ export const useUploadImage = ({ onUploadComplete }: Props): Uppy | null => {
       );
     }
   };
-
+  console.log(token, 'token');
   // update uppy configuration each time itemId changes
   useEffect(() => {
     applyUppy();
