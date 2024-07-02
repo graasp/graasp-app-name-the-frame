@@ -67,7 +67,9 @@ export const useUploadImage = ({ onUploadComplete }: Props): Uppy | null => {
     return false;
   };
 
+  console.log(itemId, 'itemID');
   const onUpload = (): void => {
+    console.log('uploading ...');
     notifier({ type: uploadAppSettingFileRoutine.SUCCESS });
   };
 
@@ -91,7 +93,6 @@ export const useUploadImage = ({ onUploadComplete }: Props): Uppy | null => {
       );
     }
   };
-  console.log(token, 'token');
   // update uppy configuration each time itemId changes
   useEffect(() => {
     applyUppy();

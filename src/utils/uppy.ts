@@ -59,11 +59,13 @@ const configureUppy = ({
   });
 
   uppy.on('file-added', (file) => {
-    console.log('file added');
+    console.log('file added', file);
     onFileAdded?.(file);
   });
 
   uppy.on('files-added', (files) => {
+    console.log('files added', files);
+
     onFilesAdded?.(files);
   });
 
