@@ -96,8 +96,9 @@ export const useUploadImage = ({ onUploadComplete }: Props): Uppy | null => {
   // update uppy configuration each time itemId changes
   useEffect(() => {
     applyUppy();
-
+    console.log('does it run', { itemId, token });
     return () => {
+      console.log('uppy closing ');
       uppy?.close();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
