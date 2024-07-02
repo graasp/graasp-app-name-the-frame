@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useContext, useEffect, useState } from 'react';
 
 import {
@@ -29,6 +30,7 @@ const AddImageStep = ({ moveToNextStep }: Props): JSX.Element => {
     name: SettingsKeys.File,
   });
 
+  console.log('add image step');
   const { saveSettings } = useContext(SettingsContext);
 
   const { data: appSetting } = hooks.useAppSettings<Settings>({

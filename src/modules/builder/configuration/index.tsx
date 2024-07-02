@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useState } from 'react';
 
 import { Stack, Step, StepButton, Stepper } from '@mui/material';
@@ -16,6 +17,7 @@ const Configurations = (): JSX.Element => {
   const { t } = useAppTranslation();
   const [activeStep, setActiveStep] = useState(0);
 
+  console.log('configuration ...');
   const { data: imageSetting } = hooks.useAppSettings({
     name: SettingsKeys.File,
   });

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useState } from 'react';
 
 import { TabContext, TabList, TabPanel } from '@mui/lab';
@@ -17,7 +18,7 @@ const BuilderView = (): JSX.Element => {
   const [activeTab, setActiveTab] = useState(BuilderTabs.CONFIGURATION_VIEW);
 
   const { t } = useAppTranslation();
-
+  console.log('builder view');
   return (
     <Box data-cy={BUILDER_VIEW_CY}>
       <Container>

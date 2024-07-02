@@ -54,6 +54,7 @@ export const useUploadImage = ({ onUploadComplete }: Props): Uppy | null => {
   const [uppy, setUppy] = useState<Uppy | null>(null);
   const { mutate: onFileUploadComplete } = mutations.useUploadAppSettingFile();
 
+  console.log('use upload hook');
   const onComplete = (result: UploadResult): boolean | void => {
     console.log(result, 'on complete');
     if (!result?.failed.length) {
@@ -67,6 +68,7 @@ export const useUploadImage = ({ onUploadComplete }: Props): Uppy | null => {
     return false;
   };
 
+  console.log(token, 'token');
   console.log(itemId, 'itemID');
   const onUpload = (): void => {
     console.log('uploading ...');
