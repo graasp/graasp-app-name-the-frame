@@ -1,0 +1,198 @@
+import React, { useEffect, useState } from 'react';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
+
+import { Box, Stack, Typography } from '@mui/material';
+
+import { DraggableLabel, Settings, SettingsKeys } from '@/@types';
+import {
+  ADD_LABEL_FRAME_HEIGHT,
+  ADD_LABEL_FRAME_WIDTH,
+} from '@/config/constants';
+import { useAppTranslation } from '@/config/i18n';
+import { hooks } from '@/config/queryClient';
+import { APP } from '@/langs/constants';
+import { move, reorder } from '@/utils/dnd';
+
+import DraggableFrameWithLabels from './DraggableFrameWithLabels';
+import LabelPin from './LabelPin';
+
+const PreviewImage = (): JSX.Element => {
+  const { t } = useAppTranslation();
+  const { data: image } = hooks.useAppSettings({
+    name: SettingsKeys.File,
+  });
+
+  const { data: appSettings } = hooks.useAppSettings<Settings>({
+    name: SettingsKeys.SettingsData,
+  });
+
+  const [labels, setLabels] = useState<DraggableLabel[]>([]);
+
+  useEffect(() => {
+    const appLabels = appSettings?.[0].data.labels;
+    const imageDimension = appSettings?.[0].data.imageDimension;
+    if (imageDimension) {
+      const wStart = ADD_LABEL_FRAME_WIDTH - imageDimension.width;
+      const hStart = ADD_LABEL_FRAME_HEIGHT - imageDimension.height;
+      if (appLabels) {
+        const labelsP = appLabels.map((l, index) => ({
+          labelId: l.id,
+          ind: index + 1,
+          choices: [],
+          x: `${((l.x - wStart / 2) / imageDimension.width) * 100}%`,
+          y: `${((l.y - hStart / 2) / imageDimension.height) * 100}%`,
+        }));
+
+        const allChoices = appLabels.map(({ id, content }) => ({
+          id,
+          content,
+        }));
+
+        const allLabels = [
+          {
+            ind: 0,
+            y: '0%',
+            x: '0%',
+            labelId: 'all-labels',
+            choices: allChoices,
+          },
+          ...labelsP,
+        ];
+        setLabels(allLabels);
+      }
+    }
+  }, [appSettings]);
+
+  const onDragEnd = (draggable: DropResult): void => {
+    const { source, destination } = draggable;
+    // dropped outside the list
+    if (!destination) {
+      return;
+    }
+    const sInd = +source.droppableId;
+    const dInd = +destination.droppableId;
+    // prevent drop to a filled destination
+    const isDestinationFilled = labels.find(
+      ({ ind }) => dInd === ind && ind !== 0,
+    )?.choices.length;
+
+    if (isDestinationFilled) {
+      return;
+    }
+
+    if (sInd === dInd) {
+      const items = reorder(
+        labels[sInd].choices,
+        source.index,
+        destination.index,
+      );
+      const newState = [...labels];
+      newState[sInd].choices = items;
+      setLabels(newState);
+    } else {
+      const result = move(
+        labels[sInd].choices,
+        labels[dInd].choices,
+        source,
+        destination,
+      );
+
+      const newState = [...labels];
+      newState[sInd].choices = result[sInd];
+      newState[dInd].choices = result[dInd];
+      setLabels(newState);
+    }
+  };
+
+  return (
+    <Box>
+      <Typography variant="h6">{t(APP.DRAG_DROP_EXERCISE_TITLE)}</Typography>
+      {image?.length && (
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Box
+            sx={{
+              position: 'relative',
+              display: 'flex',
+              gap: 1,
+              background: 'yellow',
+            }}
+          >
+            {labels.slice(0, 1).map((label) => (
+              <LabelPin label={label} key={label.ind} />
+              // <Droppable droppableId={`${label.ind}`} key={0}>
+              //   {(provided) => (
+              //     <div
+              //       ref={provided.innerRef}
+              //       {...provided.droppableProps}
+              //       style={{
+              //         display: 'flex',
+              //         gap: '8px',
+              //         minHeight: '30px',
+              //         width: '100%',
+              //         background: 'pink',
+              //       }}
+              //     >
+              //       {label.choices?.map((item, index) => (
+              //         <Draggable
+              //           key={item?.id}
+              //           draggableId={item?.id}
+              //           index={index}
+              //         >
+              //           {(dragProvided, dragSnapshot) => (
+              //             <Label
+              //               ref={dragProvided.innerRef}
+              //               {...dragProvided.draggableProps}
+              //               {...dragProvided.dragHandleProps}
+              //               isDraggable={dragSnapshot.isDragging}
+              //             >
+              //               <Box
+              //                 display="flex"
+              //                 sx={{
+              //                   position: 'relative',
+              //                 }}
+              //               >
+              //                 {item.content}
+              //               </Box>
+              //             </Label>
+              //           )}
+              //         </Draggable>
+              //       ))}
+              //       {provided.placeholder}
+              //     </div>
+              //   )}
+              // </Droppable>
+            ))}
+          </Box>
+          <DraggableFrameWithLabels
+            imageSettingId={image[0]?.id}
+            labels={labels.slice(1)}
+            // isDragging={isDragging}
+          />
+        </DragDropContext>
+      )}
+    </Box>
+  );
+};
+const PreviewStep = (): JSX.Element => {
+  const { data: appContext } = hooks.useAppContext();
+
+  const { data: appSettings } = hooks.useAppSettings<Settings>({
+    name: SettingsKeys.SettingsData,
+  });
+
+  return (
+    <Stack spacing={2} padding={2}>
+      <Box>
+        <Typography variant="h5" fontWeight="bold">
+          {appContext?.item.name}
+        </Typography>
+        <Typography variant="body1">
+          {appSettings?.[0].data.description}
+        </Typography>
+      </Box>
+      <PreviewImage />
+    </Stack>
+  );
+};
+
+export default PreviewStep;

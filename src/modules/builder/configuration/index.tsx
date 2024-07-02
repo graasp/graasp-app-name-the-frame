@@ -10,7 +10,8 @@ import { APP } from '@/langs/constants';
 
 import AddImageStep from './AddImageStep';
 import AddLabelsStep from './AddLabelsStep/AddLabelsStep';
-import PreviewStep from './PreviewStep';
+import { ImageDimensionsProvider } from './AddLabelsStep/imageDimensionContext';
+import PreviewStep from './PreviewStep/PreviewStep';
 
 const Configurations = (): JSX.Element => {
   const { t } = useAppTranslation();
@@ -35,10 +36,12 @@ const Configurations = (): JSX.Element => {
     {
       label: t(APP.ADD_LABELS_STEP_LABEL),
       component: (
-        <AddLabelsStep
-          moveToNextStep={() => setActiveStep(2)}
-          moveToPrevStep={() => setActiveStep(0)}
-        />
+        <ImageDimensionsProvider>
+          <AddLabelsStep
+            moveToNextStep={() => setActiveStep(2)}
+            moveToPrevStep={() => setActiveStep(0)}
+          />
+        </ImageDimensionsProvider>
       ),
       disabled: !image?.id,
     },

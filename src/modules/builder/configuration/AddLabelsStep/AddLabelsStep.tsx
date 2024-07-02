@@ -8,6 +8,7 @@ import { hooks, mutations } from '@/config/queryClient';
 import { APP } from '@/langs/constants';
 
 import AddDraggableLabel from './AddDraggableLabel';
+import { useImageDimensionsContext } from './imageDimensionContext';
 
 type Props = {
   moveToNextStep: () => void;
@@ -19,6 +20,7 @@ const AddLabelsStep = ({
   moveToPrevStep,
 }: Props): JSX.Element => {
   const { t } = useAppTranslation();
+  const { imgRef } = useImageDimensionsContext();
 
   const { data: appSettings } = hooks.useAppSettings<Settings>();
   const { mutate: patchSetting } = mutations.usePatchAppSetting();
@@ -33,8 +35,10 @@ const AddLabelsStep = ({
   );
 
   const saveData = (): void => {
-    if (settingsData) {
-      const data = { ...settingsData.data, labels };
+    if (settingsData && imgRef?.current) {
+      const { width, height } = imgRef.current.getBoundingClientRect();
+      const imageDimension = { width, height };
+      const data = { ...settingsData.data, labels, imageDimension };
       patchSetting({ id: settingsData?.id, data });
     }
 
