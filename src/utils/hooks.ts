@@ -54,6 +54,7 @@ export const useUploadImage = ({ onUploadComplete }: Props): Uppy | null => {
   const { mutate: onFileUploadComplete } = mutations.useUploadAppSettingFile();
 
   const onComplete = (result: UploadResult): boolean | void => {
+    console.log(result, 'on complete');
     if (!result?.failed.length) {
       onFileUploadComplete({
         data: result.successful
@@ -74,6 +75,7 @@ export const useUploadImage = ({ onUploadComplete }: Props): Uppy | null => {
   };
 
   const applyUppy = (): void => {
+    console.log('apply uppy');
     if (typeof token !== 'undefined') {
       setUppy(
         configureUppy({
