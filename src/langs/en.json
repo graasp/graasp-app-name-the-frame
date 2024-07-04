@@ -14,5 +14,6 @@
   "BACK": "Back",
   "REPLACE_IMAGE": "Replace the image",
   "ADD": "Add",
-  "DRAG_DROP_EXERCISE_TITLE": "Drag and drop these labels into the correct frame of the image"
+  "DRAG_DROP_EXERCISE_TITLE": "Drag and drop these labels into the correct frame of the image",
+  "SAVE": "Save"
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 
 import { DraggableLabel, Settings, SettingsKeys } from '@/@types';
 import {
@@ -139,13 +139,19 @@ const PreviewImage = (): JSX.Element => {
     </Box>
   );
 };
-const PreviewStep = (): JSX.Element => {
+
+const PreviewStep = ({
+  moveToPrevStep,
+}: {
+  moveToPrevStep: () => void;
+}): JSX.Element => {
   const { data: appContext } = hooks.useAppContext();
 
   const { data: appSettings } = hooks.useAppSettings<Settings>({
     name: SettingsKeys.SettingsData,
   });
 
+  const { t } = useAppTranslation();
   return (
     <Stack spacing={2} padding={2}>
       <Box>
@@ -157,6 +163,14 @@ const PreviewStep = (): JSX.Element => {
         </Typography>
       </Box>
       <PreviewImage />
+      <Stack direction="row" gap={1} width="100%" justifyContent="flex-end">
+        <Button size="large" onClick={moveToPrevStep}>
+          {t(APP.BACK)}
+        </Button>
+        <Button variant="contained" size="large">
+          {t(APP.SAVE)}
+        </Button>
+      </Stack>
     </Stack>
   );
 };

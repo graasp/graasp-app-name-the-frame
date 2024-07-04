@@ -47,7 +47,7 @@ const Configurations = (): JSX.Element => {
     },
     {
       label: t(APP.PREVIEW_STEP_LABEL),
-      component: <PreviewStep />,
+      component: <PreviewStep moveToPrevStep={() => setActiveStep(1)} />,
       disabled: !settingsData?.data.labels || !image?.id,
     },
   ];
