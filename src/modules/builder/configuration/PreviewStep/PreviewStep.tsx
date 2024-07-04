@@ -28,6 +28,8 @@ const PreviewImage = (): JSX.Element => {
 
   const [labels, setLabels] = useState<DraggableLabel[]>([]);
 
+  const [isDragging, setIsDragging] = useState(false);
+
   useEffect(() => {
     const appLabels = appSettings?.[0].data.labels;
     const imageDimension = appSettings?.[0].data.imageDimension;
@@ -65,6 +67,8 @@ const PreviewImage = (): JSX.Element => {
 
   const onDragEnd = (draggable: DropResult): void => {
     const { source, destination } = draggable;
+
+    setIsDragging(false);
     // dropped outside the list
     if (!destination) {
       return;
@@ -106,67 +110,29 @@ const PreviewImage = (): JSX.Element => {
 
   return (
     <Box>
-      <Typography variant="h6">{t(APP.DRAG_DROP_EXERCISE_TITLE)}</Typography>
+      <Typography variant="body1" fontWeight={500}>
+        {t(APP.DRAG_DROP_EXERCISE_TITLE)}
+      </Typography>
       {image?.length && (
-        <DragDropContext onDragEnd={onDragEnd}>
+        <DragDropContext
+          onDragEnd={onDragEnd}
+          onDragStart={() => setIsDragging(true)}
+        >
           <Box
             sx={{
               position: 'relative',
-              display: 'flex',
-              gap: 1,
-              background: 'yellow',
+              marginBottom: 2,
+              width: '100%',
             }}
           >
             {labels.slice(0, 1).map((label) => (
               <LabelPin label={label} key={label.ind} />
-              // <Droppable droppableId={`${label.ind}`} key={0}>
-              //   {(provided) => (
-              //     <div
-              //       ref={provided.innerRef}
-              //       {...provided.droppableProps}
-              //       style={{
-              //         display: 'flex',
-              //         gap: '8px',
-              //         minHeight: '30px',
-              //         width: '100%',
-              //         background: 'pink',
-              //       }}
-              //     >
-              //       {label.choices?.map((item, index) => (
-              //         <Draggable
-              //           key={item?.id}
-              //           draggableId={item?.id}
-              //           index={index}
-              //         >
-              //           {(dragProvided, dragSnapshot) => (
-              //             <Label
-              //               ref={dragProvided.innerRef}
-              //               {...dragProvided.draggableProps}
-              //               {...dragProvided.dragHandleProps}
-              //               isDraggable={dragSnapshot.isDragging}
-              //             >
-              //               <Box
-              //                 display="flex"
-              //                 sx={{
-              //                   position: 'relative',
-              //                 }}
-              //               >
-              //                 {item.content}
-              //               </Box>
-              //             </Label>
-              //           )}
-              //         </Draggable>
-              //       ))}
-              //       {provided.placeholder}
-              //     </div>
-              //   )}
-              // </Droppable>
             ))}
           </Box>
           <DraggableFrameWithLabels
             imageSettingId={image[0]?.id}
             labels={labels.slice(1)}
-            // isDragging={isDragging}
+            isDragging={isDragging}
           />
         </DragDropContext>
       )}

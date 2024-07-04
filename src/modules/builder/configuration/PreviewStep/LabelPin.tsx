@@ -5,35 +5,56 @@ import { Box, styled } from '@mui/material';
 
 import { DraggableLabel } from '@/@types';
 
-export const Label = styled('div')<{ isDraggable: boolean }>(
-  ({ theme, isDraggable }) => ({
-    background: 'red',
-    color: 'white',
-    borderRadius: theme.spacing(1),
-    userSelect: 'none',
-    padding: theme.spacing(0.5),
-    ...(isDraggable && {
-      left: 'auto !important',
-      top: 'auto !important',
-    }),
-  }),
-);
-
-export const GroupContainer = styled(Box)<{
+export const Container = styled('div')<{
+  isAllGroup: boolean;
   top: string;
   left: string;
-}>(({ theme, top, left }) => ({
-  borderRadius: theme.spacing(1),
-  background: 'white',
-  position: 'absolute',
-  top,
-  left,
+  isFilled: boolean;
+  isDraggingOver: boolean;
+}>(({ theme, isAllGroup, top, left, isFilled, isDraggingOver }) => ({
   display: 'flex',
   gap: theme.spacing(1),
+  flexWrap: 'wrap',
+  borderRadius: theme.spacing(1),
+  background: isDraggingOver ? 'lightgray' : 'white',
+  ...(isAllGroup
+    ? {
+        width: '100%',
+        height: '40px',
+        padding: '2px',
+        border: '1px solid black',
+      }
+    : {
+        position: 'absolute',
+        top,
+        left,
+        [theme.breakpoints.down('sm')]: {
+          transform: 'scale(0.5)',
+          transformOrigin: 'top left',
+        },
+      }),
+  ...(!isFilled && {
+    minHeight: '4ch',
+    minWidth: '8ch',
+    border: isDraggingOver ? 'none' : '1px solid black',
+  }),
+}));
+
+export const Label = styled('div')<{
+  isDraggable: boolean;
+}>(({ theme, isDraggable }) => ({
+  background: theme.palette.primary.main,
+  color: 'white',
+  borderRadius: theme.spacing(1),
+  gap: theme.spacing(1),
+  userSelect: 'none',
   border: '1px solid white',
-  borderColor: 'black',
-  minHeight: '4ch',
-  minWidth: '8ch',
+  padding: theme.spacing(0.5),
+  ...(isDraggable && {
+    left: 'initial !important',
+    top: 'initial !important',
+    background: 'purple',
+  }),
 }));
 
 type Props = {
@@ -42,44 +63,42 @@ type Props = {
 };
 
 const LabelPin = ({ label }: Props): JSX.Element => (
-  <Droppable
-    droppableId={`${label.ind}`}
-    //   isDropDisabled={!draggingOverItem}
-  >
-    {(provided) => (
-      <div
+  <Droppable droppableId={`${label.ind}`}>
+    {(provided, dropSnapshot) => (
+      <Container
         ref={provided.innerRef}
         {...provided.droppableProps}
-        style={{ background: 'green', display: 'flex' }}
+        isAllGroup={label.ind === 0}
+        top={label.y}
+        left={label.x}
+        isFilled={label.choices.length > 0}
+        isDraggingOver={dropSnapshot.isDraggingOver}
       >
         {label.choices?.map((item, index) => (
-          <Draggable
-            key={item?.id}
-            draggableId={item?.id}
-            index={index}
-            // isDragDisabled={!draggingOverItem}
-          >
-            {(dragProvided, dragSnapshot) => (
-              <Label
-                ref={dragProvided.innerRef}
-                {...dragProvided.draggableProps}
-                {...dragProvided.dragHandleProps}
-                isDraggable={dragSnapshot.isDragging}
-              >
-                <Box
-                  display="flex"
-                  sx={{
-                    position: 'relative',
-                  }}
+          <div key={item?.id}>
+            <Draggable draggableId={item?.id} index={index}>
+              {(dragProvided, dragSnapshot) => (
+                <Label
+                  ref={dragProvided.innerRef}
+                  {...dragProvided.draggableProps}
+                  {...dragProvided.dragHandleProps}
+                  isDraggable={dragSnapshot.isDragging}
                 >
-                  {item.content}
-                </Box>
-              </Label>
-            )}
-          </Draggable>
+                  <Box
+                    display="flex"
+                    sx={{
+                      position: 'relative',
+                    }}
+                  >
+                    {item.content}
+                  </Box>
+                </Label>
+              )}
+            </Draggable>
+          </div>
         ))}
         {provided.placeholder}
-      </div>
+      </Container>
     )}
   </Droppable>
 );

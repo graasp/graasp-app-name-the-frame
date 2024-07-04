@@ -6,10 +6,10 @@ import { Box } from '@mui/material';
 import { DraggableLabel } from '@/@types';
 
 import ImageFrame from './ImageFrame';
-import LabelPin, { GroupContainer } from './LabelPin';
+import LabelPin from './LabelPin';
 
 type Props = {
-  isDragging?: boolean;
+  isDragging: boolean;
   labels: DraggableLabel[];
   imageSettingId: string;
 };
@@ -21,9 +21,7 @@ const DraggableFrameWithLabels = ({
 }: Props): JSX.Element => {
   const renderDraggableLabels = (): JSX.Element | JSX.Element[] => {
     const Labels = labels.map((label) => (
-      <GroupContainer key={label.ind} top={label.y} left={label.x}>
-        <LabelPin label={label} />
-      </GroupContainer>
+      <LabelPin label={label} key={label.ind} />
     ));
 
     return Labels;
