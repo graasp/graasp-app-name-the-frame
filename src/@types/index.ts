@@ -18,7 +18,7 @@ export type Label = {
 
 export type Choice = { content: string; id: string };
 
-export type DraggableLabel = {
+export type DraggableLabelType = {
   // x and y are relative to image size
   y: string;
   x: string;

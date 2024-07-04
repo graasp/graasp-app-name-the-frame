@@ -11,7 +11,7 @@ import { APP } from '@/langs/constants';
 import AddImageStep from './AddImageStep';
 import AddLabelsStep from './AddLabelsStep/AddLabelsStep';
 import { ImageDimensionsProvider } from './AddLabelsStep/imageDimensionContext';
-import PreviewStep from './PreviewStep/PreviewStep';
+import PreviewStep from './PreviewStep';
 
 const Configurations = (): JSX.Element => {
   const { t } = useAppTranslation();

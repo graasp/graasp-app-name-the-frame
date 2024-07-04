@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
-import { DraggableLabel, Settings, SettingsKeys } from '@/@types';
+import { DraggableLabelType, Settings, SettingsKeys } from '@/@types';
 import {
   ADD_LABEL_FRAME_HEIGHT,
   ADD_LABEL_FRAME_WIDTH,
@@ -14,9 +14,9 @@ import { APP } from '@/langs/constants';
 import { move, reorder } from '@/utils/dnd';
 
 import DraggableFrameWithLabels from './DraggableFrameWithLabels';
-import LabelPin from './LabelPin';
+import DraggableLabel from './DraggableLabel';
 
-const PreviewImage = (): JSX.Element => {
+const PlayerFrame = (): JSX.Element => {
   const { t } = useAppTranslation();
   const { data: image } = hooks.useAppSettings({
     name: SettingsKeys.File,
@@ -26,7 +26,7 @@ const PreviewImage = (): JSX.Element => {
     name: SettingsKeys.SettingsData,
   });
 
-  const [labels, setLabels] = useState<DraggableLabel[]>([]);
+  const [labels, setLabels] = useState<DraggableLabelType[]>([]);
 
   const [isDragging, setIsDragging] = useState(false);
 
@@ -126,7 +126,7 @@ const PreviewImage = (): JSX.Element => {
             }}
           >
             {labels.slice(0, 1).map((label) => (
-              <LabelPin label={label} key={label.ind} />
+              <DraggableLabel label={label} key={label.ind} />
             ))}
           </Box>
           <DraggableFrameWithLabels
@@ -140,39 +140,4 @@ const PreviewImage = (): JSX.Element => {
   );
 };
 
-const PreviewStep = ({
-  moveToPrevStep,
-}: {
-  moveToPrevStep: () => void;
-}): JSX.Element => {
-  const { data: appContext } = hooks.useAppContext();
-
-  const { data: appSettings } = hooks.useAppSettings<Settings>({
-    name: SettingsKeys.SettingsData,
-  });
-
-  const { t } = useAppTranslation();
-  return (
-    <Stack spacing={2} padding={2}>
-      <Box>
-        <Typography variant="h5" fontWeight="bold">
-          {appContext?.item.name}
-        </Typography>
-        <Typography variant="body1">
-          {appSettings?.[0].data.description}
-        </Typography>
-      </Box>
-      <PreviewImage />
-      <Stack direction="row" gap={1} width="100%" justifyContent="flex-end">
-        <Button size="large" onClick={moveToPrevStep}>
-          {t(APP.BACK)}
-        </Button>
-        <Button variant="contained" size="large">
-          {t(APP.SAVE)}
-        </Button>
-      </Stack>
-    </Stack>
-  );
-};
-
-export default PreviewStep;
+export default PlayerFrame;

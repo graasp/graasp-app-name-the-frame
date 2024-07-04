@@ -13,16 +13,12 @@ const ImageFrame = ({ appSettingId }: Props): JSX.Element | null => {
     <img
       src={URL.createObjectURL(dataFile)}
       alt="frame"
-      className="image-lina"
       style={{
         maxWidth: '100%',
         maxHeight: '100%',
         objectFit: 'cover',
         pointerEvents: 'auto',
         cursor: 'cell',
-        // position: 'absolute',
-        // top: '0px',
-        // left: '0px',
       }}
     />
   ) : null;

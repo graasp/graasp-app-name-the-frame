@@ -3,7 +3,7 @@ import { Draggable, Droppable } from 'react-beautiful-dnd';
 
 import { Box, styled } from '@mui/material';
 
-import { DraggableLabel } from '@/@types';
+import { DraggableLabelType } from '@/@types';
 
 export const Container = styled('div')<{
   isAllGroup: boolean;
@@ -40,7 +40,7 @@ export const Container = styled('div')<{
   }),
 }));
 
-export const Label = styled('div')<{
+export const StyledLabel = styled('div')<{
   isDraggable: boolean;
 }>(({ theme, isDraggable }) => ({
   background: theme.palette.primary.main,
@@ -58,11 +58,11 @@ export const Label = styled('div')<{
 }));
 
 type Props = {
-  label: DraggableLabel;
+  label: DraggableLabelType;
   draggingOverItem?: boolean;
 };
 
-const LabelPin = ({ label }: Props): JSX.Element => (
+const DraggableLabel = ({ label }: Props): JSX.Element => (
   <Droppable droppableId={`${label.ind}`}>
     {(provided, dropSnapshot) => (
       <Container
@@ -78,7 +78,7 @@ const LabelPin = ({ label }: Props): JSX.Element => (
           <div key={item?.id}>
             <Draggable draggableId={item?.id} index={index}>
               {(dragProvided, dragSnapshot) => (
-                <Label
+                <StyledLabel
                   ref={dragProvided.innerRef}
                   {...dragProvided.draggableProps}
                   {...dragProvided.dragHandleProps}
@@ -92,7 +92,7 @@ const LabelPin = ({ label }: Props): JSX.Element => (
                   >
                     {item.content}
                   </Box>
-                </Label>
+                </StyledLabel>
               )}
             </Draggable>
           </div>
@@ -103,4 +103,4 @@ const LabelPin = ({ label }: Props): JSX.Element => (
   </Droppable>
 );
 
-export default LabelPin;
+export default DraggableLabel;

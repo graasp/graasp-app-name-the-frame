@@ -3,14 +3,14 @@ import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 
 import { Box } from '@mui/material';
 
-import { DraggableLabel } from '@/@types';
+import { DraggableLabelType } from '@/@types';
 
+import DraggableLabel from './DraggableLabel';
 import ImageFrame from './ImageFrame';
-import LabelPin from './LabelPin';
 
 type Props = {
   isDragging: boolean;
-  labels: DraggableLabel[];
+  labels: DraggableLabelType[];
   imageSettingId: string;
 };
 
@@ -21,7 +21,7 @@ const DraggableFrameWithLabels = ({
 }: Props): JSX.Element => {
   const renderDraggableLabels = (): JSX.Element | JSX.Element[] => {
     const Labels = labels.map((label) => (
-      <LabelPin label={label} key={label.ind} />
+      <DraggableLabel label={label} key={label.ind} />
     ));
 
     return Labels;
