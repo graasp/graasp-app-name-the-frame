@@ -5,7 +5,7 @@ import { Box } from '@mui/material';
 
 import { DraggableLabelType } from '@/@types';
 
-import DraggableLabel from './DraggableLabel';
+import DroppableDraggableLabel from './DroppableDraggableLabel';
 import ImageFrame from './ImageFrame';
 
 type Props = {
@@ -21,7 +21,7 @@ const DraggableFrameWithLabels = ({
 }: Props): JSX.Element => {
   const renderDraggableLabels = (): JSX.Element | JSX.Element[] => {
     const Labels = labels.map((label) => (
-      <DraggableLabel label={label} key={label.ind} />
+      <DroppableDraggableLabel label={label} key={label.ind} />
     ));
 
     return Labels;

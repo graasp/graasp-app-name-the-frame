@@ -62,7 +62,7 @@ type Props = {
   draggingOverItem?: boolean;
 };
 
-const DraggableLabel = ({ label }: Props): JSX.Element => (
+const DroppableDraggableLabel = ({ label }: Props): JSX.Element => (
   <Droppable droppableId={`${label.ind}`}>
     {(provided, dropSnapshot) => (
       <Container
@@ -103,4 +103,4 @@ const DraggableLabel = ({ label }: Props): JSX.Element => (
   </Droppable>
 );
 
-export default DraggableLabel;
+export default DroppableDraggableLabel;

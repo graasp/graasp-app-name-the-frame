@@ -14,7 +14,7 @@ import { APP } from '@/langs/constants';
 import { move, reorder } from '@/utils/dnd';
 
 import DraggableFrameWithLabels from './DraggableFrameWithLabels';
-import DraggableLabel from './DraggableLabel';
+import DroppableDraggableLabel from './DroppableDraggableLabel';
 
 const PlayerFrame = (): JSX.Element => {
   const { t } = useAppTranslation();
@@ -126,7 +126,7 @@ const PlayerFrame = (): JSX.Element => {
             }}
           >
             {labels.slice(0, 1).map((label) => (
-              <DraggableLabel label={label} key={label.ind} />
+              <DroppableDraggableLabel label={label} key={label.ind} />
             ))}
           </Box>
           <DraggableFrameWithLabels
