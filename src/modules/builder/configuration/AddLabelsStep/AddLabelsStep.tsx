@@ -34,15 +34,15 @@ const AddLabelsStep = ({
     settingsData?.data.labels || [],
   );
 
-  const saveData = (): void => {
+  const saveData = (l: Label[]): void => {
     if (settingsData && imgRef?.current) {
       const { width, height } = imgRef.current.getBoundingClientRect();
       const imageDimension = { width, height };
-      const data = { ...settingsData.data, labels, imageDimension };
+      const data = { ...settingsData.data, labels: l, imageDimension };
       patchSetting({ id: settingsData?.id, data });
     }
 
-    moveToNextStep();
+    // moveToNextStep();
   };
 
   return (
@@ -52,6 +52,7 @@ const AddLabelsStep = ({
           imageSettingId={image?.id}
           labels={labels}
           setLabels={setLabels}
+          saveData={saveData}
         />
       )}
       <Stack direction="row" gap={1} width="100%" justifyContent="flex-end">
@@ -61,7 +62,7 @@ const AddLabelsStep = ({
         <Button
           variant="contained"
           size="large"
-          onClick={saveData}
+          onClick={moveToNextStep}
           disabled={!settingsData?.data.labels && !labels.length}
         >
           {t(APP.NEXT)}

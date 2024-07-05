@@ -7,7 +7,8 @@ import { Label } from '@/@types';
 import { buildLabelActionsID } from '@/config/selectors';
 
 type Props = {
-  onStop: (e: DraggableEvent, p: DraggableData) => void;
+  onDrag: (e: DraggableEvent, p: DraggableData) => void;
+  onStop: () => void;
   deleteLabel: (id: string) => void;
   editLabel: (id: string) => void;
   scale: number;
@@ -33,8 +34,8 @@ const StyledLabel = styled(Box)<{ labelId: string }>(({ theme, labelId }) => ({
 }));
 
 const DraggableLabel = ({
+  onDrag,
   onStop,
-
   deleteLabel,
   editLabel,
   scale,
@@ -43,9 +44,10 @@ const DraggableLabel = ({
 }: Props): JSX.Element => (
   <Draggable
     position={{ x: label.x, y: label.y }}
-    onDrag={onStop}
+    onDrag={onDrag}
     axis="none"
     onStop={() => {
+      onStop();
       setTimeout(() => {
         setIsDragging(false);
       }, 2000);

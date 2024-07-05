@@ -14,10 +14,7 @@ import { PermissionLevel } from '@graasp/sdk';
 import { v4 } from 'uuid';
 
 import { Label } from '@/@types';
-import {
-  ADD_LABEL_FRAME_HEIGHT,
-  ADD_LABEL_FRAME_WIDTH,
-} from '@/config/constants';
+import { ADD_LABEL_FRAME_HEIGHT } from '@/config/constants';
 
 import AddLabelForm from './AddLabelForm';
 import DraggableLabel from './DraggableLabel';
@@ -27,6 +24,7 @@ type Props = {
   imageSettingId: string;
   labels: Label[];
   setLabels: (l: Label[]) => void;
+  saveData: (l: Label[]) => void;
 };
 
 const TransformContainer = styled(TransformWrapper)(() => ({
@@ -48,6 +46,7 @@ const AddDraggableLabel = ({
   labels,
   setLabels,
   imageSettingId,
+  saveData,
 }: Props): JSX.Element => {
   const { instance } = useControls();
   const { permission } = useLocalContext();
@@ -57,7 +56,6 @@ const AddDraggableLabel = ({
     y: 0,
     x: 0,
   });
-
   const [isDragging, setIsDragging] = useState(false);
   const { scale, positionX, positionY } = instance.transformState;
 
@@ -86,6 +84,7 @@ const AddDraggableLabel = ({
         ...labels.slice(editingIndex + 1),
       ];
       setLabels(newLabelGroups);
+      saveData(newLabelGroups);
     } else {
       const id = v4();
       const p = {
@@ -94,6 +93,7 @@ const AddDraggableLabel = ({
       };
       const newLabel = { ...p, id, content: labelText };
       setLabels([...labels, newLabel]);
+      saveData([...labels, newLabel]);
     }
     setOpenForm(false);
     setLabelText('');
@@ -114,7 +114,7 @@ const AddDraggableLabel = ({
     }
   };
 
-  const onStop = (
+  const onDrag = (
     e: DraggableEvent,
     position: DraggableData,
     labelId: string,
@@ -127,10 +127,9 @@ const AddDraggableLabel = ({
       const label = labels[labelInd];
 
       const p = {
-        left: x,
-        top: y,
+        x,
+        y,
       };
-
       const newLabel = { ...label, ...p };
       const newLabelGroups = [
         ...labels.slice(0, labelInd),
@@ -144,6 +143,7 @@ const AddDraggableLabel = ({
   const deleteLabel = (labelId: string): void => {
     const filteredLabels = labels.filter(({ id }) => labelId !== id);
     setLabels(filteredLabels);
+    saveData(filteredLabels);
   };
 
   const editLabel = (labelId: string): void => {
@@ -164,7 +164,7 @@ const AddDraggableLabel = ({
     <Box
       sx={{
         height: `${ADD_LABEL_FRAME_HEIGHT}px`,
-        width: `${ADD_LABEL_FRAME_WIDTH}px`,
+        width: `100%`,
       }}
     >
       {permission === PermissionLevel.Admin && openForm && !isDragging && (
@@ -182,13 +182,14 @@ const AddDraggableLabel = ({
           <DraggableLabel
             key={ele.id}
             label={ele}
-            onStop={(e: DraggableEvent, p: DraggableData) =>
-              onStop(e, p, ele.id)
+            onDrag={(e: DraggableEvent, p: DraggableData) =>
+              onDrag(e, p, ele.id)
             }
             deleteLabel={deleteLabel}
             editLabel={editLabel}
             scale={scale}
             setIsDragging={setIsDragging}
+            onStop={() => saveData(labels)}
           />
         ))}
       </Container>
@@ -200,18 +201,21 @@ const AddDraggableLabelWrapper = ({
   imageSettingId,
   labels,
   setLabels,
+  saveData,
 }: Props): JSX.Element => (
   <TransformContainer doubleClick={{ disabled: true }} centerOnInit>
     <TransformComponent
       wrapperStyle={{
-        maxWidth: '100%',
+        width: '100%',
         maxHeight: '100%',
       }}
+      contentStyle={{ width: '100%' }}
     >
       <AddDraggableLabel
         labels={labels}
         setLabels={setLabels}
         imageSettingId={imageSettingId}
+        saveData={saveData}
       />
     </TransformComponent>
   </TransformContainer>

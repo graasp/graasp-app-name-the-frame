@@ -4,10 +4,7 @@ import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { Box, Typography } from '@mui/material';
 
 import { DraggableLabelType, Settings, SettingsKeys } from '@/@types';
-import {
-  ADD_LABEL_FRAME_HEIGHT,
-  ADD_LABEL_FRAME_WIDTH,
-} from '@/config/constants';
+import { ADD_LABEL_FRAME_HEIGHT } from '@/config/constants';
 import { useAppTranslation } from '@/config/i18n';
 import { hooks } from '@/config/queryClient';
 import { APP } from '@/langs/constants';
@@ -34,7 +31,7 @@ const PlayerFrame = (): JSX.Element => {
     const appLabels = appSettings?.[0].data.labels;
     const imageDimension = appSettings?.[0].data.imageDimension;
     if (imageDimension) {
-      const wStart = ADD_LABEL_FRAME_WIDTH - imageDimension.width;
+      const wStart = 0;
       const hStart = ADD_LABEL_FRAME_HEIGHT - imageDimension.height;
       if (appLabels) {
         const labelsP = appLabels.map((l, index) => ({

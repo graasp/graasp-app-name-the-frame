@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Stack, Step, StepButton, Stepper } from '@mui/material';
 
@@ -15,7 +15,6 @@ import PreviewStep from './PreviewStep';
 
 const Configurations = (): JSX.Element => {
   const { t } = useAppTranslation();
-  const [activeStep, setActiveStep] = useState(0);
 
   const { data: imageSetting } = hooks.useAppSettings({
     name: SettingsKeys.File,
@@ -27,6 +26,18 @@ const Configurations = (): JSX.Element => {
   const image = imageSetting?.[0];
 
   const settingsData = settings?.[0];
+  const [activeStep, setActiveStep] = useState(0);
+
+  const initialSetRef = useRef(false);
+
+  useEffect(() => {
+    if (!initialSetRef.current && settingsData?.data) {
+      if (settingsData.data.labels) {
+        setActiveStep(2);
+      }
+      initialSetRef.current = true;
+    }
+  }, [settingsData]);
 
   const steps = [
     {

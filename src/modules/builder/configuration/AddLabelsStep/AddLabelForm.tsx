@@ -28,7 +28,6 @@ const AddLabelForm = ({
     <Stack
       sx={{
         position: 'absolute',
-
         zIndex: 500,
         top: formPosition.y,
         left: formPosition.x,

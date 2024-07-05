@@ -21,7 +21,11 @@ const DraggableFrameWithLabels = ({
 }: Props): JSX.Element => {
   const renderDraggableLabels = (): JSX.Element | JSX.Element[] => {
     const Labels = labels.map((label) => (
-      <DroppableDraggableLabel label={label} key={label.ind} />
+      <DroppableDraggableLabel
+        label={label}
+        key={label.ind}
+        isDragging={isDragging}
+      />
     ));
 
     return Labels;
