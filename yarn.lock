@@ -2870,15 +2870,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/lab@npm:5.0.0-alpha.170":
-  version: 5.0.0-alpha.170
-  resolution: "@mui/lab@npm:5.0.0-alpha.170"
+"@mui/lab@npm:5.0.0-alpha.171":
+  version: 5.0.0-alpha.171
+  resolution: "@mui/lab@npm:5.0.0-alpha.171"
   dependencies:
     "@babel/runtime": "npm:^7.23.9"
     "@mui/base": "npm:5.0.0-beta.40"
-    "@mui/system": "npm:^5.15.15"
+    "@mui/system": "npm:^5.16.0"
     "@mui/types": "npm:^7.2.14"
-    "@mui/utils": "npm:^5.15.14"
+    "@mui/utils": "npm:^5.16.0"
     clsx: "npm:^2.1.0"
     prop-types: "npm:^15.8.1"
   peerDependencies:
@@ -2895,7 +2895,7 @@ __metadata:
       optional: true
     "@types/react":
       optional: true
-  checksum: 10/be723d3824a8c56681c2fa71f3bfda5cad9404ed527ab82258ae85219fbb28e8080b90870954c064491699c15409fc2aa4e008e29011cadae1cb978179166f2d
+  checksum: 10/fc027b10ea477cee3febe9ff3c9ddb7e9dce8eba2def13933f3e6a279681859faf3687e9675a7472522d1869dc4c9a41ade85f97ce629ee4139c3093bdc9d81d
   languageName: node
   linkType: hard
 
@@ -8331,7 +8331,7 @@ __metadata:
     "@graasp/translations": "npm:^1.28.0"
     "@graasp/ui": "npm:4.17.1"
     "@mui/icons-material": "npm:5.16.0"
-    "@mui/lab": "npm:5.0.0-alpha.170"
+    "@mui/lab": "npm:5.0.0-alpha.171"
     "@mui/material": "npm:5.16.0"
     "@sentry/react": "npm:7.118.0"
     "@tanstack/react-query": "npm:^4.36.1"
