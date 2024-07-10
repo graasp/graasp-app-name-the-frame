@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
 import { Box, Typography } from '@mui/material';
 
-import { DraggableLabelType, Settings, SettingsKeys } from '@/@types';
-import { ADD_LABEL_FRAME_HEIGHT } from '@/config/constants';
+import { DraggableLabelType, SettingsKeys } from '@/@types';
 import { useAppTranslation } from '@/config/i18n';
 import { hooks } from '@/config/queryClient';
 import { APP } from '@/langs/constants';
@@ -13,54 +12,22 @@ import { move, reorder } from '@/utils/dnd';
 import DraggableFrameWithLabels from './DraggableFrameWithLabels';
 import DroppableDraggableLabel from './DroppableDraggableLabel';
 
-const PlayerFrame = (): JSX.Element => {
+type Props = {
+  labels: DraggableLabelType[];
+  setLabels: (l: DraggableLabelType[]) => void;
+  isSubmitted?: boolean;
+};
+const PlayerFrame = ({
+  labels,
+  setLabels,
+  isSubmitted = false,
+}: Props): JSX.Element => {
   const { t } = useAppTranslation();
   const { data: image } = hooks.useAppSettings({
     name: SettingsKeys.File,
   });
 
-  const { data: appSettings } = hooks.useAppSettings<Settings>({
-    name: SettingsKeys.SettingsData,
-  });
-
-  const [labels, setLabels] = useState<DraggableLabelType[]>([]);
-
   const [isDragging, setIsDragging] = useState(false);
-
-  useEffect(() => {
-    const appLabels = appSettings?.[0].data.labels;
-    const imageDimension = appSettings?.[0].data.imageDimension;
-    if (imageDimension) {
-      const wStart = 0;
-      const hStart = ADD_LABEL_FRAME_HEIGHT - imageDimension.height;
-      if (appLabels) {
-        const labelsP = appLabels.map((l, index) => ({
-          labelId: l.id,
-          ind: index + 1,
-          choices: [],
-          x: `${((l.x - wStart / 2) / imageDimension.width) * 100}%`,
-          y: `${((l.y - hStart / 2) / imageDimension.height) * 100}%`,
-        }));
-
-        const allChoices = appLabels.map(({ id, content }) => ({
-          id,
-          content,
-        }));
-
-        const allLabels = [
-          {
-            ind: 0,
-            y: '0%',
-            x: '0%',
-            labelId: 'all-labels',
-            choices: allChoices,
-          },
-          ...labelsP,
-        ];
-        setLabels(allLabels);
-      }
-    }
-  }, [appSettings]);
 
   const onDragEnd = (draggable: DropResult): void => {
     const { source, destination } = draggable;
@@ -110,7 +77,7 @@ const PlayerFrame = (): JSX.Element => {
       <Typography variant="body1" fontWeight={500}>
         {t(APP.DRAG_DROP_EXERCISE_TITLE)}
       </Typography>
-      {image?.length && (
+      {image && image?.length > 0 && (
         <DragDropContext
           onDragEnd={onDragEnd}
           onDragStart={() => setIsDragging(true)}
@@ -130,6 +97,7 @@ const PlayerFrame = (): JSX.Element => {
             imageSettingId={image[0]?.id}
             labels={labels.slice(1)}
             isDragging={isDragging}
+            isSubmitted={isSubmitted}
           />
         </DragDropContext>
       )}
