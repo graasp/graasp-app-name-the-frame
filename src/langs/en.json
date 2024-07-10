@@ -16,5 +16,7 @@
   "ADD": "Add",
   "DRAG_DROP_EXERCISE_TITLE": "Drag and drop these labels into the correct frame of the image",
   "SAVE": "Save",
-  "PREVIEW_NOTE": "Here is what your application will look like from the player's perspective. To modify any settings, please return to the previous steps."
+  "PREVIEW_NOTE": "Here is what your application will look like from the player's perspective. To modify any settings, please return to the previous steps.",
+  "RETRY": "Retry",
+  "UNCONFIGURED_ITEM": "Sorry, the item you are trying to reach is uncofigurable yet!"
 }

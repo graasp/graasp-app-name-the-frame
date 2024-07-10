@@ -51,7 +51,9 @@ export const Container = styled('div')<{
 
 export const StyledLabel = styled('div')<{
   isDraggable: boolean;
-}>(({ theme, isDraggable }) => ({
+  isSubmitted?: boolean;
+  isCorrect?: boolean;
+}>(({ theme, isDraggable, isSubmitted, isCorrect }) => ({
   color: 'white',
   borderRadius: theme.spacing(1),
   gap: theme.spacing(1),
@@ -66,16 +68,27 @@ export const StyledLabel = styled('div')<{
         background: 'purple',
       }
     : {
-        background: theme.palette.primary.main,
+        background:
+          // eslint-disable-next-line no-nested-ternary
+          !isSubmitted
+            ? theme.palette.primary.main
+            : isCorrect
+              ? theme.palette.success.main
+              : theme.palette.error.main,
       }),
 }));
 
 type Props = {
   label: DraggableLabelType;
   isDragging?: boolean;
+  isSubmitted?: boolean;
 };
 
-const DroppableDraggableLabel = ({ label, isDragging }: Props): JSX.Element => (
+const DroppableDraggableLabel = ({
+  label,
+  isDragging,
+  isSubmitted,
+}: Props): JSX.Element => (
   <Droppable droppableId={`${label.ind}`}>
     {(provided, dropSnapshot) => (
       <Container
@@ -97,7 +110,8 @@ const DroppableDraggableLabel = ({ label, isDragging }: Props): JSX.Element => (
                   {...dragProvided.draggableProps}
                   {...dragProvided.dragHandleProps}
                   isDraggable={dragSnapshot.isDragging}
-                  // style={dragProvided.draggableProps.style}
+                  isSubmitted={isSubmitted}
+                  isCorrect={label.labelId === item?.id}
                 >
                   <Box
                     display="flex"
