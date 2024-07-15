@@ -1913,9 +1913,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cypress/code-coverage@npm:3.12.41":
-  version: 3.12.41
-  resolution: "@cypress/code-coverage@npm:3.12.41"
+"@cypress/code-coverage@npm:3.12.42":
+  version: 3.12.42
+  resolution: "@cypress/code-coverage@npm:3.12.42"
   dependencies:
     "@cypress/webpack-preprocessor": "npm:^6.0.0"
     chalk: "npm:4.1.2"
@@ -1932,7 +1932,7 @@ __metadata:
     babel-loader: ^8.3 || ^9
     cypress: "*"
     webpack: ^4 || ^5
-  checksum: 10/2a805ca1ef6f873eabb06356c835685ec7943853c94184a52eca7b137b9b1b16a29b65f47fc9b98bf716d70065f9fbaa322d2e7ecf97fcb489543b29df17ffe4
+  checksum: 10/4d0d19ddce43cba214cce6c38c1da53ef546903a8178577638a818d807a457d9018cec0a500c559d95efa8c9efeef9b33d0310b9539f4d3f7e96f4146560a112
   languageName: node
   linkType: hard
 
@@ -8225,7 +8225,7 @@ __metadata:
   dependencies:
     "@commitlint/cli": "npm:19.3.0"
     "@commitlint/config-conventional": "npm:19.2.2"
-    "@cypress/code-coverage": "npm:3.12.41"
+    "@cypress/code-coverage": "npm:3.12.42"
     "@emotion/react": "npm:11.11.4"
     "@emotion/styled": "npm:11.11.5"
     "@graasp/apps-query-client": "npm:3.4.15"
