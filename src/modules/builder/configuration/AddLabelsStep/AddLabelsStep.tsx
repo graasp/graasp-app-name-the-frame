@@ -2,9 +2,7 @@ import React, { useContext } from 'react';
 
 import { Button, Stack } from '@mui/material';
 
-import { Settings, SettingsKeys } from '@/@types';
 import { useAppTranslation } from '@/config/i18n';
-import { hooks } from '@/config/queryClient';
 import { APP } from '@/langs/constants';
 import { LabelsContext } from '@/modules/context/LabelsContext';
 
@@ -21,10 +19,6 @@ const AddLabelsStep = ({
 }: Props): JSX.Element => {
   const { t } = useAppTranslation();
 
-  const { data: settingsData } = hooks.useAppSettings<Settings>({
-    name: SettingsKeys.SettingsData,
-  });
-
   const { labels } = useContext(LabelsContext);
 
   return (
@@ -38,7 +32,7 @@ const AddLabelsStep = ({
           variant="contained"
           size="large"
           onClick={moveToNextStep}
-          disabled={!settingsData?.[0]?.data.labels && !labels.length}
+          disabled={!labels.length}
         >
           {t(APP.NEXT)}
         </Button>
