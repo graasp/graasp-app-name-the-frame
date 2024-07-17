@@ -48,7 +48,7 @@ const Container = styled('div')(() => ({
   left: '0px',
 }));
 
-const AddDraggableLabel = ({
+const AddLabelWithinFrame = ({
   saveData,
   isDragging,
   setIsDragging,
@@ -193,7 +193,9 @@ const AddDraggableLabel = ({
   );
 };
 
-const AddDraggableLabelWrapper = ({ saveData }: PropsWrapper): JSX.Element => {
+const AddLabelWithinFrameWrapper = ({
+  saveData,
+}: PropsWrapper): JSX.Element => {
   const [isDragging, setIsDragging] = useState(false);
 
   return (
@@ -213,7 +215,7 @@ const AddDraggableLabelWrapper = ({ saveData }: PropsWrapper): JSX.Element => {
           maxHeight: '100%',
         }}
       >
-        <AddDraggableLabel
+        <AddLabelWithinFrame
           saveData={saveData}
           isDragging={isDragging}
           setIsDragging={setIsDragging}
@@ -222,4 +224,4 @@ const AddDraggableLabelWrapper = ({ saveData }: PropsWrapper): JSX.Element => {
     </TransformContainer>
   );
 };
-export default AddDraggableLabelWrapper;
+export default AddLabelWithinFrameWrapper;

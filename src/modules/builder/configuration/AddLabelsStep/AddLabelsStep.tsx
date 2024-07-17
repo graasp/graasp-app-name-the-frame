@@ -7,7 +7,7 @@ import { useAppTranslation } from '@/config/i18n';
 import { hooks, mutations } from '@/config/queryClient';
 import { APP } from '@/langs/constants';
 
-import AddDraggableLabel from './AddDraggableLabel';
+import AddLabelWithinFrame from './AddLabelWithinFrame';
 
 type Props = {
   moveToNextStep: () => void;
@@ -36,7 +36,7 @@ const AddLabelsStep = ({
 
   return (
     <Stack direction="row" flexWrap="wrap" spacing={2} padding={2}>
-      <AddDraggableLabel saveData={saveData} />
+      <AddLabelWithinFrame saveData={saveData} />
       <Stack direction="row" gap={1} width="100%" justifyContent="flex-end">
         <Button size="large" onClick={moveToPrevStep}>
           {t(APP.BACK)}
