@@ -1,20 +1,13 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
+import { useControls } from 'react-zoom-pan-pinch';
 
 import { Delete, Edit } from '@mui/icons-material';
 import { Box, IconButton, styled } from '@mui/material';
 
 import { Label } from '@/@types';
 import { buildLabelActionsID } from '@/config/selectors';
-
-type Props = {
-  onStop: (position: { x: number; y: number }, labelId: string) => void;
-  deleteLabel: (id: string) => void;
-  editLabel: (id: string) => void;
-  scale: number;
-  setIsDragging: (b: boolean) => void;
-  label: Label;
-};
+import { LabelsContext } from '@/modules/context/LabelsContext';
 
 const StyledLabel = styled(Box)<{ labelId: string }>(({ theme, labelId }) => ({
   background: theme.palette.primary.main,
@@ -33,15 +26,17 @@ const StyledLabel = styled(Box)<{ labelId: string }>(({ theme, labelId }) => ({
   zIndex: 5,
 }));
 
-const DraggableLabel = ({
-  onStop,
-  deleteLabel,
-  editLabel,
-  scale,
-  setIsDragging,
-  label,
-}: Props): JSX.Element => {
+type Props = {
+  openEditForm: (id: string) => void;
+  label: Label;
+};
+
+const DraggableLabel = ({ openEditForm, label }: Props): JSX.Element => {
   const [position, setPosition] = useState({ x: label.x, y: label.y });
+  const { labels, saveLabelsChanges, deleteLabel, setIsDragging } =
+    useContext(LabelsContext);
+  const { instance } = useControls();
+  const { scale } = instance.transformState;
 
   const onDrag = (e: DraggableEvent, newP: DraggableData): void => {
     setIsDragging(true);
@@ -49,19 +44,25 @@ const DraggableLabel = ({
     setPosition({ x: newP.x, y: newP.y });
   };
 
+  const onStop = (e: DraggableEvent): void => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    const labelInd = labels.findIndex(({ id }) => id === label.id);
+    if (labelInd > -1) {
+      const newLabel = { ...label, ...position };
+      saveLabelsChanges(labelInd, newLabel);
+      setTimeout(() => {
+        setIsDragging(false);
+      }, 2000);
+    }
+  };
   return (
     <Draggable
       position={position}
       onDrag={onDrag}
       axis="none"
-      onStop={(e: DraggableEvent) => {
-        onStop(position, label.id);
-        e.stopPropagation();
-        e.preventDefault();
-        setTimeout(() => {
-          setIsDragging(false);
-        }, 2000);
-      }}
+      onStop={onStop}
       scale={scale}
     >
       <StyledLabel labelId={label.id}>
@@ -85,7 +86,7 @@ const DraggableLabel = ({
             }}
             onClick={(e) => {
               e.stopPropagation();
-              editLabel(label.id);
+              openEditForm(label.id);
             }}
           >
             <Edit sx={{ color: 'white' }} fontSize="small" />

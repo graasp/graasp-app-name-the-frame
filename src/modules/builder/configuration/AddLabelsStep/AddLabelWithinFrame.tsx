@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import {
   TransformComponent,
   TransformWrapper,
@@ -12,26 +12,15 @@ import { PermissionLevel } from '@graasp/sdk';
 
 import { v4 } from 'uuid';
 
-import { Label, Settings, SettingsKeys } from '@/@types';
 import {
   ADD_LABEL_FRAME_HEIGHT,
   ADD_LABEL_FRAME_WIDTH,
 } from '@/config/constants';
-import { hooks } from '@/config/queryClient';
+import { LabelsContext } from '@/modules/context/LabelsContext';
 
 import AddLabelForm from './AddLabelForm';
 import DraggableLabel from './DraggableLabel';
 import ImageFrame from './ImageFrame';
-
-type PropsWrapper = {
-  saveData: (l: Label[]) => void;
-};
-
-type Props = {
-  saveData: (l: Label[]) => void;
-  isDragging: boolean;
-  setIsDragging: (b: boolean) => void;
-};
 
 const TransformContainer = styled(TransformWrapper)(() => ({
   width: '100%',
@@ -48,21 +37,13 @@ const Container = styled('div')(() => ({
   left: '0px',
 }));
 
-const AddLabelWithinFrame = ({
-  saveData,
-  isDragging,
-  setIsDragging,
-}: Props): JSX.Element => {
-  const { data: settingsData } = hooks.useAppSettings<Settings>({
-    name: SettingsKeys.SettingsData,
-  });
-
-  const labels = settingsData?.[0]?.data.labels || [];
+const AddLabelWithinFrame = (): JSX.Element => {
+  const { labels, saveLabelsChanges, isDragging, openForm, setOpenForm } =
+    useContext(LabelsContext);
 
   const { instance } = useControls();
   const { permission } = useLocalContext();
-  const [openForm, setOpenForm] = useState(false);
-  const [labelText, setLabelText] = useState('');
+  const [content, setContent] = useState('');
   const [formPosition, setFormPosition] = useState({
     y: 0,
     x: 0,
@@ -73,39 +54,33 @@ const AddLabelWithinFrame = ({
   const handleFormInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ): void => {
-    setLabelText(event.target.value);
+    setContent(event.target.value);
   };
 
   const handleFormSubmit = (): void => {
     const editingIndex = labels.findIndex(
       ({ y, x }) => y === formPosition.y && x === formPosition.x,
     );
-    const isEditing = editingIndex > -1;
-    // editing existing label
-    if (isEditing) {
+    if (editingIndex > -1) {
       const labelToEdit = labels[editingIndex];
+
       const newLabel = {
         ...labelToEdit,
-        content: labelText,
+        content,
       };
-
-      const newLabelGroups = [
-        ...labels.slice(0, editingIndex),
-        newLabel,
-        ...labels.slice(editingIndex + 1),
-      ];
-      saveData(newLabelGroups);
+      saveLabelsChanges(editingIndex, newLabel);
     } else {
       const id = v4();
       const p = {
         y: (formPosition.y - positionY) / scale,
         x: (formPosition.x - positionX) / scale,
       };
-      const newLabel = { ...p, id, content: labelText };
-      saveData([...labels, newLabel]);
+      const newLabel = { ...p, id, content };
+      saveLabelsChanges(editingIndex, newLabel);
     }
+
     setOpenForm(false);
-    setLabelText('');
+    setContent('');
   };
 
   const handleAddLabel = (
@@ -113,7 +88,6 @@ const AddLabelWithinFrame = ({
   ): void => {
     if (!isDragging) {
       const { offsetX, offsetY } = event.nativeEvent;
-
       setFormPosition({
         y: offsetY,
         x: offsetX,
@@ -123,39 +97,17 @@ const AddLabelWithinFrame = ({
     }
   };
 
-  const onStop = (
-    position: { x: number; y: number },
-    labelId: string,
-  ): void => {
-    const labelInd = labels.findIndex(({ id }) => id === labelId);
-    if (labelInd > -1) {
-      const label = labels[labelInd];
-      const newLabel = { ...label, ...position };
-      const newLabelGroups = [
-        ...labels.slice(0, labelInd),
-        newLabel,
-        ...labels.slice(labelInd + 1),
-      ];
-      saveData(newLabelGroups);
-    }
-  };
-
-  const deleteLabel = (labelId: string): void => {
-    const filteredLabels = labels.filter(({ id }) => labelId !== id);
-    saveData(filteredLabels);
-  };
-
-  const editLabel = (labelId: string): void => {
+  const openEditForm = (labelId: string): void => {
     const ele = labels.find(({ id }) => id === labelId);
     if (ele) {
-      const { x, y, content } = ele;
+      const { x, y, content: c } = ele;
       setFormPosition({
         y: y * scale + positionY,
         x: x * scale + positionX,
       });
 
       setOpenForm(true);
-      setLabelText(content);
+      setContent(c);
     }
   };
 
@@ -168,7 +120,7 @@ const AddLabelWithinFrame = ({
     >
       {permission === PermissionLevel.Admin && openForm && !isDragging && (
         <AddLabelForm
-          value={labelText}
+          value={content}
           formPosition={formPosition}
           onChange={handleFormInputChange}
           onSubmit={handleFormSubmit}
@@ -181,11 +133,7 @@ const AddLabelWithinFrame = ({
           <DraggableLabel
             key={ele.id}
             label={ele}
-            onStop={onStop}
-            deleteLabel={deleteLabel}
-            editLabel={editLabel}
-            scale={scale}
-            setIsDragging={setIsDragging}
+            openEditForm={openEditForm}
           />
         ))}
       </Container>
@@ -193,21 +141,19 @@ const AddLabelWithinFrame = ({
   );
 };
 
-const AddLabelWithinFrameWrapper = ({
-  saveData,
-}: PropsWrapper): JSX.Element => {
-  const [isDragging, setIsDragging] = useState(false);
-
+const AddLabelWithinFrameWrapper = (): JSX.Element => {
+  const { isDragging, openForm } = useContext(LabelsContext);
+  const disabled = isDragging || openForm;
   return (
     <TransformContainer
       doubleClick={{ disabled: true }}
       centerOnInit
-      panning={{ disabled: isDragging }}
-      pinch={{ disabled: isDragging }}
-      wheel={{ disabled: isDragging }}
-      zoomAnimation={{ disabled: isDragging }}
-      alignmentAnimation={{ disabled: isDragging }}
-      velocityAnimation={{ disabled: isDragging }}
+      panning={{ disabled }}
+      pinch={{ disabled }}
+      wheel={{ disabled }}
+      zoomAnimation={{ disabled }}
+      alignmentAnimation={{ disabled }}
+      velocityAnimation={{ disabled }}
     >
       <TransformComponent
         wrapperStyle={{
@@ -215,11 +161,7 @@ const AddLabelWithinFrameWrapper = ({
           maxHeight: '100%',
         }}
       >
-        <AddLabelWithinFrame
-          saveData={saveData}
-          isDragging={isDragging}
-          setIsDragging={setIsDragging}
-        />
+        <AddLabelWithinFrame />
       </TransformComponent>
     </TransformContainer>
   );
