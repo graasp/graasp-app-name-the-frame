@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Button, Stack } from '@mui/material';
 
@@ -20,36 +20,23 @@ const AddLabelsStep = ({
 }: Props): JSX.Element => {
   const { t } = useAppTranslation();
 
-  const { data: appSettings } = hooks.useAppSettings<Settings>();
+  const { data: settingsData } = hooks.useAppSettings<Settings>({
+    name: SettingsKeys.SettingsData,
+  });
   const { mutate: patchSetting } = mutations.usePatchAppSetting();
 
-  const image = appSettings?.find(({ name }) => name === SettingsKeys.File);
-  const settingsData = appSettings?.find(
-    ({ name }) => name === SettingsKeys.SettingsData,
-  );
+  const labels = settingsData?.[0]?.data.labels || [];
 
-  const [labels, setLabels] = useState<Label[]>(
-    settingsData?.data.labels || [],
-  );
-
-  const saveData = (): void => {
+  const saveData = (l: Label[]): void => {
     if (settingsData) {
-      const data = { ...settingsData.data, labels };
-      patchSetting({ id: settingsData?.id, data });
+      const data = { ...settingsData?.[0]?.data, labels: l };
+      patchSetting({ id: settingsData?.[0]?.id, data });
     }
-
-    moveToNextStep();
   };
 
   return (
     <Stack direction="row" flexWrap="wrap" spacing={2} padding={2}>
-      {image && (
-        <AddDraggableLabel
-          imageSettingId={image?.id}
-          labels={labels}
-          setLabels={setLabels}
-        />
-      )}
+      <AddDraggableLabel saveData={saveData} />
       <Stack direction="row" gap={1} width="100%" justifyContent="flex-end">
         <Button size="large" onClick={moveToPrevStep}>
           {t(APP.BACK)}
@@ -57,8 +44,8 @@ const AddLabelsStep = ({
         <Button
           variant="contained"
           size="large"
-          onClick={saveData}
-          disabled={!settingsData?.data.labels && !labels.length}
+          onClick={moveToNextStep}
+          disabled={!settingsData?.[0]?.data.labels && !labels.length}
         >
           {t(APP.NEXT)}
         </Button>

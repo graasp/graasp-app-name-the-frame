@@ -73,7 +73,7 @@ const AddLabelForm = ({
               multiline
             />
             <Button size="small" variant="contained" onClick={onSubmit}>
-              {t(APP.ADD)}
+              {t(APP.ADD_LABEL)}
             </Button>
           </Box>
         </Box>

@@ -13,5 +13,6 @@
   "NEXT": "Next",
   "BACK": "Back",
   "REPLACE_IMAGE": "Replace the image",
-  "ADD": "Add"
+  "ADD_LABEL": "Add",
+  "UNEXPECTED_ERROR": "Sorry, something went wrong!"
 }
