@@ -4,11 +4,12 @@ import { KeepScale } from 'react-zoom-pan-pinch';
 import { CloseRounded } from '@mui/icons-material';
 import { Box, Button, IconButton, Stack, TextField } from '@mui/material';
 
+import { Position } from '@/@types';
 import { useAppTranslation } from '@/config/i18n';
 import { APP } from '@/langs/constants';
 
 type Props = {
-  formPosition: { y: number; x: number };
+  position: Position;
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: () => void;
@@ -16,7 +17,7 @@ type Props = {
 };
 
 const AddLabelForm = ({
-  formPosition,
+  position,
   value,
   onChange,
   onSubmit,
@@ -28,10 +29,9 @@ const AddLabelForm = ({
     <Stack
       sx={{
         position: 'absolute',
-
         zIndex: 500,
-        top: formPosition.y,
-        left: formPosition.x,
+        top: position.y,
+        left: position.x,
       }}
       gap={1}
     >

@@ -27,11 +27,11 @@ const StyledLabel = styled(Box)<{ labelId: string }>(({ theme, labelId }) => ({
 }));
 
 type Props = {
-  openEditForm: (id: string) => void;
+  showEditForm: (id: string) => void;
   label: Label;
 };
 
-const DraggableLabel = ({ openEditForm, label }: Props): JSX.Element => {
+const DraggableLabel = ({ showEditForm, label }: Props): JSX.Element => {
   const [position, setPosition] = useState({ x: label.x, y: label.y });
   const { labels, saveLabelsChanges, deleteLabel, setIsDragging } =
     useContext(LabelsContext);
@@ -52,6 +52,8 @@ const DraggableLabel = ({ openEditForm, label }: Props): JSX.Element => {
     if (labelInd > -1) {
       const newLabel = { ...label, ...position };
       saveLabelsChanges(labelInd, newLabel);
+
+      // Set a delay before enabling actions like opening a new form or applying zoom/move to the image frame
       setTimeout(() => {
         setIsDragging(false);
       }, 2000);
@@ -86,7 +88,7 @@ const DraggableLabel = ({ openEditForm, label }: Props): JSX.Element => {
             }}
             onClick={(e) => {
               e.stopPropagation();
-              openEditForm(label.id);
+              showEditForm(label.id);
             }}
           >
             <Edit sx={{ color: 'white' }} fontSize="small" />

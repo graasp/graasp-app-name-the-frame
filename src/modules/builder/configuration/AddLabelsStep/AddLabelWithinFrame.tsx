@@ -83,7 +83,7 @@ const AddLabelWithinFrame = (): JSX.Element => {
     setContent('');
   };
 
-  const handleAddLabel = (
+  const showLabelForm = (
     event: React.MouseEvent<HTMLImageElement, MouseEvent>,
   ): void => {
     if (!isDragging) {
@@ -97,7 +97,7 @@ const AddLabelWithinFrame = (): JSX.Element => {
     }
   };
 
-  const openEditForm = (labelId: string): void => {
+  const showEditForm = (labelId: string): void => {
     const ele = labels.find(({ id }) => id === labelId);
     if (ele) {
       const { x, y, content: c } = ele;
@@ -121,19 +121,19 @@ const AddLabelWithinFrame = (): JSX.Element => {
       {permission === PermissionLevel.Admin && openForm && !isDragging && (
         <AddLabelForm
           value={content}
-          formPosition={formPosition}
+          position={formPosition}
           onChange={handleFormInputChange}
           onSubmit={handleFormSubmit}
           onClose={() => setOpenForm(false)}
         />
       )}
       <ImageFrame />
-      <Container onClick={handleAddLabel}>
+      <Container onClick={showLabelForm}>
         {labels.map((ele) => (
           <DraggableLabel
             key={ele.id}
             label={ele}
-            openEditForm={openEditForm}
+            showEditForm={showEditForm}
           />
         ))}
       </Container>

@@ -1,4 +1,4 @@
-import { FC, ReactElement, createContext, useMemo, useState } from 'react';
+import { createContext, useMemo, useState } from 'react';
 
 import { Label, Settings, SettingsKeys } from '@/@types';
 import { hooks, mutations } from '@/config/queryClient';
@@ -25,11 +25,11 @@ export type SettingsContextType = {
 export const LabelsContext =
   createContext<SettingsContextType>(defaultContextValue);
 
-type Prop = {
-  children: ReactElement | ReactElement[];
+type Props = {
+  children: JSX.Element;
 };
 
-export const LabelsProvider: FC<Prop> = ({ children }) => {
+export const LabelsProvider = ({ children }: Props): JSX.Element => {
   const { data: settingsData } = hooks.useAppSettings<Settings>({
     name: SettingsKeys.SettingsData,
   });
@@ -38,35 +38,35 @@ export const LabelsProvider: FC<Prop> = ({ children }) => {
   const [openForm, setOpenForm] = useState(false);
 
   const { mutate: patchSetting } = mutations.usePatchAppSetting();
-  const labels = settingsData?.[0]?.data.labels || [];
 
-  const saveData = (l: Label[]): void => {
-    if (settingsData) {
-      const data = { ...settingsData?.[0]?.data, labels: l };
-      patchSetting({ id: settingsData?.[0]?.id, data });
-    }
-  };
+  const value = useMemo(() => {
+    const labels = settingsData?.[0]?.data?.labels || [];
 
-  const deleteLabel = (labelId: string): void => {
-    const filteredLabels = labels.filter(({ id }) => labelId !== id);
-    saveData(filteredLabels);
-  };
+    const saveData = (l: Label[]): void => {
+      if (settingsData) {
+        const data = { ...settingsData?.[0]?.data, labels: l };
+        patchSetting({ id: settingsData?.[0]?.id, data });
+      }
+    };
 
-  const saveLabelsChanges = (editingIndex: number, newLabel: Label): void => {
-    if (editingIndex > -1) {
-      const newLabelGroups = [
-        ...labels.slice(0, editingIndex),
-        newLabel,
-        ...labels.slice(editingIndex + 1),
-      ];
-      saveData(newLabelGroups);
-    } else {
-      saveData([...labels, newLabel]);
-    }
-  };
+    const deleteLabel = (labelId: string): void => {
+      const filteredLabels = labels.filter(({ id }) => labelId !== id);
+      saveData(filteredLabels);
+    };
 
-  const value = useMemo(
-    () => ({
+    const saveLabelsChanges = (editingIndex: number, newLabel: Label): void => {
+      if (editingIndex > -1) {
+        const newLabelGroups = [
+          ...labels.slice(0, editingIndex),
+          newLabel,
+          ...labels.slice(editingIndex + 1),
+        ];
+        saveData(newLabelGroups);
+      } else {
+        saveData([...labels, newLabel]);
+      }
+    };
+    return {
       labels,
       deleteLabel,
       saveLabelsChanges,
@@ -74,10 +74,8 @@ export const LabelsProvider: FC<Prop> = ({ children }) => {
       setIsDragging,
       openForm,
       setOpenForm,
-    }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [labels, isDragging, openForm],
-  );
+    };
+  }, [isDragging, openForm, patchSetting, settingsData]);
 
   return (
     <LabelsContext.Provider value={value}>{children}</LabelsContext.Provider>
