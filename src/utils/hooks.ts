@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
-import { ROUTINES, useLocalContext } from '@graasp/apps-query-client';
+import {
+  ROUTINES,
+  TokenContext,
+  useLocalContext,
+} from '@graasp/apps-query-client';
 
 import Uppy, { UploadResult } from '@uppy/core';
 
-import { hooks, mutations, notifier } from '@/config/queryClient';
+import { mutations, notifier } from '@/config/queryClient';
 
 import configureUppy from './uppy';
 
@@ -49,7 +53,7 @@ type Props = {
 
 export const useUploadImage = ({ onUploadComplete }: Props): Uppy | null => {
   const { itemId, apiHost } = useLocalContext();
-  const { data: token } = hooks.useAuthToken(itemId);
+  const token = useContext(TokenContext);
   const [uppy, setUppy] = useState<Uppy | null>(null);
   const { mutate: onFileUploadComplete } = mutations.useUploadAppSettingFile();
 
