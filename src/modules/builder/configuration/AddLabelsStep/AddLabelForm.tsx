@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { KeepScale } from 'react-zoom-pan-pinch';
 
 import { CloseRounded } from '@mui/icons-material';
-import { Box, Button, IconButton, Stack, TextField } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Box, IconButton, Stack, TextField, useTheme } from '@mui/material';
 
-import { Position } from '@/@types';
-import { useAppTranslation } from '@/config/i18n';
-import { APP } from '@/langs/constants';
+import { Label, Position } from '@/@types';
+import { LabelsContext } from '@/modules/context/LabelsContext';
 
 type Props = {
   position: Position;
@@ -14,6 +15,7 @@ type Props = {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: () => void;
   onClose: () => void;
+  labelToDelete?: Label | null;
 };
 
 const AddLabelForm = ({
@@ -22,8 +24,10 @@ const AddLabelForm = ({
   onChange,
   onSubmit,
   onClose,
+  labelToDelete,
 }: Props): JSX.Element => {
-  const { t } = useAppTranslation();
+  const theme = useTheme();
+  const { deleteLabel } = useContext(LabelsContext);
 
   return (
     <Stack
@@ -40,7 +44,6 @@ const AddLabelForm = ({
           background: 'black',
           opacity: '0.8',
           padding: 8,
-          borderRadius: 4,
         }}
       >
         <Box sx={{ position: 'relative' }}>
@@ -53,12 +56,16 @@ const AddLabelForm = ({
               padding: '2px',
               borderRadius: '50%',
               background: 'black',
+              '&:hover': {
+                background: 'black',
+                color: 'white',
+              },
             }}
             onClick={onClose}
           >
             <CloseRounded />
           </IconButton>
-          <Box display="flex" alignItems="center" gap={1}>
+          <Box display="flex" alignItems="center">
             <TextField
               autoFocus
               size="small"
@@ -72,9 +79,31 @@ const AddLabelForm = ({
               }}
               multiline
             />
-            <Button size="small" variant="contained" onClick={onSubmit}>
-              {t(APP.ADD_LABEL)}
-            </Button>
+            <IconButton
+              onClick={onSubmit}
+              sx={{
+                background: theme.palette.primary.main,
+                borderRadius: 0,
+                outline: `1px solid ${theme.palette.primary.main}`,
+              }}
+            >
+              <AddIcon sx={{ color: 'white' }} />
+            </IconButton>
+            {labelToDelete && (
+              <IconButton
+                onClick={() => {
+                  deleteLabel(labelToDelete.id);
+                  onClose();
+                }}
+                sx={{
+                  outline: `1px solid ${theme.palette.primary.main}`,
+                  borderRadius: 0,
+                  boxSizing: 'border-box',
+                }}
+              >
+                <DeleteIcon color="primary" sx={{ color: 'white' }} />
+              </IconButton>
+            )}
           </Box>
         </Box>
       </KeepScale>

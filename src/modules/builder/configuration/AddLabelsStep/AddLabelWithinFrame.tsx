@@ -12,6 +12,7 @@ import { PermissionLevel } from '@graasp/sdk';
 
 import { v4 } from 'uuid';
 
+import { Label } from '@/@types';
 import {
   ADD_LABEL_FRAME_HEIGHT,
   ADD_LABEL_FRAME_WIDTH,
@@ -44,6 +45,7 @@ const AddLabelWithinFrame = (): JSX.Element => {
   const { instance } = useControls();
   const { permission } = useLocalContext();
   const [content, setContent] = useState('');
+  const [labelToEdit, setLabelToEdit] = useState<Label | null>(null);
   const [formPosition, setFormPosition] = useState({
     y: 0,
     x: 0,
@@ -58,17 +60,12 @@ const AddLabelWithinFrame = (): JSX.Element => {
   };
 
   const handleFormSubmit = (): void => {
-    const editingIndex = labels.findIndex(
-      ({ y, x }) => y === formPosition.y && x === formPosition.x,
-    );
-    if (editingIndex > -1) {
-      const labelToEdit = labels[editingIndex];
-
+    if (labelToEdit) {
       const newLabel = {
         ...labelToEdit,
         content,
       };
-      saveLabelsChanges(editingIndex, newLabel);
+      saveLabelsChanges(newLabel);
     } else {
       const id = v4();
       const p = {
@@ -76,11 +73,12 @@ const AddLabelWithinFrame = (): JSX.Element => {
         x: (formPosition.x - positionX) / scale,
       };
       const newLabel = { ...p, id, content };
-      saveLabelsChanges(editingIndex, newLabel);
+      saveLabelsChanges(newLabel);
     }
 
     setOpenForm(false);
     setContent('');
+    setLabelToEdit(null);
   };
 
   const showLabelForm = (
@@ -94,21 +92,21 @@ const AddLabelWithinFrame = (): JSX.Element => {
       });
 
       setOpenForm(true);
+      setLabelToEdit(null);
+      setContent('');
     }
   };
 
-  const showEditForm = (labelId: string): void => {
-    const ele = labels.find(({ id }) => id === labelId);
-    if (ele) {
-      const { x, y, content: c } = ele;
-      setFormPosition({
-        y: y * scale + positionY,
-        x: x * scale + positionX,
-      });
+  const showEditForm = (label: Label): void => {
+    setLabelToEdit(label);
+    const { x, y, content: c } = label;
+    setFormPosition({
+      y: y * scale + positionY,
+      x: x * scale + positionX,
+    });
 
-      setOpenForm(true);
-      setContent(c);
-    }
+    setOpenForm(true);
+    setContent(c);
   };
 
   return (
@@ -125,6 +123,7 @@ const AddLabelWithinFrame = (): JSX.Element => {
           onChange={handleFormInputChange}
           onSubmit={handleFormSubmit}
           onClose={() => setOpenForm(false)}
+          labelToDelete={labelToEdit}
         />
       )}
       <ImageFrame />

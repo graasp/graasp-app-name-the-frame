@@ -16,7 +16,7 @@ const defaultContextValue = {
 export type SettingsContextType = {
   labels: Label[];
   deleteLabel: (lID: string) => void;
-  saveLabelsChanges: (idx: number, newLabel: Label) => void;
+  saveLabelsChanges: (newLabel: Label) => void;
   isDragging: boolean;
   setIsDragging: (b: boolean) => void;
   openForm: boolean;
@@ -54,7 +54,8 @@ export const LabelsProvider = ({ children }: Props): JSX.Element => {
       saveData(filteredLabels);
     };
 
-    const saveLabelsChanges = (editingIndex: number, newLabel: Label): void => {
+    const saveLabelsChanges = (newLabel: Label): void => {
+      const editingIndex = labels.findIndex(({ id }) => id === newLabel.id);
       if (editingIndex > -1) {
         const newLabelGroups = [
           ...labels.slice(0, editingIndex),

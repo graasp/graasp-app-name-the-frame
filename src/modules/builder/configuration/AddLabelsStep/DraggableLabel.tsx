@@ -2,16 +2,15 @@ import { useContext, useState } from 'react';
 import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
 import { useControls } from 'react-zoom-pan-pinch';
 
-import { Delete, Edit } from '@mui/icons-material';
-import { Box, IconButton, styled } from '@mui/material';
+import { Button, styled } from '@mui/material';
 
 import { Label } from '@/@types';
-import { buildLabelActionsID } from '@/config/selectors';
 import { LabelsContext } from '@/modules/context/LabelsContext';
 
-const StyledLabel = styled(Box)<{ labelId: string }>(({ theme, labelId }) => ({
+const StyledLabel = styled(Button)(({ theme }) => ({
   background: theme.palette.primary.main,
   color: 'white',
+  textTransform: 'none',
   borderRadius: theme.spacing(1),
   userSelect: 'none',
   padding: theme.spacing(0.5),
@@ -19,21 +18,19 @@ const StyledLabel = styled(Box)<{ labelId: string }>(({ theme, labelId }) => ({
   cursor: 'grab',
   maxWidth: '12ch',
   '&:hover': {
-    [`#${buildLabelActionsID(labelId)}`]: {
-      display: 'inline-block',
-    },
+    background: theme.palette.primary.main,
   },
   zIndex: 5,
 }));
 
 type Props = {
-  showEditForm: (id: string) => void;
+  showEditForm: (l: Label) => void;
   label: Label;
 };
 
 const DraggableLabel = ({ showEditForm, label }: Props): JSX.Element => {
   const [position, setPosition] = useState({ x: label.x, y: label.y });
-  const { labels, saveLabelsChanges, deleteLabel, setIsDragging } =
+  const { saveLabelsChanges, setIsDragging, isDragging } =
     useContext(LabelsContext);
   const { instance } = useControls();
   const { scale } = instance.transformState;
@@ -48,16 +45,12 @@ const DraggableLabel = ({ showEditForm, label }: Props): JSX.Element => {
     e.stopPropagation();
     e.preventDefault();
 
-    const labelInd = labels.findIndex(({ id }) => id === label.id);
-    if (labelInd > -1) {
-      const newLabel = { ...label, ...position };
-      saveLabelsChanges(labelInd, newLabel);
-
-      // Set a delay before enabling actions like opening a new form or applying zoom/move to the image frame
-      setTimeout(() => {
-        setIsDragging(false);
-      }, 2000);
-    }
+    const newLabel = { ...label, ...position };
+    // Set a delay before enabling actions like opening a new form or applying zoom/move to the image frame
+    setTimeout(() => {
+      setIsDragging(false);
+    }, 2000);
+    saveLabelsChanges(newLabel);
   };
   return (
     <Draggable
@@ -67,47 +60,16 @@ const DraggableLabel = ({ showEditForm, label }: Props): JSX.Element => {
       onStop={onStop}
       scale={scale}
     >
-      <StyledLabel labelId={label.id}>
+      <StyledLabel
+        onClick={(e) => {
+          if (!isDragging) {
+            e.stopPropagation();
+            e.preventDefault();
+            showEditForm(label);
+          }
+        }}
+      >
         {label.content}
-        <Box
-          display="flex"
-          id={buildLabelActionsID(label.id)}
-          sx={{
-            position: 'absolute',
-            top: -24,
-            right: -10,
-            display: 'none',
-            width: 'max-content',
-          }}
-        >
-          <IconButton
-            sx={{
-              padding: '4px',
-              background: '#00000085',
-              borderRadius: '50%',
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
-              showEditForm(label.id);
-            }}
-          >
-            <Edit sx={{ color: 'white' }} fontSize="small" />
-          </IconButton>
-
-          <IconButton
-            sx={{
-              padding: '4px',
-              background: '#00000085',
-              borderRadius: '50%',
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
-              deleteLabel(label.id);
-            }}
-          >
-            <Delete sx={{ color: 'white' }} fontSize="small" />
-          </IconButton>
-        </Box>
       </StyledLabel>
     </Draggable>
   );
