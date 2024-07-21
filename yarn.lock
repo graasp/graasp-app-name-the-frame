@@ -1913,14 +1913,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cypress/code-coverage@npm:3.12.42":
-  version: 3.12.42
-  resolution: "@cypress/code-coverage@npm:3.12.42"
+"@cypress/code-coverage@npm:3.12.44":
+  version: 3.12.44
+  resolution: "@cypress/code-coverage@npm:3.12.44"
   dependencies:
     "@cypress/webpack-preprocessor": "npm:^6.0.0"
     chalk: "npm:4.1.2"
-    dayjs: "npm:1.11.10"
-    debug: "npm:4.3.4"
+    dayjs: "npm:1.11.12"
+    debug: "npm:4.3.5"
     execa: "npm:4.1.0"
     globby: "npm:11.1.0"
     istanbul-lib-coverage: "npm:^3.0.0"
@@ -1932,7 +1932,7 @@ __metadata:
     babel-loader: ^8.3 || ^9
     cypress: "*"
     webpack: ^4 || ^5
-  checksum: 10/4d0d19ddce43cba214cce6c38c1da53ef546903a8178577638a818d807a457d9018cec0a500c559d95efa8c9efeef9b33d0310b9539f4d3f7e96f4146560a112
+  checksum: 10/154a7002ac5ffa2dd1341789b619c9206b15bf66fbfcb7099b578b160b97989540263d985f3e8c93a5bb6ad0fc352cad0a4299fd38bd7c861ebe031a12d9104d
   languageName: node
   linkType: hard
 
@@ -6430,10 +6430,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dayjs@npm:1.11.10":
-  version: 1.11.10
-  resolution: "dayjs@npm:1.11.10"
-  checksum: 10/27e8f5bc01c0a76f36c656e62ab7f08c2e7b040b09e613cd4844abf03fb258e0350f0a83b02c887b84d771c1f11e092deda0beef8c6df2a1afbc3f6c1fade279
+"dayjs@npm:1.11.12":
+  version: 1.11.12
+  resolution: "dayjs@npm:1.11.12"
+  checksum: 10/8ee7c1e14961fd08d40b788d0c0e930dc6288b3d32911bb911b2fb31bb703c262788164fbe678ee9e50e2a35268d667b8c8ba43fd1806771c1f404c300a2b428
   languageName: node
   linkType: hard
 
@@ -6453,7 +6453,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:^4.3.3, debug@npm:^4.3.4":
+"debug@npm:4, debug@npm:4.3.5, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:^4.3.3, debug@npm:^4.3.4":
   version: 4.3.5
   resolution: "debug@npm:4.3.5"
   dependencies:
@@ -6462,18 +6462,6 @@ __metadata:
     supports-color:
       optional: true
   checksum: 10/cb6eab424c410e07813ca1392888589972ce9a32b8829c6508f5e1f25f3c3e70a76731610ae55b4bbe58d1a2fffa1424b30e97fa8d394e49cd2656a9643aedd2
-  languageName: node
-  linkType: hard
-
-"debug@npm:4.3.4":
-  version: 4.3.4
-  resolution: "debug@npm:4.3.4"
-  dependencies:
-    ms: "npm:2.1.2"
-  peerDependenciesMeta:
-    supports-color:
-      optional: true
-  checksum: 10/0073c3bcbd9cb7d71dd5f6b55be8701af42df3e56e911186dfa46fac3a5b9eb7ce7f377dd1d3be6db8977221f8eb333d945216f645cf56f6b688cd484837d255
   languageName: node
   linkType: hard
 
@@ -8479,7 +8467,7 @@ __metadata:
   dependencies:
     "@commitlint/cli": "npm:19.3.0"
     "@commitlint/config-conventional": "npm:19.2.2"
-    "@cypress/code-coverage": "npm:3.12.42"
+    "@cypress/code-coverage": "npm:3.12.44"
     "@emotion/react": "npm:11.13.0"
     "@emotion/styled": "npm:11.13.0"
     "@graasp/apps-query-client": "npm:3.4.15"
