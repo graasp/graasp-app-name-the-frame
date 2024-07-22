@@ -1,8 +1,7 @@
 import React, { useContext } from 'react';
-import { KeepScale } from 'react-zoom-pan-pinch';
 
 import { CloseRounded } from '@mui/icons-material';
-import AddIcon from '@mui/icons-material/Add';
+import CheckIcon from '@mui/icons-material/Check';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, IconButton, Stack, TextField, useTheme } from '@mui/material';
 
@@ -36,77 +35,71 @@ const AddLabelForm = ({
         zIndex: 500,
         top: position.y,
         left: position.x,
+        background: 'black',
+        padding: 1,
       }}
       gap={1}
     >
-      <KeepScale
-        style={{
-          background: 'black',
-          opacity: '0.8',
-          padding: 8,
-        }}
-      >
-        <Box sx={{ position: 'relative' }}>
-          <IconButton
-            color="primary"
-            sx={{
-              position: 'absolute',
-              top: -22,
-              right: -8,
-              padding: '2px',
-              borderRadius: '50%',
+      <Box sx={{ position: 'relative' }}>
+        <IconButton
+          color="primary"
+          sx={{
+            position: 'absolute',
+            top: -26,
+            right: -8,
+            padding: '2px',
+            borderRadius: '50%',
+            color: 'white',
+            background: 'black',
+            '&:hover': {
               background: 'black',
-              '&:hover': {
-                background: 'black',
-                color: 'white',
-              },
+              color: 'white',
+            },
+          }}
+          onClick={onClose}
+        >
+          <CloseRounded />
+        </IconButton>
+        <Box
+          display="flex"
+          alignItems="center"
+          sx={{ border: `1px solid ${theme.palette.primary.main}` }}
+        >
+          <TextField
+            autoFocus
+            size="small"
+            value={value}
+            onChange={onChange}
+            sx={{
+              background: 'white',
+              opacity: 1,
+              border: 0,
+              width: '15ch',
             }}
-            onClick={onClose}
+            multiline
+          />
+          <IconButton
+            onClick={onSubmit}
+            sx={{
+              background: theme.palette.primary.main,
+              borderRadius: 0,
+            }}
           >
-            <CloseRounded />
+            <CheckIcon sx={{ color: 'white' }} />
           </IconButton>
-          <Box display="flex" alignItems="center">
-            <TextField
-              autoFocus
-              size="small"
-              value={value}
-              onChange={onChange}
-              sx={{
-                background: 'white',
-                opacity: 1,
-                border: 0,
-                width: '15ch',
-              }}
-              multiline
-            />
+          {labelToDelete && (
             <IconButton
-              onClick={onSubmit}
-              sx={{
-                background: theme.palette.primary.main,
-                borderRadius: 0,
-                outline: `1px solid ${theme.palette.primary.main}`,
+              onClick={() => {
+                deleteLabel(labelToDelete.id);
+                onClose();
               }}
+              sx={{ borderRadius: 0 }}
             >
-              <AddIcon sx={{ color: 'white' }} />
+              <DeleteIcon color="primary" sx={{ color: 'white' }} />
             </IconButton>
-            {labelToDelete && (
-              <IconButton
-                onClick={() => {
-                  deleteLabel(labelToDelete.id);
-                  onClose();
-                }}
-                sx={{
-                  outline: `1px solid ${theme.palette.primary.main}`,
-                  borderRadius: 0,
-                  boxSizing: 'border-box',
-                }}
-              >
-                <DeleteIcon color="primary" sx={{ color: 'white' }} />
-              </IconButton>
-            )}
-          </Box>
+          )}
         </Box>
-      </KeepScale>
+      </Box>
     </Stack>
   );
 };

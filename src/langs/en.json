@@ -13,5 +13,6 @@
   "BACK": "Back",
   "REPLACE_IMAGE": "Replace the image",
   "ADD_LABEL": "Add",
-  "UNEXPECTED_ERROR": "Sorry, something went wrong!"
+  "UNEXPECTED_ERROR": "Sorry, something went wrong!",
+  "START_ADDING_LABEL_HELPER_TEXT": "To add a new label, simply click on the desired location on the image!"
 }
