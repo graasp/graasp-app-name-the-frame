@@ -44,7 +44,7 @@ const configureUppy = ({
       maxNumberOfFiles: FILE_UPLOAD_MAX_FILES,
       allowedFileTypes: ['image/*'], // Allow only images
     },
-    autoProceed: false,
+    autoProceed: true,
   });
 
   uppy.use(XHRUpload, {
