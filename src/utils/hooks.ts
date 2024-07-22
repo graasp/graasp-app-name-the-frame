@@ -78,7 +78,8 @@ export const useUploadImage = ({
     onFileUploadComplete({ error });
   };
 
-  const applyUppy = (): void => {
+  // update uppy configuration each time itemId changes
+  useEffect(() => {
     if (typeof token !== 'undefined') {
       setUppy(
         configureUppy({
@@ -91,17 +92,12 @@ export const useUploadImage = ({
         }),
       );
     }
-  };
-
-  // update uppy configuration each time itemId changes
-  useEffect(() => {
-    applyUppy();
 
     return () => {
       uppy?.close();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [itemId, token]);
+  }, []);
 
   return uppy;
 };
