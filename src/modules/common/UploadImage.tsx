@@ -73,7 +73,7 @@ const UploadImage = ({ onUploadComplete }: Props): JSX.Element | null => {
       uppy?.close();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [itemId, token]);
+  }, []);
 
   if (!uppy) {
     return null;
