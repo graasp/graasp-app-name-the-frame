@@ -57,30 +57,30 @@ const configureUppy = ({
     },
   });
 
-  // uppy.on('file-added', (file) => {
-  //   onFileAdded?.(file);
-  // });
+  uppy.on('file-added', (file) => {
+    onFileAdded?.(file);
+  });
 
-  // uppy.on('files-added', (files) => {
-  //   onFilesAdded?.(files);
-  // });
+  uppy.on('files-added', (files) => {
+    onFilesAdded?.(files);
+  });
 
-  // uppy.on('upload', onUpload);
+  uppy.on('upload', onUpload);
 
-  // if (onProgress) {
-  //   uppy.on('progress', onProgress);
-  // }
+  if (onProgress) {
+    uppy.on('progress', onProgress);
+  }
 
-  // uppy.on('complete', (result) => {
-  //   onComplete?.(result);
-  // });
+  uppy.on('complete', (result) => {
+    onComplete?.(result);
+  });
 
-  // if (onError) {
-  //   uppy.on('error', onError);
-  //   uppy.on('upload-error', (_, error) => {
-  //     onError(error);
-  //   });
-  // }
+  if (onError) {
+    uppy.on('error', onError);
+    uppy.on('upload-error', (_, error) => {
+      onError(error);
+    });
+  }
 
   return uppy;
 };

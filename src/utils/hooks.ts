@@ -1,10 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import {
-  ROUTINES,
-  TokenContext,
-  useLocalContext,
-} from '@graasp/apps-query-client';
+import { ROUTINES, useLocalContext } from '@graasp/apps-query-client';
 
 import Uppy, { UploadResult } from '@uppy/core';
 
@@ -49,11 +45,16 @@ const { uploadAppSettingFileRoutine } = ROUTINES;
 
 type Props = {
   onUploadComplete?: () => void;
+  itemId: string;
+  token: string;
 };
 
-export const useUploadImage = ({ onUploadComplete }: Props): Uppy | null => {
-  const { itemId, apiHost } = useLocalContext();
-  const token = useContext(TokenContext);
+export const useUploadImage = ({
+  onUploadComplete,
+  token,
+  itemId,
+}: Props): Uppy | null => {
+  const { apiHost } = useLocalContext();
   const [uppy, setUppy] = useState<Uppy | null>(null);
   const { mutate: onFileUploadComplete } = mutations.useUploadAppSettingFile();
 
