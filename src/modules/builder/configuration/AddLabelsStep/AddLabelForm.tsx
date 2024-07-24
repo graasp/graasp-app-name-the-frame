@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useControls } from 'react-zoom-pan-pinch';
 
 import { CloseRounded } from '@mui/icons-material';
 import CheckIcon from '@mui/icons-material/Check';
@@ -28,6 +29,9 @@ const AddLabelForm = ({
   const theme = useTheme();
   const { deleteLabel } = useContext(LabelsContext);
 
+  const { instance } = useControls();
+
+  const { scale } = instance.transformState;
   return (
     <Stack
       sx={{
@@ -35,69 +39,76 @@ const AddLabelForm = ({
         zIndex: 500,
         top: position.y,
         left: position.x,
-        background: 'black',
-        padding: 1,
       }}
       gap={1}
     >
-      <Box sx={{ position: 'relative' }}>
-        <IconButton
-          color="primary"
-          sx={{
-            position: 'absolute',
-            top: -26,
-            right: -8,
-            padding: '2px',
-            borderRadius: '50%',
-            color: 'white',
-            background: 'black',
-            '&:hover': {
-              background: 'black',
-              color: 'white',
-            },
-          }}
-          onClick={onClose}
-        >
-          <CloseRounded />
-        </IconButton>
-        <Box
-          display="flex"
-          alignItems="center"
-          sx={{ border: `1px solid ${theme.palette.primary.main}` }}
-        >
-          <TextField
-            autoFocus
-            size="small"
-            value={value}
-            onChange={onChange}
-            sx={{
-              background: 'white',
-              opacity: 1,
-              border: 0,
-              width: '15ch',
-            }}
-            multiline
-          />
+      <Box
+        sx={{
+          background: 'black',
+          padding: 1,
+          transformOrigin: 'top left',
+          transform: `translate(0px, 0px) scale(${1 / scale})`, // keeping the form size the same despite zooming in/out
+        }}
+      >
+        <Box sx={{ position: 'relative' }}>
           <IconButton
-            onClick={onSubmit}
+            color="primary"
             sx={{
-              background: theme.palette.primary.main,
-              borderRadius: 0,
+              position: 'absolute',
+              top: -26,
+              right: -8,
+              padding: '2px',
+              borderRadius: '50%',
+              color: 'white',
+              background: 'black',
+              '&:hover': {
+                background: 'black',
+                color: 'white',
+              },
             }}
+            onClick={onClose}
           >
-            <CheckIcon sx={{ color: 'white' }} />
+            <CloseRounded />
           </IconButton>
-          {labelToDelete && (
-            <IconButton
-              onClick={() => {
-                deleteLabel(labelToDelete.id);
-                onClose();
+          <Box
+            display="flex"
+            alignItems="center"
+            sx={{ border: `1px solid ${theme.palette.primary.main}` }}
+          >
+            <TextField
+              autoFocus
+              size="small"
+              value={value}
+              onChange={onChange}
+              sx={{
+                background: 'white',
+                opacity: 1,
+                border: 0,
+                width: '15ch',
               }}
-              sx={{ borderRadius: 0 }}
+              multiline
+            />
+            <IconButton
+              onClick={onSubmit}
+              sx={{
+                background: theme.palette.primary.main,
+                borderRadius: 0,
+              }}
             >
-              <DeleteIcon color="primary" sx={{ color: 'white' }} />
+              <CheckIcon sx={{ color: 'white' }} />
             </IconButton>
-          )}
+            {labelToDelete && (
+              <IconButton
+                onClick={() => {
+                  deleteLabel(labelToDelete.id);
+                  onClose();
+                }}
+                sx={{ borderRadius: 0 }}
+              >
+                <DeleteIcon color="primary" sx={{ color: 'white' }} />
+              </IconButton>
+            )}
+          </Box>
         </Box>
       </Box>
     </Stack>

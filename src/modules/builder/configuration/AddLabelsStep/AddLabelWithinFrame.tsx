@@ -1,9 +1,5 @@
 import { useContext, useState } from 'react';
-import {
-  TransformComponent,
-  TransformWrapper,
-  useControls,
-} from 'react-zoom-pan-pinch';
+import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 
 import { Alert, Box, styled } from '@mui/material';
 
@@ -12,7 +8,7 @@ import { PermissionLevel } from '@graasp/sdk';
 
 import { v4 } from 'uuid';
 
-import { Label, Position } from '@/@types';
+import { Label } from '@/@types';
 import {
   ADD_LABEL_FRAME_HEIGHT,
   ADD_LABEL_FRAME_WIDTH,
@@ -40,77 +36,9 @@ const Container = styled('div')(() => ({
   left: '0px',
 }));
 
-type Props = {
-  setFormPosition: (p: Position) => void;
-  setContent: (s: string) => void;
-  setLabelToEdit: (l: Label | null) => void;
-};
-const AddLabelWithinFrame = ({
-  setFormPosition,
-  setContent,
-  setLabelToEdit,
-}: Props): JSX.Element => {
-  const { labels, isDragging, setOpenForm } = useContext(LabelsContext);
-
-  const { instance } = useControls();
-
-  const { scale, positionX, positionY } = instance.transformState;
-
-  const showLabelForm = (
-    event: React.MouseEvent<HTMLImageElement, MouseEvent>,
-  ): void => {
-    if (!isDragging) {
-      const { offsetX, offsetY } = event.nativeEvent;
-      setFormPosition({
-        y: offsetY * scale + positionY,
-        x: offsetX * scale + positionX,
-      });
-
-      setOpenForm(true);
-      setLabelToEdit(null);
-      setContent('');
-    }
-  };
-
-  const showEditForm = (label: Label): void => {
-    setLabelToEdit(label);
-    const { x, y, content: c } = label;
-    setFormPosition({
-      y: y * scale + positionY,
-      x: x * scale + positionX,
-    });
-
-    setOpenForm(true);
-    setContent(c);
-  };
-
-  return (
-    <Box
-      sx={{
-        height: ADD_LABEL_FRAME_HEIGHT,
-        width: ADD_LABEL_FRAME_WIDTH,
-      }}
-    >
-      <ImageFrame />
-      <Container onClick={showLabelForm} sx={{ cursor: 'crosshair' }}>
-        {labels.map((ele) => (
-          <DraggableLabel
-            key={ele.id}
-            label={ele}
-            showEditForm={showEditForm}
-          />
-        ))}
-      </Container>
-    </Box>
-  );
-};
-
-const AddLabelWithinFrameWrapper = (): JSX.Element => {
-  const { t } = useAppTranslation();
-
-  const { isDragging, openForm, setOpenForm, saveLabelsChanges, labels } =
+const AddLabelWithinFrame = (): JSX.Element => {
+  const { labels, isDragging, setOpenForm, saveLabelsChanges, openForm } =
     useContext(LabelsContext);
-  const disabled = isDragging || openForm;
 
   const { permission } = useLocalContext();
   const [content, setContent] = useState('');
@@ -151,11 +79,40 @@ const AddLabelWithinFrameWrapper = (): JSX.Element => {
     handleShowLabelForm(false);
   };
 
+  const showLabelForm = (
+    event: React.MouseEvent<HTMLImageElement, MouseEvent>,
+  ): void => {
+    if (!isDragging) {
+      const { offsetX, offsetY } = event.nativeEvent;
+      setFormPosition({
+        y: offsetY,
+        x: offsetX,
+      });
+      setOpenForm(true);
+      setLabelToEdit(null);
+      setContent('');
+    }
+  };
+
+  const showEditForm = (label: Label): void => {
+    setLabelToEdit(label);
+    const { x, y, content: c } = label;
+    setFormPosition({
+      y,
+      x,
+    });
+
+    setOpenForm(true);
+    setContent(c);
+  };
+
   return (
-    <Box sx={{ position: 'relative' }}>
-      {labels.length === 0 && (
-        <Alert severity="info">{t(APP.START_ADDING_LABEL_HELPER_TEXT)}</Alert>
-      )}
+    <Box
+      sx={{
+        height: ADD_LABEL_FRAME_HEIGHT,
+        width: ADD_LABEL_FRAME_WIDTH,
+      }}
+    >
       {permission === PermissionLevel.Admin && openForm && !isDragging && (
         <AddLabelForm
           value={content}
@@ -166,6 +123,32 @@ const AddLabelWithinFrameWrapper = (): JSX.Element => {
           labelToDelete={labelToEdit}
         />
       )}
+      <ImageFrame />
+      <Container onClick={showLabelForm} sx={{ cursor: 'crosshair' }}>
+        {labels.map((ele) => (
+          <DraggableLabel
+            key={ele.id}
+            label={ele}
+            showEditForm={showEditForm}
+          />
+        ))}
+      </Container>
+    </Box>
+  );
+};
+
+const AddLabelWithinFrameWrapper = (): JSX.Element => {
+  const { t } = useAppTranslation();
+
+  const { isDragging, openForm, labels } = useContext(LabelsContext);
+  const disabled = isDragging || openForm;
+
+  return (
+    <Box sx={{ position: 'relative' }}>
+      {labels.length === 0 && (
+        <Alert severity="info">{t(APP.START_ADDING_LABEL_HELPER_TEXT)}</Alert>
+      )}
+
       <TransformContainer
         doubleClick={{ disabled: true }}
         centerOnInit
@@ -182,11 +165,7 @@ const AddLabelWithinFrameWrapper = (): JSX.Element => {
             maxHeight: '100%',
           }}
         >
-          <AddLabelWithinFrame
-            setContent={setContent}
-            setFormPosition={setFormPosition}
-            setLabelToEdit={setLabelToEdit}
-          />
+          <AddLabelWithinFrame />
         </TransformComponent>
       </TransformContainer>
     </Box>
