@@ -12,13 +12,19 @@ import { useUploadImage } from '@/utils/hooks';
 import { DASHBOARD_UPLOADER_ID } from '../../config/selectors';
 
 type Props = {
+  itemId: string;
+  token: string;
   onUploadComplete?: () => void;
 };
 
-const UploadImage = ({ onUploadComplete }: Props): JSX.Element | null => {
+const UploadImage = ({
+  onUploadComplete,
+  itemId,
+  token,
+}: Props): JSX.Element | null => {
   const { t } = useAppTranslation();
 
-  const uppy = useUploadImage({ onUploadComplete });
+  const uppy = useUploadImage({ itemId, token, onUploadComplete });
 
   if (!uppy) {
     return null;
