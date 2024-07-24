@@ -4,7 +4,7 @@ import { ROUTINES, useLocalContext } from '@graasp/apps-query-client';
 
 import Uppy, { UploadResult } from '@uppy/core';
 
-import { hooks, mutations, notifier } from '@/config/queryClient';
+import { mutations, notifier } from '@/config/queryClient';
 
 import configureUppy from './uppy';
 
@@ -45,11 +45,16 @@ const { uploadAppSettingFileRoutine } = ROUTINES;
 
 type Props = {
   onUploadComplete?: () => void;
+  itemId: string;
+  token: string;
 };
 
-export const useUploadImage = ({ onUploadComplete }: Props): Uppy | null => {
-  const { itemId, apiHost } = useLocalContext();
-  const { data: token } = hooks.useAuthToken(itemId);
+export const useUploadImage = ({
+  onUploadComplete,
+  token,
+  itemId,
+}: Props): Uppy | null => {
+  const { apiHost } = useLocalContext();
   const [uppy, setUppy] = useState<Uppy | null>(null);
   const { mutate: onFileUploadComplete } = mutations.useUploadAppSettingFile();
 
@@ -73,7 +78,8 @@ export const useUploadImage = ({ onUploadComplete }: Props): Uppy | null => {
     onFileUploadComplete({ error });
   };
 
-  const applyUppy = (): void => {
+  // update uppy configuration each time itemId changes
+  useEffect(() => {
     if (typeof token !== 'undefined') {
       setUppy(
         configureUppy({
@@ -86,17 +92,12 @@ export const useUploadImage = ({ onUploadComplete }: Props): Uppy | null => {
         }),
       );
     }
-  };
-
-  // update uppy configuration each time itemId changes
-  useEffect(() => {
-    applyUppy();
 
     return () => {
       uppy?.close();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [itemId, token]);
+  }, []);
 
   return uppy;
 };

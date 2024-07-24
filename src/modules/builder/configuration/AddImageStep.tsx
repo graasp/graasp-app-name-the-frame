@@ -9,6 +9,8 @@ import {
   Typography,
 } from '@mui/material';
 
+import { TokenContext, useLocalContext } from '@graasp/apps-query-client';
+
 import { Settings, SettingsKeys } from '@/@types';
 import { useAppTranslation } from '@/config/i18n';
 import { hooks } from '@/config/queryClient';
@@ -23,6 +25,8 @@ type Props = {
 };
 const AddImageStep = ({ moveToNextStep }: Props): JSX.Element => {
   const { t } = useAppTranslation();
+  const { itemId } = useLocalContext();
+  const token = useContext(TokenContext);
   const { data: imageSetting } = hooks.useAppSettings({
     name: SettingsKeys.File,
   });
@@ -83,7 +87,9 @@ const AddImageStep = ({ moveToNextStep }: Props): JSX.Element => {
           <Typography variant="body2" color="grey">
             {t(APP.DROP_IMAGE_DESCRIPTION)}
           </Typography>
-          <UploadImage />
+          {Boolean(token && itemId) && (
+            <UploadImage token={token} itemId={itemId} />
+          )}
         </Box>
       )}
       <Box alignSelf="end">
