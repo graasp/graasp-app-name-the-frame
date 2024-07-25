@@ -8,6 +8,7 @@ import { BUILDER_VIEW_CY } from '@/config/selectors';
 import { APP } from '@/langs/constants';
 
 import Configurations from '../builder/configuration';
+import { LabelsProvider } from '../context/LabelsContext';
 
 enum BuilderTabs {
   CONFIGURATION_VIEW = 'CONFIGURATION_VIEW',
@@ -34,7 +35,9 @@ const BuilderView = (): JSX.Element => {
             />
           </TabList>
           <TabPanel value={BuilderTabs.CONFIGURATION_VIEW}>
-            <Configurations />
+            <LabelsProvider>
+              <Configurations />
+            </LabelsProvider>
           </TabPanel>
         </TabContext>
       </Container>

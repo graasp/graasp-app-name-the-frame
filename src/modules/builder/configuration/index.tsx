@@ -9,7 +9,7 @@ import { CONFIGURATION_TAB_ID } from '@/config/selectors';
 import { APP } from '@/langs/constants';
 
 import AddImageStep from './AddImageStep';
-import AddLabelsStep from './AddLabelsStep';
+import AddLabelsStep from './AddLabelsStep/AddLabelsStep';
 import PreviewStep from './PreviewStep';
 
 const Configurations = (): JSX.Element => {
@@ -19,8 +19,13 @@ const Configurations = (): JSX.Element => {
   const { data: imageSetting } = hooks.useAppSettings({
     name: SettingsKeys.File,
   });
+  const { data: settings } = hooks.useAppSettings({
+    name: SettingsKeys.SettingsData,
+  });
 
   const image = imageSetting?.[0];
+
+  const settingsData = settings?.[0];
 
   const steps = [
     {
@@ -29,10 +34,19 @@ const Configurations = (): JSX.Element => {
     },
     {
       label: t(APP.ADD_LABELS_STEP_LABEL),
-      component: <AddLabelsStep />,
+      component: (
+        <AddLabelsStep
+          moveToNextStep={() => setActiveStep(2)}
+          moveToPrevStep={() => setActiveStep(0)}
+        />
+      ),
       disabled: !image?.id,
     },
-    { label: t(APP.PREVIEW_STEP_LABEL), component: <PreviewStep /> },
+    {
+      label: t(APP.PREVIEW_STEP_LABEL),
+      component: <PreviewStep />,
+      disabled: !settingsData?.data.labels || !image?.id,
+    },
   ];
 
   return (

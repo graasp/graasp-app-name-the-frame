@@ -15,7 +15,7 @@ type AllSettingsType = {
 
 // default values for the data property of settings by name
 const defaultSettingsValues: AllSettingsType = {
-  [SettingsKeys.SettingsData]: { description: '' },
+  [SettingsKeys.SettingsData]: { description: '', labels: [] },
   [SettingsKeys.File]: {},
 };
 
