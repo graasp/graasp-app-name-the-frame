@@ -75,6 +75,9 @@ const RootDiv = styled('div')({
 const Root: FC = () => {
   const [mockContext, setMockContext] = useObjectState(defaultMockContext);
 
+  // eslint-disable-next-line no-console
+  console.log('render root');
+
   return (
     <RootDiv>
       {/* Used to define the order of injected properties between JSS and emotion */}

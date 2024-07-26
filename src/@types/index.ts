@@ -9,9 +9,9 @@ export enum SettingsKeys {
   SettingsData = 'settings-data',
 }
 
-export type Label = {
-  y: number;
-  x: number;
+export type Position = { x: number; y: number };
+
+export type Label = Position & {
   content: string;
   id: string;
 };

@@ -1,45 +1,53 @@
-import React from 'react';
-import { KeepScale } from 'react-zoom-pan-pinch';
+import React, { useContext } from 'react';
+import { useControls } from 'react-zoom-pan-pinch';
 
 import { CloseRounded } from '@mui/icons-material';
-import { Box, Button, IconButton, Stack, TextField } from '@mui/material';
+import CheckIcon from '@mui/icons-material/Check';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Box, IconButton, Stack, TextField, useTheme } from '@mui/material';
 
-import { useAppTranslation } from '@/config/i18n';
-import { APP } from '@/langs/constants';
+import { Label, Position } from '@/@types';
+import { LabelsContext } from '@/modules/context/LabelsContext';
 
 type Props = {
-  formPosition: { y: number; x: number };
+  position: Position;
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: () => void;
   onClose: () => void;
+  labelToDelete?: Label | null;
 };
 
 const AddLabelForm = ({
-  formPosition,
+  position,
   value,
   onChange,
   onSubmit,
   onClose,
+  labelToDelete,
 }: Props): JSX.Element => {
-  const { t } = useAppTranslation();
+  const theme = useTheme();
+  const { deleteLabel } = useContext(LabelsContext);
 
+  const { instance } = useControls();
+
+  const { scale } = instance.transformState;
   return (
     <Stack
       sx={{
         position: 'absolute',
         zIndex: 500,
-        top: formPosition.y,
-        left: formPosition.x,
+        top: position.y,
+        left: position.x,
       }}
       gap={1}
     >
-      <KeepScale
-        style={{
+      <Box
+        sx={{
           background: 'black',
-          opacity: '0.8',
-          padding: 8,
-          borderRadius: 4,
+          padding: 1,
+          transformOrigin: 'top left',
+          transform: `translate(0px, 0px) scale(${1 / scale})`, // keeping the form size the same despite zooming in/out
         }}
       >
         <Box sx={{ position: 'relative' }}>
@@ -47,17 +55,26 @@ const AddLabelForm = ({
             color="primary"
             sx={{
               position: 'absolute',
-              top: -22,
+              top: -26,
               right: -8,
               padding: '2px',
               borderRadius: '50%',
+              color: 'white',
               background: 'black',
+              '&:hover': {
+                background: 'black',
+                color: 'white',
+              },
             }}
             onClick={onClose}
           >
             <CloseRounded />
           </IconButton>
-          <Box display="flex" alignItems="center" gap={1}>
+          <Box
+            display="flex"
+            alignItems="center"
+            sx={{ border: `1px solid ${theme.palette.primary.main}` }}
+          >
             <TextField
               autoFocus
               size="small"
@@ -71,12 +88,29 @@ const AddLabelForm = ({
               }}
               multiline
             />
-            <Button size="small" variant="contained" onClick={onSubmit}>
-              {t(APP.ADD)}
-            </Button>
+            <IconButton
+              onClick={onSubmit}
+              sx={{
+                background: theme.palette.primary.main,
+                borderRadius: 0,
+              }}
+            >
+              <CheckIcon sx={{ color: 'white' }} />
+            </IconButton>
+            {labelToDelete && (
+              <IconButton
+                onClick={() => {
+                  deleteLabel(labelToDelete.id);
+                  onClose();
+                }}
+                sx={{ borderRadius: 0 }}
+              >
+                <DeleteIcon color="primary" sx={{ color: 'white' }} />
+              </IconButton>
+            )}
           </Box>
         </Box>
-      </KeepScale>
+      </Box>
     </Stack>
   );
 };

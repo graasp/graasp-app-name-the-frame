@@ -7,14 +7,15 @@
   "DESCRIPTION_DETAILS": "Add a description for your frame (optional)",
   "DROP_IMAGE_LABEL": "Upload image",
   "DROP_IMAGE_DESCRIPTION": "Add the image you want to add labels for",
-  "UPLOAD_IMAGE_NOTE": "You can upload up to {{FILE_UPLOAD_MAX_FILES}} file at a time",
-  "UPLOAD_IMAGE_NOTE_plural": "You can upload up to {{FILE_UPLOAD_MAX_FILES}} files at a time",
+  "UPLOAD_IMAGE_NOTE": "You can upload up your image here",
   "DROP_HERE": "Drop here or",
   "NEXT": "Next",
   "BACK": "Back",
   "REPLACE_IMAGE": "Replace the image",
-  "ADD": "Add",
   "DRAG_DROP_EXERCISE_TITLE": "Drag and drop these labels into the correct frame of the image",
   "SAVE": "Save",
-  "PREVIEW_NOTE": "Here is what your application will look like from the player's perspective. To modify any settings, please return to the previous steps."
+  "PREVIEW_NOTE": "Here is what your application will look like from the player's perspective. To modify any settings, please return to the previous steps.",
+  "ADD_LABEL": "Add",
+  "UNEXPECTED_ERROR": "Sorry, something went wrong!",
+  "START_ADDING_LABEL_HELPER_TEXT": "To add a new label, click on the desired location on the image!"
 }

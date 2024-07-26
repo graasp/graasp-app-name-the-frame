@@ -1,24 +1,16 @@
+import { useContext, useState } from 'react';
 import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
+import { useControls } from 'react-zoom-pan-pinch';
 
-import { Delete, Edit } from '@mui/icons-material';
-import { Box, IconButton, styled } from '@mui/material';
+import { Button, styled } from '@mui/material';
 
 import { Label } from '@/@types';
-import { buildLabelActionsID } from '@/config/selectors';
+import { LabelsContext } from '@/modules/context/LabelsContext';
 
-type Props = {
-  onDrag: (e: DraggableEvent, p: DraggableData) => void;
-  onStop: () => void;
-  deleteLabel: (id: string) => void;
-  editLabel: (id: string) => void;
-  scale: number;
-  setIsDragging: (b: boolean) => void;
-  label: Label;
-};
-
-const StyledLabel = styled(Box)<{ labelId: string }>(({ theme, labelId }) => ({
+const StyledLabel = styled(Button)(({ theme }) => ({
   background: theme.palette.primary.main,
   color: 'white',
+  textTransform: 'none',
   borderRadius: theme.spacing(1),
   userSelect: 'none',
   padding: theme.spacing(0.5),
@@ -26,77 +18,61 @@ const StyledLabel = styled(Box)<{ labelId: string }>(({ theme, labelId }) => ({
   cursor: 'grab',
   maxWidth: '12ch',
   '&:hover': {
-    [`#${buildLabelActionsID(labelId)}`]: {
-      display: 'inline-block',
-    },
+    background: theme.palette.primary.main,
   },
   zIndex: 5,
 }));
 
-const DraggableLabel = ({
-  onDrag,
-  onStop,
-  deleteLabel,
-  editLabel,
-  scale,
-  setIsDragging,
-  label,
-}: Props): JSX.Element => (
-  <Draggable
-    position={{ x: label.x, y: label.y }}
-    onDrag={onDrag}
-    axis="none"
-    onStop={() => {
-      onStop();
-      setTimeout(() => {
-        setIsDragging(false);
-      }, 2000);
-    }}
-    scale={scale}
-  >
-    <StyledLabel labelId={label.id}>
-      {label.content}
-      <Box
-        display="flex"
-        id={buildLabelActionsID(label.id)}
-        sx={{
-          position: 'absolute',
-          top: -24,
-          right: -10,
-          display: 'none',
-          width: 'max-content',
+type Props = {
+  showEditForm: (l: Label) => void;
+  label: Label;
+};
+
+const DraggableLabel = ({ showEditForm, label }: Props): JSX.Element => {
+  const [position, setPosition] = useState({ x: label.x, y: label.y });
+  const { saveLabelsChanges, setIsDragging, isDragging } =
+    useContext(LabelsContext);
+  const { instance } = useControls();
+  const { scale } = instance.transformState;
+
+  const onDrag = (e: DraggableEvent, newP: DraggableData): void => {
+    setIsDragging(true);
+    e.stopPropagation();
+    setPosition({ x: newP.x, y: newP.y });
+  };
+
+  const onStop = (e: DraggableEvent): void => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    const newLabel = { ...label, ...position };
+    // Set a delay before enabling actions like opening a new form or applying zoom/move to the image frame
+    setTimeout(() => {
+      setIsDragging(false);
+    }, 2000);
+    saveLabelsChanges(newLabel);
+  };
+  return (
+    <Draggable
+      position={position}
+      onDrag={onDrag}
+      axis="none"
+      onStop={onStop}
+      scale={scale}
+    >
+      <StyledLabel
+        onClick={(e) => {
+          if (!isDragging) {
+            e.stopPropagation();
+            e.preventDefault();
+            showEditForm(label);
+          }
         }}
       >
-        <IconButton
-          sx={{
-            padding: '4px',
-            background: '#00000085',
-            borderRadius: '50%',
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            editLabel(label.id);
-          }}
-        >
-          <Edit sx={{ color: 'white' }} fontSize="small" />
-        </IconButton>
-
-        <IconButton
-          sx={{
-            padding: '4px',
-            background: '#00000085',
-            borderRadius: '50%',
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            deleteLabel(label.id);
-          }}
-        >
-          <Delete sx={{ color: 'white' }} fontSize="small" />
-        </IconButton>
-      </Box>
-    </StyledLabel>
-  </Draggable>
-);
+        {label.content}
+      </StyledLabel>
+    </Draggable>
+  );
+};
 
 export default DraggableLabel;
