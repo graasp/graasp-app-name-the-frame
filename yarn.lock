@@ -11506,12 +11506,12 @@ __metadata:
   linkType: hard
 
 "react-zoom-pan-pinch@npm:^3.6.0":
-  version: 3.6.0
-  resolution: "react-zoom-pan-pinch@npm:3.6.0"
+  version: 3.6.1
+  resolution: "react-zoom-pan-pinch@npm:3.6.1"
   peerDependencies:
     react: "*"
     react-dom: "*"
-  checksum: 10/54b37a478ccf823467f04c4d9d0f70ccc0cd6ef214882a9a778e65adb03f88110c8f425659ecdbc4c2701284a407f594f05e7c11812843cc8d8140845e4b5539
+  checksum: 10/9146aa5c427dd6d0c8a4ebe3db0c720718eef6262d1b4b36033ee433bc76a9c84e30ca91311211ab95446305d3e2813d9abc576d093efbf5562be984431896cb
   languageName: node
   linkType: hard
 
