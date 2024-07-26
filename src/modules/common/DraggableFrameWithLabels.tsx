@@ -1,9 +1,10 @@
 import React from 'react';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 
-import { Box } from '@mui/material';
+import { Box, styled } from '@mui/material';
 
 import { DraggableLabelType } from '@/@types';
+import { ADD_LABEL_FRAME_HEIGHT } from '@/config/constants';
 
 import DroppableDraggableLabel from './DroppableDraggableLabel';
 import ImageFrame from './ImageFrame';
@@ -13,6 +14,13 @@ type Props = {
   labels: DraggableLabelType[];
   imageSettingId: string;
 };
+
+const TransformContainer = styled(TransformWrapper)(() => ({
+  width: '100%',
+  height: '100%',
+  border: 'none',
+  margin: 'auto',
+}));
 
 const DraggableFrameWithLabels = ({
   isDragging,
@@ -32,8 +40,8 @@ const DraggableFrameWithLabels = ({
   };
 
   return (
-    <Box sx={{ position: 'relative' }}>
-      <TransformWrapper
+    <Box sx={{ position: 'relative', width: '100%' }}>
+      <TransformContainer
         initialScale={1}
         panning={{ disabled: isDragging }}
         pinch={{ disabled: isDragging }}
@@ -43,18 +51,25 @@ const DraggableFrameWithLabels = ({
         velocityAnimation={{ disabled: isDragging }}
       >
         <TransformComponent
+          wrapperStyle={{
+            width: '100%',
+            maxHeight: '100%',
+          }}
           contentStyle={{
             width: '100%',
-            height: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
           }}
         >
-          <ImageFrame appSettingId={imageSettingId} />
-          {renderDraggableLabels()}
+          <Box
+            sx={{
+              height: ADD_LABEL_FRAME_HEIGHT,
+              width: '100%',
+            }}
+          >
+            <ImageFrame appSettingId={imageSettingId} />
+            {renderDraggableLabels()}
+          </Box>
         </TransformComponent>
-      </TransformWrapper>
+      </TransformContainer>
     </Box>
   );
 };

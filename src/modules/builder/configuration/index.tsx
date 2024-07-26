@@ -7,10 +7,10 @@ import { useAppTranslation } from '@/config/i18n';
 import { hooks } from '@/config/queryClient';
 import { CONFIGURATION_TAB_ID } from '@/config/selectors';
 import { APP } from '@/langs/constants';
+import { ImageDimensionsProvider } from '@/modules/context/imageDimensionContext';
 
 import AddImageStep from './AddImageStep';
 import AddLabelsStep from './AddLabelsStep/AddLabelsStep';
-import { ImageDimensionsProvider } from './AddLabelsStep/imageDimensionContext';
 import PreviewStep from './PreviewStep';
 
 const Configurations = (): JSX.Element => {

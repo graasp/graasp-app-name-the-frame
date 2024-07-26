@@ -31,15 +31,13 @@ const PlayerFrame = (): JSX.Element => {
     const appLabels = appSettings?.[0].data.labels;
     const imageDimension = appSettings?.[0].data.imageDimension;
     if (imageDimension) {
-      const wStart = 0;
-      const hStart = ADD_LABEL_FRAME_HEIGHT - imageDimension.height;
       if (appLabels) {
         const labelsP = appLabels.map((l, index) => ({
           labelId: l.id,
           ind: index + 1,
           choices: [],
-          x: `${((l.x - wStart / 2) / imageDimension.width) * 100}%`,
-          y: `${((l.y - hStart / 2) / imageDimension.height) * 100}%`,
+          x: `${(l.x / imageDimension.width) * 100}%`,
+          y: `${(l.y / ADD_LABEL_FRAME_HEIGHT) * 100}%`,
         }));
 
         const allChoices = appLabels.map(({ id, content }) => ({

@@ -13,6 +13,7 @@ import { ADD_LABEL_FRAME_HEIGHT } from '@/config/constants';
 import { useAppTranslation } from '@/config/i18n';
 import { APP } from '@/langs/constants';
 import { LabelsContext } from '@/modules/context/LabelsContext';
+import { useImageDimensionsContext } from '@/modules/context/imageDimensionContext';
 
 import AddLabelForm from './AddLabelForm';
 import DraggableLabel from './DraggableLabel';
@@ -36,7 +37,7 @@ const Container = styled('div')(() => ({
 const AddLabelWithinFrame = (): JSX.Element => {
   const { labels, isDragging, setOpenForm, saveLabelsChanges, openForm } =
     useContext(LabelsContext);
-
+  const { dimension } = useImageDimensionsContext();
   const { permission } = useLocalContext();
   const [content, setContent] = useState('');
   const [labelToEdit, setLabelToEdit] = useState<Label | null>(null);
@@ -81,6 +82,14 @@ const AddLabelWithinFrame = (): JSX.Element => {
   ): void => {
     if (!isDragging) {
       const { offsetX, offsetY } = event.nativeEvent;
+      // prevent adding labels outside image
+      if (
+        offsetY < (ADD_LABEL_FRAME_HEIGHT - dimension.height) / 2 ||
+        offsetY >
+          (ADD_LABEL_FRAME_HEIGHT - dimension.height) / 2 + dimension.height
+      ) {
+        return;
+      }
       setFormPosition({
         y: offsetY,
         x: offsetX,
@@ -141,7 +150,7 @@ const AddLabelWithinFrameWrapper = (): JSX.Element => {
   const disabled = isDragging || openForm;
 
   return (
-    <Box>
+    <Box sx={{ width: '100%' }}>
       {labels.length === 0 && (
         <Alert severity="info">{t(APP.START_ADDING_LABEL_HELPER_TEXT)}</Alert>
       )}
