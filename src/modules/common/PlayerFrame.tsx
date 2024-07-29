@@ -37,7 +37,7 @@ const PlayerFrame = (): JSX.Element => {
           ind: index + 1,
           choices: [],
           x: `${(l.x / imageDimension.width) * 100}%`,
-          y: `${(l.y / ADD_LABEL_FRAME_HEIGHT) * 100}%`,
+          y: `${((l.y - 0) / ADD_LABEL_FRAME_HEIGHT) * 100}%`,
         }));
 
         const allChoices = appLabels.map(({ id, content }) => ({
@@ -104,7 +104,7 @@ const PlayerFrame = (): JSX.Element => {
   };
 
   return (
-    <Box>
+    <Box sx={{ width: '100%' }}>
       <Typography variant="body1" fontWeight={500}>
         {t(APP.DRAG_DROP_EXERCISE_TITLE)}
       </Typography>

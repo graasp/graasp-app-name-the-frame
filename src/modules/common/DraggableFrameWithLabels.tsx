@@ -40,7 +40,7 @@ const DraggableFrameWithLabels = ({
   };
 
   return (
-    <Box sx={{ position: 'relative', width: '100%' }}>
+    <Box sx={{ width: '100%' }}>
       <TransformContainer
         initialScale={1}
         panning={{ disabled: isDragging }}

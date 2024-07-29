@@ -8,7 +8,7 @@ type Props = {
 const Container = styled('div')(() => ({
   display: 'flex',
   justifyContent: 'center',
-  alignItems: 'center',
+  alignItems: 'baseline',
   width: '100%',
   height: '100%',
   position: 'absolute',
@@ -27,10 +27,11 @@ const ImageFrame = ({ appSettingId }: Props): JSX.Element | null => {
         src={URL.createObjectURL(dataFile)}
         alt="frame"
         style={{
-          maxWidth: '100%',
+          width: '100%',
           objectFit: 'cover',
           pointerEvents: 'auto',
           cursor: 'cell',
+          maxHeight: '100%',
         }}
       />
     </Container>

@@ -12,7 +12,7 @@ import { debounce } from '@/utils';
 const Container = styled('div')(() => ({
   display: 'flex',
   justifyContent: 'center',
-  alignItems: 'center',
+  alignItems: 'baseline',
   width: '100%',
   height: '100%',
   position: 'absolute',
@@ -78,6 +78,7 @@ const ImageFrame = (): JSX.Element | null => {
             objectFit: 'cover',
             pointerEvents: 'auto',
             cursor: 'cell',
+            width: '100%',
           }}
         />
       </Container>
