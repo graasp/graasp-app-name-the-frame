@@ -31,6 +31,7 @@ const Configurations = (): JSX.Element => {
   const initialSetRef = useRef(false);
 
   useEffect(() => {
+    // move to preview step in case all was settled, using Ref to move only within first render, So If i change sth with second step I don't want to move to preview immediately
     if (!initialSetRef.current && settingsData?.data) {
       if (settingsData.data.labels) {
         setActiveStep(2);

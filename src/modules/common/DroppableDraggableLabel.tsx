@@ -1,7 +1,7 @@
 import React from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 
-import { Box, styled } from '@mui/material';
+import { styled } from '@mui/material';
 
 import { DraggableLabelType } from '@/@types';
 
@@ -97,16 +97,8 @@ const DroppableDraggableLabel = ({ label, isDragging }: Props): JSX.Element => (
                   {...dragProvided.draggableProps}
                   {...dragProvided.dragHandleProps}
                   isDraggable={dragSnapshot.isDragging}
-                  // style={dragProvided.draggableProps.style}
                 >
-                  <Box
-                    display="flex"
-                    sx={{
-                      position: 'relative',
-                    }}
-                  >
-                    {item.content}
-                  </Box>
+                  {item.content}
                 </StyledLabel>
               )}
             </Draggable>

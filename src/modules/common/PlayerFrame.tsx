@@ -4,7 +4,6 @@ import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { Box, Typography } from '@mui/material';
 
 import { DraggableLabelType, Settings, SettingsKeys } from '@/@types';
-import { ADD_LABEL_FRAME_HEIGHT } from '@/config/constants';
 import { useAppTranslation } from '@/config/i18n';
 import { hooks } from '@/config/queryClient';
 import { APP } from '@/langs/constants';
@@ -15,9 +14,6 @@ import DroppableDraggableLabel from './DroppableDraggableLabel';
 
 const PlayerFrame = (): JSX.Element => {
   const { t } = useAppTranslation();
-  const { data: image } = hooks.useAppSettings({
-    name: SettingsKeys.File,
-  });
 
   const { data: appSettings } = hooks.useAppSettings<Settings>({
     name: SettingsKeys.SettingsData,
@@ -30,6 +26,7 @@ const PlayerFrame = (): JSX.Element => {
   useEffect(() => {
     const appLabels = appSettings?.[0].data.labels;
     const imageDimension = appSettings?.[0].data.imageDimension;
+
     if (imageDimension) {
       if (appLabels) {
         const labelsP = appLabels.map((l, index) => ({
@@ -37,7 +34,7 @@ const PlayerFrame = (): JSX.Element => {
           ind: index + 1,
           choices: [],
           x: `${(l.x / imageDimension.width) * 100}%`,
-          y: `${((l.y - 0) / ADD_LABEL_FRAME_HEIGHT) * 100}%`,
+          y: `${(l.y / imageDimension.height) * 100}%`,
         }));
 
         const allChoices = appLabels.map(({ id, content }) => ({
@@ -108,29 +105,26 @@ const PlayerFrame = (): JSX.Element => {
       <Typography variant="body1" fontWeight={500}>
         {t(APP.DRAG_DROP_EXERCISE_TITLE)}
       </Typography>
-      {image?.length && (
-        <DragDropContext
-          onDragEnd={onDragEnd}
-          onDragStart={() => setIsDragging(true)}
+      <DragDropContext
+        onDragEnd={onDragEnd}
+        onDragStart={() => setIsDragging(true)}
+      >
+        <Box
+          sx={{
+            position: 'relative',
+            marginBottom: 2,
+            width: '100%',
+          }}
         >
-          <Box
-            sx={{
-              position: 'relative',
-              marginBottom: 2,
-              width: '100%',
-            }}
-          >
-            {labels.slice(0, 1).map((label) => (
-              <DroppableDraggableLabel label={label} key={label.ind} />
-            ))}
-          </Box>
-          <DraggableFrameWithLabels
-            imageSettingId={image[0]?.id}
-            labels={labels.slice(1)}
-            isDragging={isDragging}
-          />
-        </DragDropContext>
-      )}
+          {labels.slice(0, 1).map((label) => (
+            <DroppableDraggableLabel label={label} key={label.ind} />
+          ))}
+        </Box>
+        <DraggableFrameWithLabels
+          labels={labels.slice(1)}
+          isDragging={isDragging}
+        />
+      </DragDropContext>
     </Box>
   );
 };

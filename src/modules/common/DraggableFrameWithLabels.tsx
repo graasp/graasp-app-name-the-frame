@@ -11,7 +11,6 @@ import ImageFrame from './ImageFrame';
 type Props = {
   isDragging: boolean;
   labels: DraggableLabelType[];
-  imageSettingId: string;
 };
 
 const TransformContainer = styled(TransformWrapper)(() => ({
@@ -24,9 +23,8 @@ const TransformContainer = styled(TransformWrapper)(() => ({
 const DraggableFrameWithLabels = ({
   isDragging,
   labels,
-  imageSettingId,
 }: Props): JSX.Element => {
-  const renderDraggableLabels = (): JSX.Element | JSX.Element[] => {
+  const renderDraggableLabels = (): JSX.Element[] => {
     const Labels = labels.map((label) => (
       <DroppableDraggableLabel
         label={label}
@@ -59,7 +57,7 @@ const DraggableFrameWithLabels = ({
           }}
         >
           <Box sx={{ width: '100%' }}>
-            <ImageFrame appSettingId={imageSettingId} />
+            <ImageFrame />
             {renderDraggableLabels()}
           </Box>
         </TransformComponent>

@@ -45,6 +45,7 @@ const ImageFrame = (): JSX.Element | null => {
   ).current;
 
   useEffect((): (() => void) => {
+    // watch image resize to save image dimension
     const id = settingsData?.[0]?.id;
     const onImageSizeChange = (entries: ResizeObserverEntry[]): void => {
       const entry = entries[0];
