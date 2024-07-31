@@ -4,7 +4,6 @@ import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 import { Box, styled } from '@mui/material';
 
 import { DraggableLabelType } from '@/@types';
-import { ADD_LABEL_FRAME_HEIGHT } from '@/config/constants';
 
 import DroppableDraggableLabel from './DroppableDraggableLabel';
 import ImageFrame from './ImageFrame';
@@ -59,12 +58,7 @@ const DraggableFrameWithLabels = ({
             width: '100%',
           }}
         >
-          <Box
-            sx={{
-              height: ADD_LABEL_FRAME_HEIGHT,
-              width: '100%',
-            }}
-          >
+          <Box sx={{ width: '100%' }}>
             <ImageFrame appSettingId={imageSettingId} />
             {renderDraggableLabels()}
           </Box>
