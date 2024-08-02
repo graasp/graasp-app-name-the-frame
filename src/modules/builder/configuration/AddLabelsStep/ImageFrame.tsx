@@ -15,9 +15,6 @@ const Container = styled('div')(() => ({
   alignItems: 'baseline',
   width: '100%',
   height: '100%',
-  position: 'absolute',
-  top: '0px',
-  left: '0px',
 }));
 
 const ImageFrame = (): JSX.Element | null => {

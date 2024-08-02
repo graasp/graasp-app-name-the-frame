@@ -47,11 +47,33 @@ export const ImageDimensionsProvider = ({ children }: Props): JSX.Element => {
       },
       id: string,
     ): void => {
-      const payload = {
-        ...settingsData?.[0]?.data,
-        imageDimension,
-      };
-      patchSetting({ id, data: payload });
+      if (imageDimension.height && imageDimension.width) {
+        const labels = settingsData?.[0]?.data.labels;
+        const prevDimension = settingsData?.[0]?.data.imageDimension;
+
+        // get new offsets in case image dimension change
+        const newLabels = labels?.map((label) => {
+          const { x, y } = label;
+          if (
+            prevDimension &&
+            (prevDimension.width !== imageDimension.width ||
+              prevDimension?.height !== imageDimension.height)
+          ) {
+            const newX = (x * imageDimension.width) / prevDimension.width;
+            const newY = (y * imageDimension.height) / prevDimension.height;
+            return { ...label, x: newX, y: newY };
+          }
+          return label;
+        });
+
+        const payload = {
+          ...settingsData?.[0]?.data,
+          imageDimension,
+          labels: newLabels,
+        };
+
+        patchSetting({ id, data: payload });
+      }
     };
 
     return { imgRef, saveImageDimension, dimension, settingsData };
