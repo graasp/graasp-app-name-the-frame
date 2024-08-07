@@ -3,14 +3,19 @@ import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
 import { Box, Typography } from '@mui/material';
 
-import { DraggableLabelType, Settings, SettingsKeys } from '@/@types';
+import {
+  AnsweredLabel,
+  DraggableLabelType,
+  Settings,
+  SettingsKeys,
+} from '@/@types';
 import { useAppTranslation } from '@/config/i18n';
 import { hooks } from '@/config/queryClient';
 import { APP } from '@/langs/constants';
-import { move, reorder } from '@/utils/dnd';
+import { updateLabels } from '@/utils/dnd';
 
+import AllLabelsContainer from './AllLabelsContainer';
 import DraggableFrameWithLabels from './DraggableFrameWithLabels';
-import DroppableDraggableLabel from './DroppableDraggableLabel';
 
 const PlayerFrame = (): JSX.Element => {
   const { t } = useAppTranslation();
@@ -19,84 +24,95 @@ const PlayerFrame = (): JSX.Element => {
     name: SettingsKeys.SettingsData,
   });
 
-  const [labels, setLabels] = useState<DraggableLabelType[]>([]);
+  const [labels, setLabels] = useState<AnsweredLabel[]>([]);
+  const [nonAnsweredLabels, setNonAnsweredLabels] = useState<
+    DraggableLabelType[]
+  >([]);
 
   const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
-    const appLabels = appSettings?.[0].data.labels;
+    const settingLabels = appSettings?.[0].data.labels;
     const imageDimension = appSettings?.[0].data.imageDimension;
 
     if (imageDimension) {
-      if (appLabels) {
-        const labelsP = appLabels.map((l, index) => ({
-          labelId: l.id,
-          ind: index + 1,
-          choices: [],
-          x: `${(l.x / imageDimension.width) * 100}%`,
-          y: `${(l.y / imageDimension.height) * 100}%`,
+      if (settingLabels) {
+        const answeredLabels = settingLabels.map(({ id, content, x, y }) => ({
+          expected: {
+            id,
+            content,
+            x: `${(x / imageDimension.width) * 100}%`,
+            y: `${(y / imageDimension.height) * 100}%`,
+          },
+          actual: null,
         }));
 
-        const allChoices = appLabels.map(({ id, content }) => ({
+        const AllChoices = settingLabels.map(({ id, content, x, y }) => ({
           id,
           content,
+          x: `${(x / imageDimension.width) * 100}%`,
+          y: `${(y / imageDimension.height) * 100}%`,
         }));
 
-        const allLabels = [
-          {
-            ind: 0,
-            y: '0%',
-            x: '0%',
-            labelId: 'all-labels',
-            choices: allChoices,
-          },
-          ...labelsP,
-        ];
-        setLabels(allLabels);
+        setLabels(answeredLabels);
+        setNonAnsweredLabels(AllChoices);
       }
     }
   }, [appSettings]);
 
   const onDragEnd = (draggable: DropResult): void => {
-    const { source, destination } = draggable;
+    const { source, destination: draggableDist } = draggable;
 
     setIsDragging(false);
     // dropped outside the list
-    if (!destination) {
+    if (!draggableDist) {
       return;
     }
-    const sInd = +source.droppableId;
-    const dInd = +destination.droppableId;
-    // prevent drop to a filled destination
-    const isDestinationFilled = labels.find(
-      ({ ind }) => dInd === ind && ind !== 0,
-    )?.choices.length;
+    const sInd = +source.index;
+    const sDInd = +source.droppableId;
+    const dInd = +draggableDist.droppableId;
 
-    if (isDestinationFilled) {
-      return;
+    const labelDist = labels[dInd - 1];
+    // moving from all items
+    if (sDInd === 0) {
+      if (labelDist.actual) {
+        return;
+      }
+
+      const itemToMove = nonAnsweredLabels[sInd];
+      const destination = { ...labelDist, actual: itemToMove };
+
+      setLabels(
+        updateLabels(labels, [{ index: dInd - 1, newItem: destination }]),
+      );
+      setNonAnsweredLabels(
+        nonAnsweredLabels.filter((_, index) => index !== sInd),
+      );
     }
+    // moving from choices
+    if (sDInd > 0) {
+      const itemToMove = labels[sDInd - 1];
+      const src = { ...itemToMove, actual: null };
 
-    if (sInd === dInd) {
-      const items = reorder(
-        labels[sInd].choices,
-        source.index,
-        destination.index,
-      );
-      const newState = [...labels];
-      newState[sInd].choices = items;
-      setLabels(newState);
-    } else {
-      const result = move(
-        labels[sInd].choices,
-        labels[dInd].choices,
-        source,
-        destination,
-      );
+      if (itemToMove.actual) {
+        // move to all
+        if (dInd === 0) {
+          setLabels(updateLabels(labels, [{ index: sDInd - 1, newItem: src }]));
+          setNonAnsweredLabels([...nonAnsweredLabels, itemToMove.actual]);
 
-      const newState = [...labels];
-      newState[sInd].choices = result[sInd];
-      newState[dInd].choices = result[dInd];
-      setLabels(newState);
+          // move from item to item
+        } else {
+          const dist = labels[dInd - 1];
+          const destination = { ...dist, actual: itemToMove.actual };
+
+          setLabels(
+            updateLabels(labels, [
+              { index: dInd - 1, newItem: destination },
+              { index: sDInd - 1, newItem: src },
+            ]),
+          );
+        }
+      }
     }
   };
 
@@ -116,14 +132,9 @@ const PlayerFrame = (): JSX.Element => {
             width: '100%',
           }}
         >
-          {labels.slice(0, 1).map((label) => (
-            <DroppableDraggableLabel label={label} key={label.ind} />
-          ))}
+          <AllLabelsContainer labels={nonAnsweredLabels} />
         </Box>
-        <DraggableFrameWithLabels
-          labels={labels.slice(1)}
-          isDragging={isDragging}
-        />
+        <DraggableFrameWithLabels labels={labels} isDragging={isDragging} />
       </DragDropContext>
     </Box>
   );

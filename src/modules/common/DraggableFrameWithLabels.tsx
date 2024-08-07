@@ -3,14 +3,14 @@ import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 
 import { Box, styled } from '@mui/material';
 
-import { DraggableLabelType } from '@/@types';
+import { AnsweredLabel } from '@/@types';
 
-import DroppableDraggableLabel from './DroppableDraggableLabel';
+import DroppableLabel from './DroppableLabel';
 import ImageFrame from './ImageFrame';
 
 type Props = {
   isDragging: boolean;
-  labels: DraggableLabelType[];
+  labels: AnsweredLabel[];
 };
 
 const TransformContainer = styled(TransformWrapper)(() => ({
@@ -24,12 +24,13 @@ const DraggableFrameWithLabels = ({
   isDragging,
   labels,
 }: Props): JSX.Element => {
-  const renderDraggableLabels = (): JSX.Element[] => {
-    const Labels = labels.map((label) => (
-      <DroppableDraggableLabel
+  const renderDroppableLabels = (): JSX.Element[] => {
+    const Labels = labels.map((label, index) => (
+      <DroppableLabel
         label={label}
-        key={label.ind}
+        key={label.expected.id}
         isDragging={isDragging}
+        id={index + 1}
       />
     ));
 
@@ -58,7 +59,7 @@ const DraggableFrameWithLabels = ({
         >
           <Box sx={{ width: '100%' }}>
             <ImageFrame />
-            {renderDraggableLabels()}
+            {renderDroppableLabels()}
           </Box>
         </TransformComponent>
       </TransformContainer>

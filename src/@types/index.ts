@@ -22,7 +22,11 @@ export type DraggableLabelType = {
   // x and y are relative to image size
   y: string;
   x: string;
-  choices: Choice[];
-  ind: number;
-  labelId: string;
+  id: string;
+  content: string;
+};
+
+export type AnsweredLabel = {
+  expected: DraggableLabelType;
+  actual: null | DraggableLabelType;
 };

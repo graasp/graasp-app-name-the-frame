@@ -35,7 +35,5 @@ if (MOCK_API) {
 }
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <Root />
-  </React.StrictMode>,
+  <Root />,
 );
