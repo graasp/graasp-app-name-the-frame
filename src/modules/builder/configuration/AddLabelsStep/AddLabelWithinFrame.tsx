@@ -12,6 +12,7 @@ import { Label } from '@/@types';
 import { useAppTranslation } from '@/config/i18n';
 import { APP } from '@/langs/constants';
 import { LabelsContext } from '@/modules/context/LabelsContext';
+import { useImageDimensionsContext } from '@/modules/context/imageDimensionContext';
 
 import AddLabelForm from './AddLabelForm';
 import DraggableLabel from './DraggableLabel';
@@ -39,9 +40,11 @@ const AddLabelWithinFrame = (): JSX.Element => {
   const [content, setContent] = useState('');
   const [labelToEdit, setLabelToEdit] = useState<Label | null>(null);
   const [formPosition, setFormPosition] = useState({
-    y: 0,
-    x: 0,
+    y: '0%',
+    x: '0%',
   });
+
+  const { dimension } = useImageDimensionsContext();
 
   const handleFormInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -64,11 +67,7 @@ const AddLabelWithinFrame = (): JSX.Element => {
       saveLabelsChanges(newLabel);
     } else {
       const id = v4();
-      const p = {
-        y: formPosition.y,
-        x: formPosition.x,
-      };
-      const newLabel = { ...p, id, content };
+      const newLabel = { ...formPosition, id, content };
       saveLabelsChanges(newLabel);
     }
     handleShowLabelForm(false);
@@ -79,10 +78,9 @@ const AddLabelWithinFrame = (): JSX.Element => {
   ): void => {
     if (!isDragging) {
       const { offsetX, offsetY } = event.nativeEvent;
-
       setFormPosition({
-        y: offsetY,
-        x: offsetX,
+        y: `${(offsetY / dimension.height) * 100}%`,
+        x: `${(offsetX / dimension.width) * 100}%`,
       });
       setOpenForm(true);
       setLabelToEdit(null);

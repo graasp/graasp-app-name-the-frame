@@ -7,6 +7,7 @@ import { useAppTranslation } from '@/config/i18n';
 import { hooks } from '@/config/queryClient';
 import { CONFIGURATION_TAB_ID } from '@/config/selectors';
 import { APP } from '@/langs/constants';
+import { ImageDimensionsProvider } from '@/modules/context/imageDimensionContext';
 
 import AddImageStep from './AddImageStep';
 import AddLabelsStep from './AddLabelsStep/AddLabelsStep';
@@ -47,10 +48,12 @@ const Configurations = (): JSX.Element => {
     {
       label: t(APP.ADD_LABELS_STEP_LABEL),
       component: (
-        <AddLabelsStep
-          moveToNextStep={() => setActiveStep(2)}
-          moveToPrevStep={() => setActiveStep(0)}
-        />
+        <ImageDimensionsProvider>
+          <AddLabelsStep
+            moveToNextStep={() => setActiveStep(2)}
+            moveToPrevStep={() => setActiveStep(0)}
+          />
+        </ImageDimensionsProvider>
       ),
       disabled: !image?.id,
     },

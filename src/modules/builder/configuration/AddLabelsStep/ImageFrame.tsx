@@ -1,12 +1,10 @@
-import { useRef } from 'react';
-
 import { Alert, Skeleton, styled } from '@mui/material';
 
 import { Settings, SettingsKeys } from '@/@types';
 import { useAppTranslation } from '@/config/i18n';
 import { hooks } from '@/config/queryClient';
 import { APP } from '@/langs/constants';
-import { useImageObserver } from '@/modules/context/imageDimensionContext';
+import { useImageDimensionsContext } from '@/modules/context/imageDimensionContext';
 
 const Container = styled('div')(() => ({
   display: 'flex',
@@ -19,11 +17,11 @@ const Container = styled('div')(() => ({
 const ImageFrame = (): JSX.Element | null => {
   const { data: appSettings, isLoading: settingLoading } =
     hooks.useAppSettings<Settings>();
-  const imgRef = useRef<HTMLImageElement | null>(null);
 
   const image = appSettings?.find(({ name }) => name === SettingsKeys.File);
   const appSettingId = image?.id || '';
 
+  const { imgRef } = useImageDimensionsContext();
   const {
     data: dataFile,
     isLoading: isImageLoading,
@@ -31,8 +29,6 @@ const ImageFrame = (): JSX.Element | null => {
   } = hooks.useAppSettingFile({
     appSettingId,
   });
-
-  useImageObserver({ imgRef });
 
   const { t } = useAppTranslation();
 

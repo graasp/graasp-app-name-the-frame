@@ -1,56 +1,45 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import { Settings, SettingsKeys } from '@/@types';
-import { hooks, mutations } from '@/config/queryClient';
+import { hooks } from '@/config/queryClient';
 import { debounce } from '@/utils';
 
-type Props = {
+type ImageDimensionContextType = {
   imgRef: React.MutableRefObject<HTMLImageElement | null> | null;
+  dimension: { width: number; height: number };
 };
-export const useImageObserver = ({ imgRef }: Props): void => {
-  const { mutate: patchSetting } = mutations.usePatchAppSetting();
+
+const ImageDimensionsContext = createContext<ImageDimensionContextType>({
+  imgRef: null,
+  dimension: { width: 0, height: 0 },
+});
+
+type Props1 = {
+  children: JSX.Element;
+};
+export const ImageDimensionsProvider = ({ children }: Props1): JSX.Element => {
+  const imgRef = useRef<HTMLImageElement | null>(null);
 
   const { data: settingsData } = hooks.useAppSettings<Settings>({
     name: SettingsKeys.SettingsData,
   });
 
+  const [imgDimension, setImgDimension] = useState({ width: 0, height: 0 });
   const saveImageDimension = useCallback(
-    (
-      imageDimension: {
-        width: number;
-        height: number;
-      },
-      id: string,
-    ): void => {
+    (imageDimension: { width: number; height: number }): void => {
       if (imageDimension.height && imageDimension.width) {
-        const labels = settingsData?.[0]?.data.labels;
-        const prevDimension = settingsData?.[0]?.data.imageDimension;
-
-        // Calculate new offsets if image dimensions have changed
-        const newLabels = labels?.map((label) => {
-          const { x, y } = label;
-          if (
-            prevDimension &&
-            (prevDimension.width !== imageDimension.width ||
-              prevDimension?.height !== imageDimension.height)
-          ) {
-            const newX = (x * imageDimension.width) / prevDimension.width;
-            const newY = (y * imageDimension.height) / prevDimension.height;
-            return { ...label, x: newX, y: newY };
-          }
-          return label;
-        });
-
-        const payload = {
-          ...settingsData?.[0]?.data,
-          imageDimension,
-          labels: newLabels,
-        };
-
-        patchSetting({ id, data: payload });
+        setImgDimension(imageDimension);
       }
     },
-    [settingsData, patchSetting],
+    [],
   );
 
   const debouncedSaveImageDimension = useMemo(
@@ -71,7 +60,7 @@ export const useImageObserver = ({ imgRef }: Props): void => {
       const { width, height } = entry.contentRect;
 
       if ((width !== dimension.width || height !== dimension.height) && id) {
-        debouncedSaveImageDimension({ width, height }, id);
+        debouncedSaveImageDimension({ width, height });
       }
     };
 
@@ -84,4 +73,19 @@ export const useImageObserver = ({ imgRef }: Props): void => {
       resizeObserver.disconnect();
     };
   }, [imgRef, debouncedSaveImageDimension, settingsData]);
+
+  const value: ImageDimensionContextType = useMemo(() => {
+    const dimension = imgDimension;
+
+    return { imgRef, dimension };
+  }, [imgRef, imgDimension]);
+
+  return (
+    <ImageDimensionsContext.Provider value={value}>
+      {children}
+    </ImageDimensionsContext.Provider>
+  );
 };
+
+export const useImageDimensionsContext = (): ImageDimensionContextType =>
+  useContext<ImageDimensionContextType>(ImageDimensionsContext);

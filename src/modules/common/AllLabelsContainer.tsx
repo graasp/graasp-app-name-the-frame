@@ -3,7 +3,7 @@ import { Droppable } from 'react-beautiful-dnd';
 
 import { styled } from '@mui/material';
 
-import { DraggableLabelType } from '@/@types';
+import { Label } from '@/@types';
 
 import DraggableLabel from './DraggableLabel';
 
@@ -22,7 +22,7 @@ export const Container = styled('div')<{
 }));
 
 type Props = {
-  labels: DraggableLabelType[];
+  labels: Label[];
 };
 
 const AllLabelsContainer = ({ labels }: Props): JSX.Element => (

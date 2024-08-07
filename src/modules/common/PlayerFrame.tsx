@@ -3,12 +3,7 @@ import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
 import { Box, Typography } from '@mui/material';
 
-import {
-  AnsweredLabel,
-  DraggableLabelType,
-  Settings,
-  SettingsKeys,
-} from '@/@types';
+import { AnsweredLabel, Label, Settings, SettingsKeys } from '@/@types';
 import { useAppTranslation } from '@/config/i18n';
 import { hooks } from '@/config/queryClient';
 import { APP } from '@/langs/constants';
@@ -25,36 +20,21 @@ const PlayerFrame = (): JSX.Element => {
   });
 
   const [labels, setLabels] = useState<AnsweredLabel[]>([]);
-  const [nonAnsweredLabels, setNonAnsweredLabels] = useState<
-    DraggableLabelType[]
-  >([]);
+  const [nonAnsweredLabels, setNonAnsweredLabels] = useState<Label[]>([]);
 
   const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
     const settingLabels = appSettings?.[0].data.labels;
-    const imageDimension = appSettings?.[0].data.imageDimension;
 
-    if (imageDimension && settingLabels) {
-      const answeredLabels = settingLabels.map(({ id, content, x, y }) => ({
-        expected: {
-          id,
-          content,
-          x: `${(x / imageDimension.width) * 100}%`,
-          y: `${(y / imageDimension.height) * 100}%`,
-        },
+    if (settingLabels) {
+      const answeredLabels = settingLabels.map((label) => ({
+        expected: label,
         actual: null,
       }));
 
-      const AllChoices = settingLabels.map(({ id, content, x, y }) => ({
-        id,
-        content,
-        x: `${(x / imageDimension.width) * 100}%`,
-        y: `${(y / imageDimension.height) * 100}%`,
-      }));
-
       setLabels(answeredLabels);
-      setNonAnsweredLabels(AllChoices);
+      setNonAnsweredLabels(settingLabels);
     }
   }, [appSettings]);
 
