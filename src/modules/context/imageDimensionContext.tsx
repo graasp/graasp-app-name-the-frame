@@ -8,8 +8,6 @@ import React, {
   useState,
 } from 'react';
 
-import { Settings, SettingsKeys } from '@/@types';
-import { hooks } from '@/config/queryClient';
 import { debounce } from '@/utils';
 
 type ImageDimensionContextType = {
@@ -28,10 +26,6 @@ type Props1 = {
 export const ImageDimensionsProvider = ({ children }: Props1): JSX.Element => {
   const imgRef = useRef<HTMLImageElement | null>(null);
 
-  const { data: settingsData } = hooks.useAppSettings<Settings>({
-    name: SettingsKeys.SettingsData,
-  });
-
   const [imgDimension, setImgDimension] = useState({ width: 0, height: 0 });
   const saveImageDimension = useCallback(
     (imageDimension: { width: number; height: number }): void => {
@@ -48,18 +42,12 @@ export const ImageDimensionsProvider = ({ children }: Props1): JSX.Element => {
   );
 
   useEffect((): (() => void) => {
-    const data = settingsData?.[0];
-    const dimension = data?.data?.imageDimension || {
-      width: 0,
-      height: 0,
-    };
     // watch image resize to save image dimension
-    const id = settingsData?.[0]?.id;
     const onImageSizeChange = (entries: ResizeObserverEntry[]): void => {
       const entry = entries[0];
       const { width, height } = entry.contentRect;
 
-      if ((width !== dimension.width || height !== dimension.height) && id) {
+      if (width !== imgDimension.width || height !== imgDimension.height) {
         debouncedSaveImageDimension({ width, height });
       }
     };
@@ -72,7 +60,7 @@ export const ImageDimensionsProvider = ({ children }: Props1): JSX.Element => {
     return () => {
       resizeObserver.disconnect();
     };
-  }, [imgRef, debouncedSaveImageDimension, settingsData]);
+  }, [imgRef, debouncedSaveImageDimension, imgDimension]);
 
   const value: ImageDimensionContextType = useMemo(() => {
     const dimension = imgDimension;
