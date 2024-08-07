@@ -35,28 +35,26 @@ const PlayerFrame = (): JSX.Element => {
     const settingLabels = appSettings?.[0].data.labels;
     const imageDimension = appSettings?.[0].data.imageDimension;
 
-    if (imageDimension) {
-      if (settingLabels) {
-        const answeredLabels = settingLabels.map(({ id, content, x, y }) => ({
-          expected: {
-            id,
-            content,
-            x: `${(x / imageDimension.width) * 100}%`,
-            y: `${(y / imageDimension.height) * 100}%`,
-          },
-          actual: null,
-        }));
-
-        const AllChoices = settingLabels.map(({ id, content, x, y }) => ({
+    if (imageDimension && settingLabels) {
+      const answeredLabels = settingLabels.map(({ id, content, x, y }) => ({
+        expected: {
           id,
           content,
           x: `${(x / imageDimension.width) * 100}%`,
           y: `${(y / imageDimension.height) * 100}%`,
-        }));
+        },
+        actual: null,
+      }));
 
-        setLabels(answeredLabels);
-        setNonAnsweredLabels(AllChoices);
-      }
+      const AllChoices = settingLabels.map(({ id, content, x, y }) => ({
+        id,
+        content,
+        x: `${(x / imageDimension.width) * 100}%`,
+        y: `${(y / imageDimension.height) * 100}%`,
+      }));
+
+      setLabels(answeredLabels);
+      setNonAnsweredLabels(AllChoices);
     }
   }, [appSettings]);
 

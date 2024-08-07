@@ -19,7 +19,7 @@ export type Label = Position & {
 export type Choice = { content: string; id: string };
 
 export type DraggableLabelType = {
-  // x and y are relative to image size
+  // x and y are relative to image size (percentage)
   y: string;
   x: string;
   id: string;
