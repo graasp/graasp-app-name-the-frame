@@ -43,7 +43,7 @@ const AddImageStep = ({ moveToNextStep }: Props): JSX.Element => {
   const [description, setDescription] = useState<string>('');
 
   const saveData = (): void => {
-    const newData = { description };
+    const newData = { ...(settings && settings.data), description };
 
     saveSettings(SettingsKeys.SettingsData, newData);
     moveToNextStep();

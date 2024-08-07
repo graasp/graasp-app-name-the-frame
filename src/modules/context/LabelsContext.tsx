@@ -44,7 +44,10 @@ export const LabelsProvider = ({ children }: Props): JSX.Element => {
 
     const saveData = (l: Label[]): void => {
       if (settingsData) {
-        const data = { ...settingsData?.[0]?.data, labels: l };
+        const data = {
+          ...settingsData?.[0]?.data,
+          labels: l,
+        };
         patchSetting({ id: settingsData?.[0]?.id, data });
       }
     };

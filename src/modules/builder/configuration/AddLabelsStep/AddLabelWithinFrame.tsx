@@ -9,13 +9,11 @@ import { PermissionLevel } from '@graasp/sdk';
 import { v4 } from 'uuid';
 
 import { Label } from '@/@types';
-import {
-  ADD_LABEL_FRAME_HEIGHT,
-  ADD_LABEL_FRAME_WIDTH,
-} from '@/config/constants';
+import { ADD_LABEL_FRAME_HEIGHT } from '@/config/constants';
 import { useAppTranslation } from '@/config/i18n';
 import { APP } from '@/langs/constants';
 import { LabelsContext } from '@/modules/context/LabelsContext';
+import { useImageDimensionsContext } from '@/modules/context/imageDimensionContext';
 
 import AddLabelForm from './AddLabelForm';
 import DraggableLabel from './DraggableLabel';
@@ -39,7 +37,7 @@ const Container = styled('div')(() => ({
 const AddLabelWithinFrame = (): JSX.Element => {
   const { labels, isDragging, setOpenForm, saveLabelsChanges, openForm } =
     useContext(LabelsContext);
-
+  const { dimension } = useImageDimensionsContext();
   const { permission } = useLocalContext();
   const [content, setContent] = useState('');
   const [labelToEdit, setLabelToEdit] = useState<Label | null>(null);
@@ -84,6 +82,14 @@ const AddLabelWithinFrame = (): JSX.Element => {
   ): void => {
     if (!isDragging) {
       const { offsetX, offsetY } = event.nativeEvent;
+      // prevent adding labels outside image
+      if (
+        offsetY < (ADD_LABEL_FRAME_HEIGHT - dimension.height) / 2 ||
+        offsetY >
+          (ADD_LABEL_FRAME_HEIGHT - dimension.height) / 2 + dimension.height
+      ) {
+        return;
+      }
       setFormPosition({
         y: offsetY,
         x: offsetX,
@@ -110,7 +116,7 @@ const AddLabelWithinFrame = (): JSX.Element => {
     <Box
       sx={{
         height: ADD_LABEL_FRAME_HEIGHT,
-        width: ADD_LABEL_FRAME_WIDTH,
+        width: '100%',
       }}
     >
       {permission === PermissionLevel.Admin && openForm && !isDragging && (
@@ -144,7 +150,7 @@ const AddLabelWithinFrameWrapper = (): JSX.Element => {
   const disabled = isDragging || openForm;
 
   return (
-    <Box sx={{ position: 'relative' }}>
+    <Box sx={{ width: '100%' }}>
       {labels.length === 0 && (
         <Alert severity="info">{t(APP.START_ADDING_LABEL_HELPER_TEXT)}</Alert>
       )}
@@ -161,9 +167,10 @@ const AddLabelWithinFrameWrapper = (): JSX.Element => {
       >
         <TransformComponent
           wrapperStyle={{
-            maxWidth: '100%',
+            width: '100%',
             maxHeight: '100%',
           }}
+          contentStyle={{ width: '100%' }}
         >
           <AddLabelWithinFrame />
         </TransformComponent>

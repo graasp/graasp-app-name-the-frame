@@ -12,6 +12,9 @@
   "NEXT": "Next",
   "BACK": "Back",
   "REPLACE_IMAGE": "Replace the image",
+  "DRAG_DROP_EXERCISE_TITLE": "Drag and drop these labels into the correct frame of the image",
+  "SAVE": "Save",
+  "PREVIEW_NOTE": "Here is what your application will look like from the player's perspective. To modify any settings, please return to the previous steps.",
   "ADD_LABEL": "Add",
   "UNEXPECTED_ERROR": "Sorry, something went wrong!",
   "START_ADDING_LABEL_HELPER_TEXT": "To add a new label, click on the desired location on the image!"

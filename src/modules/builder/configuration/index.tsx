@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Stack, Step, StepButton, Stepper } from '@mui/material';
 
@@ -7,6 +7,7 @@ import { useAppTranslation } from '@/config/i18n';
 import { hooks } from '@/config/queryClient';
 import { CONFIGURATION_TAB_ID } from '@/config/selectors';
 import { APP } from '@/langs/constants';
+import { ImageDimensionsProvider } from '@/modules/context/imageDimensionContext';
 
 import AddImageStep from './AddImageStep';
 import AddLabelsStep from './AddLabelsStep/AddLabelsStep';
@@ -14,7 +15,6 @@ import PreviewStep from './PreviewStep';
 
 const Configurations = (): JSX.Element => {
   const { t } = useAppTranslation();
-  const [activeStep, setActiveStep] = useState(0);
 
   const { data: imageSetting } = hooks.useAppSettings({
     name: SettingsKeys.File,
@@ -26,6 +26,19 @@ const Configurations = (): JSX.Element => {
   const image = imageSetting?.[0];
 
   const settingsData = settings?.[0];
+  const [activeStep, setActiveStep] = useState(0);
+
+  const initialSetRef = useRef(false);
+
+  useEffect(() => {
+    // move to preview step in case all was settled, using Ref to move only within first render, So If i change sth with second step I don't want to move to preview immediately
+    if (!initialSetRef.current && settingsData?.data) {
+      if (settingsData.data.labels) {
+        setActiveStep(2);
+      }
+      initialSetRef.current = true;
+    }
+  }, [settingsData]);
 
   const steps = [
     {
@@ -35,16 +48,18 @@ const Configurations = (): JSX.Element => {
     {
       label: t(APP.ADD_LABELS_STEP_LABEL),
       component: (
-        <AddLabelsStep
-          moveToNextStep={() => setActiveStep(2)}
-          moveToPrevStep={() => setActiveStep(0)}
-        />
+        <ImageDimensionsProvider>
+          <AddLabelsStep
+            moveToNextStep={() => setActiveStep(2)}
+            moveToPrevStep={() => setActiveStep(0)}
+          />
+        </ImageDimensionsProvider>
       ),
       disabled: !image?.id,
     },
     {
       label: t(APP.PREVIEW_STEP_LABEL),
-      component: <PreviewStep />,
+      component: <PreviewStep moveToPrevStep={() => setActiveStep(1)} />,
       disabled: !settingsData?.data.labels || !image?.id,
     },
   ];
