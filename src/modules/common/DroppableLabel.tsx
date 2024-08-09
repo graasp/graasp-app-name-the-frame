@@ -5,7 +5,7 @@ import { styled } from '@mui/material';
 
 import { AnsweredLabel } from '@/@types';
 
-import DraggableLabel from './DraggableLabel';
+import DraggableLabelToDroppableCont from './DraggableLabelToDroppableCont';
 
 export const Container = styled('div')<{
   top: string;
@@ -28,6 +28,7 @@ export const Container = styled('div')<{
       transform: 'scale(1.1)',
     }),
   }),
+  // scale label to 0.5 for small devices
   [theme.breakpoints.down('sm')]: {
     transform: 'scale(0.5)',
     transformOrigin: 'top left',
@@ -37,11 +38,10 @@ export const Container = styled('div')<{
 type Props = {
   label: AnsweredLabel;
   isDragging?: boolean;
-  id: number;
 };
 
-const DroppableLabel = ({ label, isDragging, id }: Props): JSX.Element => (
-  <Droppable droppableId={`${id}`}>
+const DroppableLabel = ({ label, isDragging }: Props): JSX.Element => (
+  <Droppable droppableId={label.expected.id}>
     {(provided, dropSnapshot) => (
       <Container
         ref={provided.innerRef}
@@ -53,7 +53,7 @@ const DroppableLabel = ({ label, isDragging, id }: Props): JSX.Element => (
         isDragging={isDragging}
       >
         {label.actual && (
-          <DraggableLabel
+          <DraggableLabelToDroppableCont
             content={label.actual.content}
             index={0}
             draggableId={label.actual.id}

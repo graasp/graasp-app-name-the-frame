@@ -4,8 +4,9 @@ import { Droppable } from 'react-beautiful-dnd';
 import { styled } from '@mui/material';
 
 import { Label } from '@/@types';
+import { ALL_DROPPABLE_CONTAINER_ID } from '@/config/selectors';
 
-import DraggableLabel from './DraggableLabel';
+import DraggableLabel from './DraggableLabelToDroppableCont';
 
 export const Container = styled('div')<{
   isDraggingOver: boolean;
@@ -26,7 +27,7 @@ type Props = {
 };
 
 const AllLabelsContainer = ({ labels }: Props): JSX.Element => (
-  <Droppable droppableId="0">
+  <Droppable droppableId={ALL_DROPPABLE_CONTAINER_ID}>
     {(provided, dropSnapshot) => (
       <Container
         ref={provided.innerRef}

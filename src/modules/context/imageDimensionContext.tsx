@@ -20,10 +20,12 @@ const ImageDimensionsContext = createContext<ImageDimensionContextType>({
   dimension: { width: 0, height: 0 },
 });
 
-type Props1 = {
+type Props = {
   children: JSX.Element;
 };
-export const ImageDimensionsProvider = ({ children }: Props1): JSX.Element => {
+
+// keep track of image dimension to control x,y offset for label within add labels step
+export const ImageDimensionsProvider = ({ children }: Props): JSX.Element => {
   const imgRef = useRef<HTMLImageElement | null>(null);
 
   const [imgDimension, setImgDimension] = useState({ width: 0, height: 0 });

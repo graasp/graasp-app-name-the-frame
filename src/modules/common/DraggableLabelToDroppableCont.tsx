@@ -28,7 +28,7 @@ type Props = {
   draggableId: string;
   content: string;
 };
-const DraggableLabel = ({
+const DraggableLabelToDroppableCont = ({
   draggableId,
   index,
   content,
@@ -47,4 +47,4 @@ const DraggableLabel = ({
   </Draggable>
 );
 
-export default DraggableLabel;
+export default DraggableLabelToDroppableCont;

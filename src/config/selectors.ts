@@ -12,3 +12,5 @@ export const DASHBOARD_UPLOADER_ID = 'dashboard-uploader-id';
 export const CONFIGURATION_TAB_ID = 'configurations-id';
 
 export const buildLabelActionsID = (id: string): string => `label-action-${id}`;
+
+export const ALL_DROPPABLE_CONTAINER_ID = 'all-droppable';
