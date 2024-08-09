@@ -5,7 +5,6 @@ import { useControls } from 'react-zoom-pan-pinch';
 import { Button, styled } from '@mui/material';
 
 import { Label } from '@/@types';
-import { ADD_LABEL_FRAME_HEIGHT } from '@/config/constants';
 import { LabelsContext } from '@/modules/context/LabelsContext';
 import { useImageDimensionsContext } from '@/modules/context/imageDimensionContext';
 
@@ -31,43 +30,39 @@ type Props = {
 };
 
 const DraggableLabel = ({ showEditForm, label }: Props): JSX.Element => {
-  const [position, setPosition] = useState({ x: label.x, y: label.y });
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const { dimension } = useImageDimensionsContext();
 
   useEffect(() => {
-    setPosition({ x: label.x, y: label.y });
-  }, [label]);
+    const x = (parseFloat(label.x) * dimension.width) / 100;
+    const y = (parseFloat(label.y) * dimension.height) / 100;
+    setPosition({ x, y });
+  }, [label, dimension]);
 
   const { saveLabelsChanges, setIsDragging, isDragging } =
     useContext(LabelsContext);
   const { instance } = useControls();
   const { scale } = instance.transformState;
-  const { dimension } = useImageDimensionsContext();
 
   const onDrag = (e: DraggableEvent, newP: DraggableData): void => {
     setIsDragging(true);
     e.stopPropagation();
-    // prevent dragging label outside the image
-    if (
-      newP.y < (ADD_LABEL_FRAME_HEIGHT - dimension.height) / 2 ||
-      newP.y >
-        (ADD_LABEL_FRAME_HEIGHT - dimension.height) / 2 + dimension.height
-    ) {
-      return;
-    }
     setPosition({ x: newP.x, y: newP.y });
   };
 
   const onStop = (e: DraggableEvent): void => {
     e.stopPropagation();
     e.preventDefault();
-
-    const newLabel = { ...label, ...position };
+    const y = `${(position.y / dimension.height) * 100}%`;
+    const x = `${(position.x / dimension.width) * 100}%`;
+    const newLabel = { ...label, x, y };
     // Set a delay before enabling actions like opening a new form or applying zoom/move to the image frame
     setTimeout(() => {
       setIsDragging(false);
     }, 2000);
     saveLabelsChanges(newLabel);
   };
+
   return (
     <Draggable
       position={position}

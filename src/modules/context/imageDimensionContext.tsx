@@ -1,13 +1,22 @@
-import React, { createContext, useContext, useMemo, useRef } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
-import { AppSetting } from '@graasp/sdk';
+import { debounce } from '@/utils';
 
-import { Settings, SettingsKeys } from '@/@types';
-import { hooks, mutations } from '@/config/queryClient';
+type ImageDimensionContextType = {
+  imgRef: React.MutableRefObject<HTMLImageElement | null> | null;
+  dimension: { width: number; height: number };
+};
 
 const ImageDimensionsContext = createContext<ImageDimensionContextType>({
   imgRef: null,
-  saveImageDimension: () => {},
   dimension: { width: 0, height: 0 },
 });
 
@@ -15,47 +24,51 @@ type Props = {
   children: JSX.Element;
 };
 
-type ImageDimensionContextType = {
-  saveImageDimension: (
-    d: { width: number; height: number },
-    id: string,
-  ) => void;
-  imgRef: React.MutableRefObject<HTMLImageElement | null> | null;
-  dimension: { width: number; height: number };
-  settingsData?: AppSetting<Settings>[];
-};
-
+// keep track of image dimension to control x,y offset for label within add labels step
 export const ImageDimensionsProvider = ({ children }: Props): JSX.Element => {
   const imgRef = useRef<HTMLImageElement | null>(null);
-  const { mutate: patchSetting } = mutations.usePatchAppSetting();
 
-  const { data: settingsData } = hooks.useAppSettings<Settings>({
-    name: SettingsKeys.SettingsData,
-  });
+  const [imgDimension, setImgDimension] = useState({ width: 0, height: 0 });
+  const saveImageDimension = useCallback(
+    (imageDimension: { width: number; height: number }): void => {
+      if (imageDimension.height && imageDimension.width) {
+        setImgDimension(imageDimension);
+      }
+    },
+    [],
+  );
+
+  const debouncedSaveImageDimension = useMemo(
+    () => debounce(saveImageDimension, 200),
+    [saveImageDimension],
+  );
+
+  useEffect((): (() => void) => {
+    // watch image resize to save image dimension
+    const onImageSizeChange = (entries: ResizeObserverEntry[]): void => {
+      const entry = entries[0];
+      const { width, height } = entry.contentRect;
+
+      if (width !== imgDimension.width || height !== imgDimension.height) {
+        debouncedSaveImageDimension({ width, height });
+      }
+    };
+
+    const resizeObserver = new ResizeObserver(onImageSizeChange);
+    if (imgRef?.current) {
+      resizeObserver.observe(imgRef.current);
+    }
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [imgRef, debouncedSaveImageDimension, imgDimension]);
 
   const value: ImageDimensionContextType = useMemo(() => {
-    const data = settingsData?.[0];
-    const dimension = data?.data?.imageDimension || {
-      width: 0,
-      height: 0,
-    };
+    const dimension = imgDimension;
 
-    const saveImageDimension = (
-      imageDimension: {
-        width: number;
-        height: number;
-      },
-      id: string,
-    ): void => {
-      const payload = {
-        ...settingsData?.[0]?.data,
-        imageDimension,
-      };
-      patchSetting({ id, data: payload });
-    };
-
-    return { imgRef, saveImageDimension, dimension, settingsData };
-  }, [imgRef, patchSetting, settingsData]);
+    return { imgRef, dimension };
+  }, [imgRef, imgDimension]);
 
   return (
     <ImageDimensionsContext.Provider value={value}>

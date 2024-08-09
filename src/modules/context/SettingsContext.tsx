@@ -18,7 +18,6 @@ const defaultSettingsValues: AllSettingsType = {
   [SettingsKeys.SettingsData]: {
     description: '',
     labels: [],
-    imageDimension: { width: 0, height: 0 },
   },
   [SettingsKeys.File]: {},
 };

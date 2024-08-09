@@ -8,8 +8,7 @@ import { PermissionLevel } from '@graasp/sdk';
 
 import { v4 } from 'uuid';
 
-import { Label } from '@/@types';
-import { ADD_LABEL_FRAME_HEIGHT } from '@/config/constants';
+import { Label, Position } from '@/@types';
 import { useAppTranslation } from '@/config/i18n';
 import { APP } from '@/langs/constants';
 import { LabelsContext } from '@/modules/context/LabelsContext';
@@ -35,16 +34,13 @@ const Container = styled('div')(() => ({
 }));
 
 const AddLabelWithinFrame = (): JSX.Element => {
-  const { labels, isDragging, setOpenForm, saveLabelsChanges, openForm } =
-    useContext(LabelsContext);
-  const { dimension } = useImageDimensionsContext();
+  const { labels, isDragging, saveLabelsChanges } = useContext(LabelsContext);
   const { permission } = useLocalContext();
   const [content, setContent] = useState('');
   const [labelToEdit, setLabelToEdit] = useState<Label | null>(null);
-  const [formPosition, setFormPosition] = useState({
-    y: 0,
-    x: 0,
-  });
+  const [formPosition, setFormPosition] = useState<null | Position>(null);
+
+  const { dimension } = useImageDimensionsContext();
 
   const handleFormInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -52,8 +48,7 @@ const AddLabelWithinFrame = (): JSX.Element => {
     setContent(event.target.value);
   };
 
-  const handleShowLabelForm = (show: boolean): void => {
-    setOpenForm(show);
+  const handleShowLabelForm = (): void => {
     setContent('');
     setLabelToEdit(null);
   };
@@ -65,16 +60,14 @@ const AddLabelWithinFrame = (): JSX.Element => {
         content,
       };
       saveLabelsChanges(newLabel);
-    } else {
+    } else if (formPosition) {
       const id = v4();
-      const p = {
-        y: formPosition.y,
-        x: formPosition.x,
-      };
-      const newLabel = { ...p, id, content };
+      const newLabel = { ...formPosition, id, content };
       saveLabelsChanges(newLabel);
     }
-    handleShowLabelForm(false);
+    setFormPosition(null);
+
+    handleShowLabelForm();
   };
 
   const showLabelForm = (
@@ -82,19 +75,10 @@ const AddLabelWithinFrame = (): JSX.Element => {
   ): void => {
     if (!isDragging) {
       const { offsetX, offsetY } = event.nativeEvent;
-      // prevent adding labels outside image
-      if (
-        offsetY < (ADD_LABEL_FRAME_HEIGHT - dimension.height) / 2 ||
-        offsetY >
-          (ADD_LABEL_FRAME_HEIGHT - dimension.height) / 2 + dimension.height
-      ) {
-        return;
-      }
       setFormPosition({
-        y: offsetY,
-        x: offsetX,
+        y: `${(offsetY / dimension.height) * 100}%`,
+        x: `${(offsetX / dimension.width) * 100}%`,
       });
-      setOpenForm(true);
       setLabelToEdit(null);
       setContent('');
     }
@@ -108,24 +92,18 @@ const AddLabelWithinFrame = (): JSX.Element => {
       x,
     });
 
-    setOpenForm(true);
     setContent(c);
   };
 
   return (
-    <Box
-      sx={{
-        height: ADD_LABEL_FRAME_HEIGHT,
-        width: '100%',
-      }}
-    >
-      {permission === PermissionLevel.Admin && openForm && !isDragging && (
+    <Box sx={{ width: '100%' }}>
+      {permission === PermissionLevel.Admin && formPosition && !isDragging && (
         <AddLabelForm
           value={content}
           position={formPosition}
           onChange={handleFormInputChange}
           onSubmit={handleFormSubmit}
-          onClose={() => setOpenForm(false)}
+          onClose={() => setFormPosition(null)}
           labelToDelete={labelToEdit}
         />
       )}
@@ -146,8 +124,8 @@ const AddLabelWithinFrame = (): JSX.Element => {
 const AddLabelWithinFrameWrapper = (): JSX.Element => {
   const { t } = useAppTranslation();
 
-  const { isDragging, openForm, labels } = useContext(LabelsContext);
-  const disabled = isDragging || openForm;
+  const { isDragging, labels } = useContext(LabelsContext);
+  const disabled = isDragging;
 
   return (
     <Box sx={{ width: '100%' }}>

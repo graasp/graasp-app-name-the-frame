@@ -9,8 +9,6 @@ const defaultContextValue = {
   saveLabelsChanges: () => {},
   isDragging: false,
   setIsDragging: () => {},
-  openForm: false,
-  setOpenForm: () => {},
 };
 
 export type SettingsContextType = {
@@ -19,9 +17,8 @@ export type SettingsContextType = {
   saveLabelsChanges: (newLabel: Label) => void;
   isDragging: boolean;
   setIsDragging: (b: boolean) => void;
-  openForm: boolean;
-  setOpenForm: (b: boolean) => void;
 };
+
 export const LabelsContext =
   createContext<SettingsContextType>(defaultContextValue);
 
@@ -35,7 +32,6 @@ export const LabelsProvider = ({ children }: Props): JSX.Element => {
   });
 
   const [isDragging, setIsDragging] = useState(false);
-  const [openForm, setOpenForm] = useState(false);
 
   const { mutate: patchSetting } = mutations.usePatchAppSetting();
 
@@ -76,10 +72,8 @@ export const LabelsProvider = ({ children }: Props): JSX.Element => {
       saveLabelsChanges,
       isDragging,
       setIsDragging,
-      openForm,
-      setOpenForm,
     };
-  }, [isDragging, openForm, patchSetting, settingsData]);
+  }, [isDragging, patchSetting, settingsData]);
 
   return (
     <LabelsContext.Provider value={value}>{children}</LabelsContext.Provider>
