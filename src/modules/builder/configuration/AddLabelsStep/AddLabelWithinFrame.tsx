@@ -13,6 +13,7 @@ import { useAppTranslation } from '@/config/i18n';
 import { APP } from '@/langs/constants';
 import { LabelsContext } from '@/modules/context/LabelsContext';
 import { useImageDimensionsContext } from '@/modules/context/imageDimensionContext';
+import { PositionConverter } from '@/utils';
 
 import AddLabelForm from './AddLabelForm';
 import DraggableLabel from './DraggableLabel';
@@ -48,7 +49,7 @@ const AddLabelWithinFrame = (): JSX.Element => {
     setContent(event.target.value);
   };
 
-  const handleShowLabelForm = (): void => {
+  const resetLabelForm = (): void => {
     setContent('');
     setLabelToEdit(null);
   };
@@ -67,7 +68,7 @@ const AddLabelWithinFrame = (): JSX.Element => {
     }
     setFormPosition(null);
 
-    handleShowLabelForm();
+    resetLabelForm();
   };
 
   const showLabelForm = (
@@ -75,10 +76,9 @@ const AddLabelWithinFrame = (): JSX.Element => {
   ): void => {
     if (!isDragging) {
       const { offsetX, offsetY } = event.nativeEvent;
-      setFormPosition({
-        y: `${(offsetY / dimension.height) * 100}%`,
-        x: `${(offsetX / dimension.width) * 100}%`,
-      });
+      setFormPosition(
+        PositionConverter.toRelative({ x: offsetX, y: offsetY, ...dimension }),
+      );
       setLabelToEdit(null);
       setContent('');
     }

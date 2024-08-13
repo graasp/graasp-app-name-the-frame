@@ -7,6 +7,7 @@ import { Button, styled } from '@mui/material';
 import { Label } from '@/@types';
 import { LabelsContext } from '@/modules/context/LabelsContext';
 import { useImageDimensionsContext } from '@/modules/context/imageDimensionContext';
+import { PositionConverter } from '@/utils';
 
 const StyledLabel = styled(Button)(({ theme }) => ({
   background: theme.palette.primary.main,
@@ -34,9 +35,13 @@ const DraggableLabel = ({ showEditForm, label }: Props): JSX.Element => {
   const { dimension } = useImageDimensionsContext();
 
   useEffect(() => {
-    const x = (parseFloat(label.x) * dimension.width) / 100;
-    const y = (parseFloat(label.y) * dimension.height) / 100;
-    setPosition({ x, y });
+    setPosition(
+      PositionConverter.toAbsolute({
+        x: label.x,
+        y: label.y,
+        ...dimension,
+      }),
+    );
   }, [label, dimension]);
 
   const { saveLabelsChanges, setIsDragging, isDragging } =
@@ -53,10 +58,13 @@ const DraggableLabel = ({ showEditForm, label }: Props): JSX.Element => {
   const onStop = (e: DraggableEvent): void => {
     e.stopPropagation();
     e.preventDefault();
-    const y = `${(position.y / dimension.height) * 100}%`;
-    const x = `${(position.x / dimension.width) * 100}%`;
-    const newLabel = { ...label, x, y };
-    // Set a delay before enabling actions like opening a new form or applying zoom/move to the image frame
+
+    const newLabel = {
+      ...label,
+      ...PositionConverter.toRelative({ ...position, ...dimension }),
+    };
+
+    // Add a delay before allowing actions like opening a new form or applying zoom/move to the image frame to prevent unintended behavior, particularly when isDragging is disabled and openForm or drag-and-drop might be triggered
     setTimeout(() => {
       setIsDragging(false);
     }, 2000);
