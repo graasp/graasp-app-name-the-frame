@@ -4,6 +4,7 @@ import { Droppable } from 'react-beautiful-dnd';
 import { styled } from '@mui/material';
 
 import { AnsweredLabel } from '@/@types';
+import { buildDraggableLabelId } from '@/config/selectors';
 
 import DraggableLabelToDroppableCont from './DraggableLabelToDroppableCont';
 
@@ -56,6 +57,7 @@ const DroppableLabel = ({
         isFilled={Boolean(label.actual)}
         isDraggingOver={dropSnapshot.isDraggingOver}
         isDragging={isDragging}
+        id={buildDraggableLabelId(label.expected.id)}
       >
         {label.actual && (
           <DraggableLabelToDroppableCont

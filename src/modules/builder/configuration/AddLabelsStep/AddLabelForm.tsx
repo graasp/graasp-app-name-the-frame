@@ -7,6 +7,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, IconButton, Stack, TextField, useTheme } from '@mui/material';
 
 import { Label, Position } from '@/@types';
+import {
+  ADD_LABEL_FORM_ID,
+  ADD_LABEL_SUBMIT_BTN_ID,
+  DELETE_LABEL_BTN_ID,
+  NEW_LABEL_CONTENT_INPUT_ID,
+} from '@/config/selectors';
 import { LabelsContext } from '@/modules/context/LabelsContext';
 
 type Props = {
@@ -34,6 +40,7 @@ const AddLabelForm = ({
   const { scale } = instance.transformState;
   return (
     <Stack
+      id={ADD_LABEL_FORM_ID}
       sx={{
         position: 'absolute',
         zIndex: 500,
@@ -79,6 +86,7 @@ const AddLabelForm = ({
               autoFocus
               size="small"
               value={value}
+              id={NEW_LABEL_CONTENT_INPUT_ID}
               onChange={onChange}
               sx={{
                 background: 'white',
@@ -90,6 +98,7 @@ const AddLabelForm = ({
             />
             <IconButton
               onClick={onSubmit}
+              id={ADD_LABEL_SUBMIT_BTN_ID}
               sx={{
                 background: theme.palette.primary.main,
                 borderRadius: 0,
@@ -99,6 +108,7 @@ const AddLabelForm = ({
             </IconButton>
             {labelToDelete && (
               <IconButton
+                id={DELETE_LABEL_BTN_ID}
                 onClick={() => {
                   deleteLabel(labelToDelete.id);
                   onClose();
