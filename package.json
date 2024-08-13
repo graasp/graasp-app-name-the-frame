@@ -76,7 +76,7 @@
     "@typescript-eslint/eslint-plugin": "7.17.0",
     "@typescript-eslint/parser": "7.17.0",
     "@vitejs/plugin-react": "^4.2.1",
-    "axios": "1.7.2",
+    "axios": "1.7.4",
     "concurrently": "8.2.2",
     "cypress": "13.13.1",
     "env-cmd": "10.1.0",
