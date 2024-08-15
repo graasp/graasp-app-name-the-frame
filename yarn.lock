@@ -2586,7 +2586,7 @@ __metadata:
 
 "@graasp/apps-query-client@https://github.com/graasp/graasp-apps-query-client.git#384-mock-app-setting-file":
   version: 3.5.0
-  resolution: "@graasp/apps-query-client@https://github.com/graasp/graasp-apps-query-client.git#commit=af8103f73ef0561bfb84d89c02d8ea2515f8a10a"
+  resolution: "@graasp/apps-query-client@https://github.com/graasp/graasp-apps-query-client.git#commit=323c1cbd00c1789cde76e7c7baeaa632dd10a84a"
   dependencies:
     "@emotion/react": "npm:11.13.0"
     "@emotion/styled": "npm:11.13.0"
@@ -2607,7 +2607,7 @@ __metadata:
     date-fns: ^3.3.0
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: 10/e3a57918ee7a81fd2aedb2b54057b8376279a939dfdf4f1fa6bf6d93f48ea4078be242205aa6467f77df8033a9f8b7726739cf32c6ec4fca5437117cf3d276ce
+  checksum: 10/f04e54ef32bdc4f9a165dafbf9af05aad39c8943104c5ee02473742a988f8feb0578c1a6f9b4a20f5ad8813fef4263fc749e2056d515a8fb2d04e5c5668eccfc
   languageName: node
   linkType: hard
 

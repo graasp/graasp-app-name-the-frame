@@ -6,7 +6,7 @@ import { MEMBERS } from './members';
 import { MOCK_SERVER_ITEM } from './mockItem';
 
 type FileSettingsData = {
-  fileUrl: string;
+  format: string;
 };
 
 // x and y are relative to image size (percentage)
@@ -23,7 +23,7 @@ type Settings = {
 };
 export const EMPTY_SETTING: AppSetting = {
   id: v4(),
-  name: '',
+  name: 'hi',
   data: {},
   item: MOCK_SERVER_ITEM,
   creator: MEMBERS.ANNA,
@@ -36,7 +36,7 @@ export const MOCK_FILE_SETTING: AppSetting & { data: FileSettingsData } = {
   id: v4(),
   name: 'file',
   data: {
-    fileUrl: 'http://localhost:3000/app-items/app-settings/image.png',
+    format: 'png',
   },
 };
 export const MOCK_SETTING_DATA: AppSetting & { data: Settings } = {
@@ -46,5 +46,21 @@ export const MOCK_SETTING_DATA: AppSetting & { data: Settings } = {
   data: {
     description: 'https://.pdf',
     // labels: [],
+  },
+};
+
+export const MOCK_SETTING_DATA_WITH_LABELS: AppSetting & { data: Settings } = {
+  ...EMPTY_SETTING,
+  id: v4(),
+  name: 'settings-data',
+  data: {
+    description: 'Drag and drop colors within the right place',
+    labels: [
+      { id: v4(), content: 'red', x: '20%', y: '80%' },
+      { id: v4(), content: 'green', x: '10%', y: '20%' },
+      { id: v4(), content: 'yellow', x: '80%', y: '30%' },
+      { id: v4(), content: 'blue', x: '50%', y: '50%' },
+      { id: v4(), content: 'white', x: '60%', y: '40%' },
+    ],
   },
 };

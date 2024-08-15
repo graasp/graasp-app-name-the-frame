@@ -5,7 +5,11 @@ import { Stack, Step, StepButton, Stepper } from '@mui/material';
 import { SettingsKeys } from '@/@types';
 import { useAppTranslation } from '@/config/i18n';
 import { hooks } from '@/config/queryClient';
-import { CONFIGURATION_TAB_ID } from '@/config/selectors';
+import {
+  CONFIGURATION_TAB_ID,
+  CONFIG_STEPPERS_ADD_IMG_ID,
+  CONFIG_STEPPERS_ADD_LABELS_ID,
+} from '@/config/selectors';
 import { APP } from '@/langs/constants';
 import { ImageDimensionsProvider } from '@/modules/context/imageDimensionContext';
 
@@ -44,6 +48,7 @@ const Configurations = (): JSX.Element => {
     {
       label: t(APP.ADD_IMAGE_STEP_LABEL),
       component: <AddImageStep moveToNextStep={() => setActiveStep(1)} />,
+      id: CONFIG_STEPPERS_ADD_IMG_ID,
     },
     {
       label: t(APP.ADD_LABELS_STEP_LABEL),
@@ -56,23 +61,26 @@ const Configurations = (): JSX.Element => {
         </ImageDimensionsProvider>
       ),
       disabled: !image?.id,
+      id: CONFIG_STEPPERS_ADD_LABELS_ID,
     },
     {
       label: t(APP.PREVIEW_STEP_LABEL),
       component: <PreviewStep moveToPrevStep={() => setActiveStep(1)} />,
       disabled: !settingsData?.data.labels || !image?.id,
+      id: CONFIG_STEPPERS_ADD_LABELS_ID,
     },
   ];
 
   return (
     <Stack spacing={1} id={CONFIGURATION_TAB_ID}>
       <Stepper activeStep={activeStep} nonLinear>
-        {steps.map(({ label, disabled }, index) => (
+        {steps.map(({ label, disabled, id }, index) => (
           <Step key={label}>
             <StepButton
               disabled={disabled}
               onClick={() => setActiveStep(index)}
               color="inherit"
+              id={id}
             >
               {label}
             </StepButton>

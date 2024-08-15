@@ -24,7 +24,7 @@ const PreviewStep = ({
       <Stack spacing={2} padding={2}>
         <Box>
           <Typography variant="h5" fontWeight="bold">
-            {appContext?.item.name}
+            {appContext?.item?.name}
           </Typography>
           <Typography variant="body1">
             {appSettings?.[0].data.description}
