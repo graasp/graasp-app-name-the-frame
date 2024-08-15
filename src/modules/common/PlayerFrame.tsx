@@ -6,9 +6,8 @@ import { Box, Typography } from '@mui/material';
 import { AnsweredLabel, Label, Settings, SettingsKeys } from '@/@types';
 import { useAppTranslation } from '@/config/i18n';
 import { hooks } from '@/config/queryClient';
-import { ALL_DROPPABLE_CONTAINER_ID } from '@/config/selectors';
 import { APP } from '@/langs/constants';
-import { updateLabels } from '@/utils/dnd';
+import { trackLabelsChanges } from '@/utils/dnd';
 
 import AllLabelsContainer from './AllLabelsContainer';
 import DraggableFrameWithLabels from './DraggableFrameWithLabels';
@@ -40,75 +39,28 @@ const PlayerFrame = (): JSX.Element => {
     }
   }, [appSettings]);
 
-  const findAnLabelIndex = (id: string): number =>
-    answeredLabels?.findIndex(({ expected }) => expected.id === id) ?? -1;
-
   const onDragEnd = (draggable: DropResult): void => {
     const { source, destination: draggableDist } = draggable;
 
     setIsDragging(false);
-    // dropped outside the listdraggableDist
+    // dropped outside the list draggableDist
     if (!draggableDist || !labels) {
       return;
     }
 
     const srcDroppableId = source.droppableId;
     const distDroppableId = draggableDist.droppableId;
+    const srcLabelIndex = source.index;
+    const { labels: l, answeredLabels: newAnswers } = trackLabelsChanges({
+      srcDroppableId,
+      distDroppableId,
+      labels,
+      answeredLabels,
+      srcLabelIndex,
+    });
 
-    // moving from all labels
-    if (srcDroppableId === ALL_DROPPABLE_CONTAINER_ID) {
-      const distIdx = findAnLabelIndex(distDroppableId);
-      const labelDist = answeredLabels[distIdx];
-
-      if (labelDist.actual) {
-        return;
-      }
-
-      const sIdx = source.index;
-      const itemToMove = labels[sIdx];
-      const destination = { ...labelDist, actual: itemToMove };
-
-      setAnsweredLabels(
-        updateLabels(answeredLabels, [
-          { index: distIdx, newItem: destination },
-        ]),
-      );
-      setLabels(labels.filter((_, index) => index !== sIdx));
-    }
-
-    const srcIdx = findAnLabelIndex(srcDroppableId);
-
-    // moving from answered labels
-    if (srcIdx > -1) {
-      const itemToMove = answeredLabels[srcIdx];
-      const src = { ...itemToMove, actual: null };
-
-      if (itemToMove.actual) {
-        // move to all labels
-        if (distDroppableId === ALL_DROPPABLE_CONTAINER_ID) {
-          setAnsweredLabels(
-            updateLabels(answeredLabels, [{ index: srcIdx, newItem: src }]),
-          );
-          setLabels([...labels, itemToMove.actual]);
-
-          // move from choice to choice
-        } else {
-          const distIdx = findAnLabelIndex(distDroppableId);
-
-          const dist = {
-            ...answeredLabels[distIdx],
-            actual: itemToMove.actual,
-          };
-
-          setAnsweredLabels(
-            updateLabels(answeredLabels, [
-              { index: distIdx, newItem: dist },
-              { index: srcIdx, newItem: src },
-            ]),
-          );
-        }
-      }
-    }
+    setLabels(l);
+    setAnsweredLabels(newAnswers);
   };
 
   return (
