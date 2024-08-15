@@ -3,14 +3,14 @@ import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 
 import { Box, styled } from '@mui/material';
 
-import { DraggableLabelType } from '@/@types';
+import { AnsweredLabel } from '@/@types';
 
-import DroppableDraggableLabel from './DroppableDraggableLabel';
+import DroppableLabel from './DroppableLabel';
 import ImageFrame from './ImageFrame';
 
 type Props = {
   isDragging: boolean;
-  labels: DraggableLabelType[];
+  labels: AnsweredLabel[];
 };
 
 const TransformContainer = styled(TransformWrapper)(() => ({
@@ -23,47 +23,39 @@ const TransformContainer = styled(TransformWrapper)(() => ({
 const DraggableFrameWithLabels = ({
   isDragging,
   labels,
-}: Props): JSX.Element => {
-  const renderDraggableLabels = (): JSX.Element[] => {
-    const Labels = labels.map((label) => (
-      <DroppableDraggableLabel
-        label={label}
-        key={label.ind}
-        isDragging={isDragging}
-      />
-    ));
-
-    return Labels;
-  };
-
-  return (
-    <Box sx={{ width: '100%' }}>
-      <TransformContainer
-        initialScale={1}
-        panning={{ disabled: isDragging }}
-        pinch={{ disabled: isDragging }}
-        wheel={{ disabled: isDragging }}
-        zoomAnimation={{ disabled: isDragging }}
-        alignmentAnimation={{ disabled: isDragging }}
-        velocityAnimation={{ disabled: isDragging }}
+}: Props): JSX.Element => (
+  <Box sx={{ width: '100%' }}>
+    <TransformContainer
+      initialScale={1}
+      panning={{ disabled: isDragging }}
+      pinch={{ disabled: isDragging }}
+      wheel={{ disabled: isDragging }}
+      zoomAnimation={{ disabled: isDragging }}
+      alignmentAnimation={{ disabled: isDragging }}
+      velocityAnimation={{ disabled: isDragging }}
+    >
+      <TransformComponent
+        wrapperStyle={{
+          width: '100%',
+          maxHeight: '100%',
+        }}
+        contentStyle={{
+          width: '100%',
+        }}
       >
-        <TransformComponent
-          wrapperStyle={{
-            width: '100%',
-            maxHeight: '100%',
-          }}
-          contentStyle={{
-            width: '100%',
-          }}
-        >
-          <Box sx={{ width: '100%' }}>
-            <ImageFrame />
-            {renderDraggableLabels()}
-          </Box>
-        </TransformComponent>
-      </TransformContainer>
-    </Box>
-  );
-};
+        <Box sx={{ width: '100%' }}>
+          <ImageFrame />
+          {labels.map((label) => (
+            <DroppableLabel
+              label={label}
+              key={label.expected.id}
+              isDragging={isDragging}
+            />
+          ))}
+        </Box>
+      </TransformComponent>
+    </TransformContainer>
+  </Box>
+);
 
 export default DraggableFrameWithLabels;

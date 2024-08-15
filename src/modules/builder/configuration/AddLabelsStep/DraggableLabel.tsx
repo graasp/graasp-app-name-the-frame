@@ -5,9 +5,9 @@ import { useControls } from 'react-zoom-pan-pinch';
 import { Button, styled } from '@mui/material';
 
 import { Label } from '@/@types';
-import { ADD_LABEL_FRAME_HEIGHT } from '@/config/constants';
 import { LabelsContext } from '@/modules/context/LabelsContext';
 import { useImageDimensionsContext } from '@/modules/context/imageDimensionContext';
+import { PositionConverter } from '@/utils';
 
 const StyledLabel = styled(Button)(({ theme }) => ({
   background: theme.palette.primary.main,
@@ -31,29 +31,27 @@ type Props = {
 };
 
 const DraggableLabel = ({ showEditForm, label }: Props): JSX.Element => {
-  const [position, setPosition] = useState({ x: label.x, y: label.y });
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const { dimension } = useImageDimensionsContext();
 
   useEffect(() => {
-    setPosition({ x: label.x, y: label.y });
-  }, [label]);
+    setPosition(
+      PositionConverter.toAbsolute({
+        x: label.x,
+        y: label.y,
+        ...dimension,
+      }),
+    );
+  }, [label, dimension]);
 
   const { saveLabelsChanges, setIsDragging, isDragging } =
     useContext(LabelsContext);
   const { instance } = useControls();
   const { scale } = instance.transformState;
-  const { dimension } = useImageDimensionsContext();
 
   const onDrag = (e: DraggableEvent, newP: DraggableData): void => {
     setIsDragging(true);
     e.stopPropagation();
-    // prevent dragging label outside the image
-    if (
-      newP.y < (ADD_LABEL_FRAME_HEIGHT - dimension.height) / 2 ||
-      newP.y >
-        (ADD_LABEL_FRAME_HEIGHT - dimension.height) / 2 + dimension.height
-    ) {
-      return;
-    }
     setPosition({ x: newP.x, y: newP.y });
   };
 
@@ -61,13 +59,18 @@ const DraggableLabel = ({ showEditForm, label }: Props): JSX.Element => {
     e.stopPropagation();
     e.preventDefault();
 
-    const newLabel = { ...label, ...position };
-    // Set a delay before enabling actions like opening a new form or applying zoom/move to the image frame
+    const newLabel = {
+      ...label,
+      ...PositionConverter.toRelative({ ...position, ...dimension }),
+    };
+
+    // Add a delay before allowing actions like opening a new form or applying zoom/move to the image frame to prevent unintended behavior, particularly when isDragging is disabled and openForm or drag-and-drop might be triggered
     setTimeout(() => {
       setIsDragging(false);
     }, 2000);
     saveLabelsChanges(newLabel);
   };
+
   return (
     <Draggable
       position={position}
