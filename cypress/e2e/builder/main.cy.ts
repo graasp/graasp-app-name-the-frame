@@ -4,8 +4,10 @@ import {
   ADD_LABELS_IMAGE_CONTAINER_ID,
   ADD_LABEL_FORM_ID,
   ADD_LABEL_SUBMIT_BTN_ID,
+  ALL_LABELS_CONTAINER_ID,
   CONFIG_STEPPERS_ADD_LABELS_ID,
   DELETE_LABEL_BTN_ID,
+  LABELS_WITHIN_FRAME_CONTAINER_ID,
   NEW_LABEL_CONTENT_INPUT_ID,
   buildDraggableLabelId,
 } from '../../../src/config/selectors';
@@ -22,25 +24,9 @@ const addNewLabel = (content: string, isOpenForm?: boolean): void => {
   cy.get(`#${NEW_LABEL_CONTENT_INPUT_ID}`).type(content);
   cy.get(`#${ADD_LABEL_SUBMIT_BTN_ID}`).click();
 };
-/*
 
-Add label step:
-
-create label - DONE
-edit label - DONE
-remove label - DONE
-save
-Preview step:
-
-show all given labels
-show even if empty?
-*/
 const appSettings: AppSetting[] = [MOCK_FILE_SETTING, MOCK_SETTING_DATA];
 describe('Builder View', () => {
-  // it('App', () => {
-  //   cy.get(`#${CONFIGURATION_TAB_ID}`).should('be.visible');
-  // });
-
   describe('add labels step', () => {
     beforeEach(() => {
       cy.setUpApi(
@@ -51,7 +37,6 @@ describe('Builder View', () => {
         },
       );
       cy.visit('/');
-      // cy.wait(3000);
 
       // move to add labels step
       cy.get(`#${CONFIG_STEPPERS_ADD_LABELS_ID}`).click();
@@ -64,7 +49,7 @@ describe('Builder View', () => {
 
     it('add new label', () => {
       const labelContent = 'label1';
-      addNewLabel(labelContent);
+      addNewLabel(labelContent, true);
       cy.get(`#${buildDraggableLabelId(labelContent)}`).should('be.visible');
     });
 
@@ -94,7 +79,7 @@ describe('Builder View', () => {
     });
   });
 
-  describe.only('add preview step', () => {
+  describe('add preview step', () => {
     beforeEach(() => {
       cy.setUpApi(
         { appSettings: [MOCK_FILE_SETTING, MOCK_SETTING_DATA_WITH_LABELS] },
@@ -104,11 +89,18 @@ describe('Builder View', () => {
         },
       );
       cy.visit('/');
-      // cy.wait(3000);
     });
 
     MOCK_SETTING_DATA_WITH_LABELS.data.labels?.forEach((label) => {
-      it(`expect to find ${label.content} label within all labels container and to have a draggable container for it`, () => {});
+      it(`expect to find ${label.content} label within all labels container and to have a draggable container for it`, () => {
+        cy.get(
+          `#${ALL_LABELS_CONTAINER_ID} #${buildDraggableLabelId(label.id)}`,
+        ).should('be.visible');
+
+        cy.get(
+          `#${LABELS_WITHIN_FRAME_CONTAINER_ID} #${buildDraggableLabelId(label.id)}`,
+        ).should('be.visible');
+      });
     });
   });
 });

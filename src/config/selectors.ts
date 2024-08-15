@@ -27,3 +27,7 @@ export const DELETE_LABEL_BTN_ID = `delete-label-btn-id`;
 
 export const buildDraggableLabelId = (content: string): string =>
   `draggable-label-${content}-id`;
+
+export const ALL_LABELS_CONTAINER_ID = 'all-labels-container-id';
+export const LABELS_WITHIN_FRAME_CONTAINER_ID =
+  'labels-within-frame-container-id';

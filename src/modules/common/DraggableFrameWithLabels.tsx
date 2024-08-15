@@ -4,6 +4,7 @@ import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 import { Box, styled } from '@mui/material';
 
 import { AnsweredLabel } from '@/@types';
+import { LABELS_WITHIN_FRAME_CONTAINER_ID } from '@/config/selectors';
 
 import DroppableLabel from './DroppableLabel';
 import ImageFrame from './ImageFrame';
@@ -43,7 +44,7 @@ const DraggableFrameWithLabels = ({
           width: '100%',
         }}
       >
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ width: '100%' }} id={LABELS_WITHIN_FRAME_CONTAINER_ID}>
           <ImageFrame />
           {labels.map((label) => (
             <DroppableLabel
