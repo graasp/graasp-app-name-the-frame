@@ -2622,21 +2622,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graasp/sdk@npm:4.12.2":
-  version: 4.12.2
-  resolution: "@graasp/sdk@npm:4.12.2"
-  dependencies:
-    "@faker-js/faker": "npm:8.4.1"
-    filesize: "npm:10.1.2"
-    js-cookie: "npm:3.0.5"
-    validator: "npm:13.12.0"
-  peerDependencies:
-    date-fns: ^3
-    uuid: ^9 || ^10.0.0
-  checksum: 10/c345510c953b51706a1be1ea30dd04b9f7aea28471dfb6bcf2c6bbffda6d020dcc12fa3ab6a630beab432601e1319808078874d0af13ac6807904dcc0e30efd1
-  languageName: node
-  linkType: hard
-
 "@graasp/sdk@npm:4.22.0":
   version: 4.22.0
   resolution: "@graasp/sdk@npm:4.22.0"
@@ -2650,6 +2635,21 @@ __metadata:
     date-fns: ^3
     uuid: ^9 || ^10.0.0
   checksum: 10/c1e81d401f51a9c22eb4f5bc12057aa3ea249771701c390a11dc7c1609b814d9222926bbb7d9b19f70fda67bccb854f42045d890dd850f71bf4f9f8629fcb799
+  languageName: node
+  linkType: hard
+
+"@graasp/sdk@npm:4.25.0":
+  version: 4.25.0
+  resolution: "@graasp/sdk@npm:4.25.0"
+  dependencies:
+    "@faker-js/faker": "npm:8.4.1"
+    filesize: "npm:10.1.4"
+    js-cookie: "npm:3.0.5"
+    validator: "npm:13.12.0"
+  peerDependencies:
+    date-fns: ^3
+    uuid: ^9 || ^10.0.0
+  checksum: 10/1ec2b05e95e46cada1531a44a03deb9bdb4796f15b80acd37e1bc1bf75c2791f686ab9b4701337c2ee26abc7c2055cf954ede0a8271618ff3647fad19b7c5488
   languageName: node
   linkType: hard
 
@@ -7925,13 +7925,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"filesize@npm:10.1.2":
-  version: 10.1.2
-  resolution: "filesize@npm:10.1.2"
-  checksum: 10/47830a299cc8cfe7b90089a6c37790d2334f3057b98efd891e1e2e1683c8076962d9bd1d600eb77bb9bc33f5e7c4682e07ccb62281b8833b923d39c5c322e983
-  languageName: node
-  linkType: hard
-
 "filesize@npm:10.1.4":
   version: 10.1.4
   resolution: "filesize@npm:10.1.4"
@@ -8467,7 +8460,7 @@ __metadata:
     "@emotion/react": "npm:11.13.0"
     "@emotion/styled": "npm:11.13.0"
     "@graasp/apps-query-client": "https://github.com/graasp/graasp-apps-query-client.git#384-mock-app-setting-file"
-    "@graasp/sdk": "npm:4.12.2"
+    "@graasp/sdk": "npm:4.25.0"
     "@graasp/translations": "npm:^1.28.0"
     "@graasp/ui": "npm:4.17.1"
     "@mui/icons-material": "npm:5.16.5"

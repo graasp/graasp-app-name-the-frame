@@ -13,7 +13,7 @@
     "@emotion/react": "11.13.0",
     "@emotion/styled": "11.13.0",
     "@graasp/apps-query-client": "https://github.com/graasp/graasp-apps-query-client.git#384-mock-app-setting-file",
-    "@graasp/sdk": "4.12.2",
+    "@graasp/sdk": "4.25.0",
     "@graasp/translations": "^1.28.0",
     "@graasp/ui": "4.17.1",
     "@mui/icons-material": "5.16.5",

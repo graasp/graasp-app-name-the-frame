@@ -2,6 +2,8 @@ import { AppSetting } from '@graasp/sdk';
 
 import { v4 } from 'uuid';
 
+import { Settings } from '@/@types';
+
 import { MEMBERS } from './members';
 import { MOCK_SERVER_ITEM } from './mockItem';
 
@@ -9,21 +11,9 @@ type FileSettingsData = {
   format: string;
 };
 
-// x and y are relative to image size (percentage)
-export type Position = { x: string; y: string };
-
-export type Label = Position & {
-  content: string;
-  id: string;
-};
-
-type Settings = {
-  description: string;
-  labels?: Label[];
-};
 export const EMPTY_SETTING: AppSetting = {
   id: v4(),
-  name: 'hi',
+  name: 'new item',
   data: {},
   item: MOCK_SERVER_ITEM,
   creator: MEMBERS.ANNA,
@@ -44,8 +34,8 @@ export const MOCK_SETTING_DATA: AppSetting & { data: Settings } = {
   id: v4(),
   name: 'settings-data',
   data: {
-    description: 'https://.pdf',
-    // labels: [],
+    description: 'item description',
+    labels: [],
   },
 };
 
