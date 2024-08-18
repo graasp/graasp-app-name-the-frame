@@ -38,9 +38,14 @@ export const Container = styled('div')<{
 type Props = {
   label: AnsweredLabel;
   isDragging?: boolean;
+  isSubmitted: boolean;
 };
 
-const DroppableLabel = ({ label, isDragging }: Props): JSX.Element => (
+const DroppableLabel = ({
+  label,
+  isDragging,
+  isSubmitted,
+}: Props): JSX.Element => (
   <Droppable droppableId={label.expected.id}>
     {(provided, dropSnapshot) => (
       <Container
@@ -54,6 +59,8 @@ const DroppableLabel = ({ label, isDragging }: Props): JSX.Element => (
       >
         {label.actual && (
           <DraggableLabelToDroppableCont
+            isCorrect={label.expected.id === label.actual?.id}
+            isSubmitted={isSubmitted}
             content={label.actual.content}
             index={0}
             draggableId={label.actual.id}
