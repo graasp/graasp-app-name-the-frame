@@ -47,8 +47,8 @@ const PlayerView = (): JSX.Element => {
     ({ type }) => type === ANSWER_SUBMISSION_TYPE,
   );
   const settingLabels = appSettings?.[0].data.labels;
-  const lastVersion = answersAppData?.[answersAppData.length - 1];
-  const answers = lastVersion?.data.answers;
+  const lastAnswerAppData = answersAppData?.[answersAppData.length - 1];
+  const answers = lastAnswerAppData?.data.answers;
 
   const retry = (): void => {
     if (settingLabels) {
@@ -62,7 +62,7 @@ const PlayerView = (): JSX.Element => {
     }
   };
 
-  const save = (): void => {
+  const submit = (): void => {
     const submittedAnswers = answeredLabels.map(({ expected, actual }) => ({
       expectedId: expected.id,
       actualId: actual?.id,
@@ -74,33 +74,32 @@ const PlayerView = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (settingLabels) {
-      if (answers) {
-        const answered = answers?.map(
-          ({ expectedId, actualId }: SubmittedAnswer) => ({
-            expected: settingLabels.find(
-              ({ id }) => id === expectedId,
-            ) as Label,
-            actual: settingLabels.find(({ id }) => id === actualId) || null,
-          }),
-        );
+    if (!settingLabels) {
+      return;
+    }
+    if (answers) {
+      const answered = answers.map(
+        ({ expectedId, actualId }: SubmittedAnswer) => ({
+          expected: settingLabels.find(({ id }) => id === expectedId) as Label,
+          actual: settingLabels.find(({ id }) => id === actualId) || null,
+        }),
+      );
 
-        setAnsweredLabels(answered);
-        setLabels(
-          settingLabels.filter(
-            ({ id }) =>
-              !answers.find(({ actualId }: SubmittedAnswer) => actualId === id),
-          ),
-        );
-      } else {
-        const answered = settingLabels.map((label) => ({
-          expected: label,
-          actual: null,
-        }));
+      setAnsweredLabels(answered);
+      setLabels(
+        settingLabels.filter(
+          ({ id }) =>
+            !answers.find(({ actualId }: SubmittedAnswer) => actualId === id),
+        ),
+      );
+    } else {
+      const answered = settingLabels.map((label) => ({
+        expected: label,
+        actual: null,
+      }));
 
-        setAnsweredLabels(answered);
-        setLabels(settingLabels);
-      }
+      setAnsweredLabels(answered);
+      setLabels(settingLabels);
     }
   }, [answers, settingLabels]);
 
@@ -122,38 +121,51 @@ const PlayerView = (): JSX.Element => {
     return <Alert severity="error">{t(APP.UNCONFIGURED_ITEM)}</Alert>;
   }
 
+  const onLabelMoved = (
+    newLabels: Label[],
+    newAnswers: AnsweredLabel[],
+  ): void => {
+    setLabels(newLabels);
+    setAnsweredLabels(newAnswers);
+  };
+
   return (
-    <Box data-cy={PLAYER_VIEW_CY}>
-      <Container>
-        <Stack spacing={2} padding={2}>
-          <Box className="KKK">
+    <Container data-cy={PLAYER_VIEW_CY}>
+      <Stack spacing={2} padding={2}>
+        <Stack justifyContent="space-between" flexDirection="row">
+          <Box>
             <Typography variant="h5" fontWeight="bold">
               {appContext?.item.name}
             </Typography>
-            <Typography variant="body1">
-              {appSettings?.[0]?.data.description}
-            </Typography>
-          </Box>
-          <PlayerFrame
-            labels={labels}
-            setLabels={setLabels}
-            isSubmitted={isSubmitted}
-            answeredLabels={answeredLabels}
-            setAnsweredLabels={setAnsweredLabels}
-          />
-          <Stack direction="row" gap={1} width="100%" justifyContent="flex-end">
-            {answersAppData && answersAppData.length > 0 && (
-              <Button size="large" onClick={retry}>
-                {t(APP.RETRY)}
-              </Button>
+            {appSettings?.[0]?.data.description && (
+              <Typography variant="body1">
+                {appSettings?.[0]?.data.description}
+              </Typography>
             )}
-            <Button size="large" onClick={save} variant="contained">
-              {t(APP.SAVE)}
+          </Box>
+          {isSubmitted ? (
+            answersAppData &&
+            answersAppData.length > 0 && (
+              <Button onClick={retry}>{t(APP.RETRY)}</Button>
+            )
+          ) : (
+            <Button
+              onClick={submit}
+              variant="contained"
+              sx={{ height: 'fit-content' }}
+            >
+              {t(APP.SUBMIT)}
             </Button>
-          </Stack>
+          )}
         </Stack>
-      </Container>
-    </Box>
+        <PlayerFrame
+          labels={labels}
+          isSubmitted={isSubmitted}
+          answeredLabels={answeredLabels}
+          onLabelMoved={onLabelMoved}
+        />
+      </Stack>
+    </Container>
   );
 };
 export default PlayerView;

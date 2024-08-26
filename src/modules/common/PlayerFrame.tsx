@@ -13,18 +13,16 @@ import DraggableFrameWithLabels from './DraggableFrameWithLabels';
 
 type Props = {
   labels: null | Label[];
-  setLabels: (l: Label[]) => void;
   answeredLabels: AnsweredLabel[];
-  setAnsweredLabels: (l: AnsweredLabel[]) => void;
   isSubmitted?: boolean;
+  onLabelMoved: (newLabels: Label[], newAnswers: AnsweredLabel[]) => void;
 };
 
 const PlayerFrame = ({
   labels,
-  setLabels,
   answeredLabels,
-  setAnsweredLabels,
   isSubmitted = false,
+  onLabelMoved,
 }: Props): JSX.Element => {
   const { t } = useAppTranslation();
 
@@ -50,8 +48,7 @@ const PlayerFrame = ({
       srcLabelIndex,
     });
 
-    setLabels(l);
-    setAnsweredLabels(newAnswers);
+    onLabelMoved(l, newAnswers);
   };
 
   return (

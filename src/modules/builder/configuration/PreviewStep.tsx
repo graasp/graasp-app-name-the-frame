@@ -38,6 +38,14 @@ const PreviewStep = ({
     }
   }, [appSettings]);
 
+  const onLabelMoved = (
+    newLabels: Label[],
+    newAnswers: AnsweredLabel[],
+  ): void => {
+    setLabels(newLabels);
+    setAnsweredLabels(newAnswers);
+  };
+
   return (
     <>
       <Alert severity="success">{t(APP.PREVIEW_NOTE)}</Alert>
@@ -52,9 +60,8 @@ const PreviewStep = ({
         </Box>
         <PlayerFrame
           labels={labels}
-          setLabels={setLabels}
           answeredLabels={answeredLabels}
-          setAnsweredLabels={setAnsweredLabels}
+          onLabelMoved={onLabelMoved}
         />
         <Stack direction="row" gap={1} width="100%" justifyContent="flex-end">
           <Button size="large" onClick={moveToPrevStep}>
