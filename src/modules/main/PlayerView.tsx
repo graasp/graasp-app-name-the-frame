@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import {
   Alert,
@@ -13,7 +13,7 @@ import {
 import isEqual from 'lodash.isequal';
 
 import { AnsweredLabel, Label, Settings, SettingsKeys } from '@/@types';
-import { ANSWER_SUBMISSION_TYPE } from '@/config/constants';
+import { ANSWERS_SUBMISSION_TYPE } from '@/config/constants';
 import { useAppTranslation } from '@/config/i18n';
 import { hooks, mutations } from '@/config/queryClient';
 import { PLAYER_VIEW_CY } from '@/config/selectors';
@@ -41,10 +41,9 @@ const PlayerView = (): JSX.Element => {
   const { data: image } = hooks.useAppSettings({
     name: SettingsKeys.File,
   });
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const answersAppData = appData?.filter(
-    ({ type }) => type === ANSWER_SUBMISSION_TYPE,
+    ({ type }) => type === ANSWERS_SUBMISSION_TYPE,
   );
   const settingLabels = appSettings?.[0].data.labels;
   const lastAnswerAppData = answersAppData?.[answersAppData.length - 1];
@@ -69,27 +68,31 @@ const PlayerView = (): JSX.Element => {
     }));
     saveAppData({
       data: { answers: submittedAnswers },
-      type: ANSWER_SUBMISSION_TYPE,
+      type: ANSWERS_SUBMISSION_TYPE,
     });
   };
+
+  const lastSubmittedAnsweredLabels = useMemo(
+    () =>
+      answers?.map(({ expectedId, actualId }: SubmittedAnswer) => ({
+        expected: settingLabels?.find(({ id }) => id === expectedId) as Label,
+        actual: settingLabels?.find(({ id }) => id === actualId) || null,
+      })),
+    [answers, settingLabels],
+  );
 
   useEffect(() => {
     if (!settingLabels) {
       return;
     }
-    if (answers) {
-      const answered = answers.map(
-        ({ expectedId, actualId }: SubmittedAnswer) => ({
-          expected: settingLabels.find(({ id }) => id === expectedId) as Label,
-          actual: settingLabels.find(({ id }) => id === actualId) || null,
-        }),
-      );
-
-      setAnsweredLabels(answered);
+    if (lastSubmittedAnsweredLabels) {
+      setAnsweredLabels(lastSubmittedAnsweredLabels);
       setLabels(
         settingLabels.filter(
           ({ id }) =>
-            !answers.find(({ actualId }: SubmittedAnswer) => actualId === id),
+            !lastSubmittedAnsweredLabels.find(
+              ({ actual }) => actual?.id === id,
+            ),
         ),
       );
     } else {
@@ -101,17 +104,12 @@ const PlayerView = (): JSX.Element => {
       setAnsweredLabels(answered);
       setLabels(settingLabels);
     }
-  }, [answers, settingLabels]);
+  }, [lastSubmittedAnsweredLabels, settingLabels]);
 
-  useEffect(() => {
-    const answered = answers?.map(
-      ({ expectedId, actualId }: SubmittedAnswer) => ({
-        expected: settingLabels?.find(({ id }) => id === expectedId) as Label,
-        actual: settingLabels?.find(({ id }) => id === actualId) || null,
-      }),
-    );
-    setIsSubmitted(isEqual(answeredLabels, answered));
-  }, [answeredLabels, answers, settingLabels]);
+  const isSubmitted = useMemo(
+    () => isEqual(answeredLabels, lastSubmittedAnsweredLabels),
+    [answeredLabels, lastSubmittedAnsweredLabels],
+  );
 
   if (isLoading) {
     return <CircularProgress />;

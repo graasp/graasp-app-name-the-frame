@@ -17,7 +17,7 @@
   "PREVIEW_NOTE": "Here is what your application will look like from a reader's perspective. To modify any settings, please return to the previous steps.",
   "ADD_LABEL": "Add",
   "UNEXPECTED_ERROR": "Sorry, something went wrong!",
-  "START_ADDING_LABEL_HELPER_TEXT": "To add a new label, click on the desired location on the image!",
+  "START_ADDING_LABEL_HELPER_TEXT": "To add a new label, click on the desired location on the image.",
   "RETRY": "Retry",
   "UNCONFIGURED_ITEM": "The item you are trying to reach is not configured yet!"
 }
