@@ -8,10 +8,12 @@ import { BUILDER_VIEW_CY } from '@/config/selectors';
 import { APP } from '@/langs/constants';
 
 import Configurations from '../builder/configuration';
+import BuilderResults from '../builder/results';
 import { LabelsProvider } from '../context/LabelsContext';
 
 enum BuilderTabs {
   CONFIGURATION_VIEW = 'CONFIGURATION_VIEW',
+  RESULTS_VIEW = 'RESULTS_VIEW',
 }
 
 const BuilderView = (): JSX.Element => {
@@ -33,11 +35,18 @@ const BuilderView = (): JSX.Element => {
               value={BuilderTabs.CONFIGURATION_VIEW}
               label={t(APP.BUILDER_TAB_CONFIGURATION)}
             />
+            <Tab
+              value={BuilderTabs.RESULTS_VIEW}
+              label={t(APP.BUILDER_TAB_RESULTS)}
+            />
           </TabList>
           <TabPanel value={BuilderTabs.CONFIGURATION_VIEW}>
             <LabelsProvider>
               <Configurations />
             </LabelsProvider>
+          </TabPanel>
+          <TabPanel value={BuilderTabs.RESULTS_VIEW}>
+            <BuilderResults />
           </TabPanel>
         </TabContext>
       </Container>
