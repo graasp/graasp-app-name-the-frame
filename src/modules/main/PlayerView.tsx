@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 
 import isEqual from 'lodash.isequal';
+import orderBy from 'lodash.orderby';
 
 import { AnsweredLabel, Label, Settings, SettingsKeys } from '@/@types';
 import { ANSWERS_SUBMISSION_TYPE } from '@/config/constants';
@@ -48,8 +49,11 @@ const PlayerView = (): JSX.Element => {
   const answersAppData = appData?.filter(
     ({ type }) => type === ANSWERS_SUBMISSION_TYPE,
   );
+  // we only have one data settings
   const settingLabels = appSettings?.[0]?.data?.labels;
-  const lastAnswerAppData = answersAppData?.[answersAppData.length - 1];
+  const answersOrdersByCreatedDate = orderBy(answersAppData, 'createdAt');
+  const lastAnswerAppData =
+    answersOrdersByCreatedDate?.[answersOrdersByCreatedDate.length - 1];
   const answers = lastAnswerAppData?.data?.answers;
 
   const retry = (): void => {
@@ -148,20 +152,18 @@ const PlayerView = (): JSX.Element => {
               </Typography>
             )}
           </Box>
-          {isSubmitted ? (
-            answersAppData &&
-            answersAppData.length > 0 && (
-              <Button onClick={retry}>{t(APP.RETRY)}</Button>
-            )
-          ) : (
-            <Button
-              onClick={submit}
-              variant="contained"
-              sx={{ height: 'fit-content' }}
-            >
-              {t(APP.SUBMIT)}
-            </Button>
-          )}
+          <Box>
+            <Button onClick={retry}>{t(APP.RETRY)}</Button>
+            {!isSubmitted && (
+              <Button
+                onClick={submit}
+                variant="contained"
+                sx={{ height: 'fit-content' }}
+              >
+                {t(APP.SUBMIT)}
+              </Button>
+            )}
+          </Box>
         </Stack>
         <PlayerFrame
           labels={labels}
