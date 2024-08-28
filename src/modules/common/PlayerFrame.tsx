@@ -1,43 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
 import { Box, Typography } from '@mui/material';
 
-import { AnsweredLabel, Label, Settings, SettingsKeys } from '@/@types';
+import { AnsweredLabel, Label } from '@/@types';
 import { useAppTranslation } from '@/config/i18n';
-import { hooks } from '@/config/queryClient';
 import { APP } from '@/langs/constants';
 import { trackLabelsChanges } from '@/utils/dnd';
 
 import AllLabelsContainer from './AllLabelsContainer';
 import DraggableFrameWithLabels from './DraggableFrameWithLabels';
 
-const PlayerFrame = (): JSX.Element => {
+type Props = {
+  labels: null | Label[];
+  answeredLabels: AnsweredLabel[];
+  isSubmitted?: boolean;
+  onLabelMoved: (newLabels: Label[], newAnswers: AnsweredLabel[]) => void;
+};
+
+const PlayerFrame = ({
+  labels,
+  answeredLabels,
+  isSubmitted = false,
+  onLabelMoved,
+}: Props): JSX.Element => {
   const { t } = useAppTranslation();
 
-  const { data: appSettings } = hooks.useAppSettings<Settings>({
-    name: SettingsKeys.SettingsData,
-  });
-
-  const [answeredLabels, setAnsweredLabels] = useState<AnsweredLabel[]>([]);
-  // labels will be null only before setting the state as we cannot render all labels within container if not settled yet
-  const [labels, setLabels] = useState<null | Label[]>(null);
-
   const [isDragging, setIsDragging] = useState(false);
-
-  useEffect(() => {
-    const settingLabels = appSettings?.[0].data.labels;
-
-    if (settingLabels) {
-      const answered = settingLabels.map((label) => ({
-        expected: label,
-        actual: null,
-      }));
-
-      setAnsweredLabels(answered);
-      setLabels(settingLabels);
-    }
-  }, [appSettings]);
 
   const onDragEnd = (draggable: DropResult): void => {
     const { source, destination: draggableDist } = draggable;
@@ -59,8 +48,7 @@ const PlayerFrame = (): JSX.Element => {
       srcLabelIndex,
     });
 
-    setLabels(l);
-    setAnsweredLabels(newAnswers);
+    onLabelMoved(l, newAnswers);
   };
 
   return (
@@ -86,6 +74,7 @@ const PlayerFrame = (): JSX.Element => {
         <DraggableFrameWithLabels
           labels={answeredLabels}
           isDragging={isDragging}
+          isSubmitted={isSubmitted}
         />
       </DragDropContext>
     </Box>

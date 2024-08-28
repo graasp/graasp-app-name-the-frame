@@ -5,7 +5,9 @@ import { styled } from '@mui/material';
 
 export const StyledLabel = styled('div')<{
   isDraggable: boolean;
-}>(({ theme, isDraggable }) => ({
+  isSubmitted?: boolean;
+  isCorrect?: boolean;
+}>(({ theme, isDraggable, isSubmitted, isCorrect }) => ({
   color: 'white',
   borderRadius: theme.spacing(1),
   gap: theme.spacing(1),
@@ -21,17 +23,26 @@ export const StyledLabel = styled('div')<{
     : {
         background: theme.palette.primary.main,
       }),
+  ...(isSubmitted && {
+    background: isCorrect
+      ? theme.palette.success.main
+      : theme.palette.error.main,
+  }),
 }));
 
 type Props = {
   index: number;
   draggableId: string;
   content: string;
+  isSubmitted?: boolean;
+  isCorrect?: boolean;
 };
 const DraggableLabelToDroppableCont = ({
   draggableId,
   index,
   content,
+  isSubmitted = false,
+  isCorrect,
 }: Props): JSX.Element => (
   <Draggable draggableId={draggableId} index={index}>
     {(dragProvided, dragSnapshot) => (
@@ -40,6 +51,8 @@ const DraggableLabelToDroppableCont = ({
         {...dragProvided.draggableProps}
         {...dragProvided.dragHandleProps}
         isDraggable={dragSnapshot.isDragging}
+        isSubmitted={isSubmitted}
+        isCorrect={isCorrect}
       >
         {content}
       </StyledLabel>

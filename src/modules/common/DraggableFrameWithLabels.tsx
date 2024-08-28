@@ -10,6 +10,7 @@ import ImageFrame from './ImageFrame';
 
 type Props = {
   isDragging: boolean;
+  isSubmitted: boolean;
   labels: AnsweredLabel[];
 };
 
@@ -23,6 +24,7 @@ const TransformContainer = styled(TransformWrapper)(() => ({
 const DraggableFrameWithLabels = ({
   isDragging,
   labels,
+  isSubmitted,
 }: Props): JSX.Element => (
   <Box sx={{ width: '100%' }}>
     <TransformContainer
@@ -50,6 +52,7 @@ const DraggableFrameWithLabels = ({
               label={label}
               key={label.expected.id}
               isDragging={isDragging}
+              isSubmitted={isSubmitted}
             />
           ))}
         </Box>
