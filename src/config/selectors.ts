@@ -14,3 +14,5 @@ export const CONFIGURATION_TAB_ID = 'configurations-id';
 export const buildLabelActionsID = (id: string): string => `label-action-${id}`;
 
 export const ALL_DROPPABLE_CONTAINER_ID = 'all-droppable';
+
+export const UNCONFIGURED_PLAYER_ALERT_ID = 'unconfigured-player-alert-id';

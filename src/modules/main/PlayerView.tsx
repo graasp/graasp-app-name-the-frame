@@ -16,7 +16,10 @@ import { AnsweredLabel, Label, Settings, SettingsKeys } from '@/@types';
 import { ANSWERS_SUBMISSION_TYPE } from '@/config/constants';
 import { useAppTranslation } from '@/config/i18n';
 import { hooks, mutations } from '@/config/queryClient';
-import { PLAYER_VIEW_CY } from '@/config/selectors';
+import {
+  PLAYER_VIEW_CY,
+  UNCONFIGURED_PLAYER_ALERT_ID,
+} from '@/config/selectors';
 import { APP } from '@/langs/constants';
 
 import PlayerFrame from '../common/PlayerFrame';
@@ -45,9 +48,9 @@ const PlayerView = (): JSX.Element => {
   const answersAppData = appData?.filter(
     ({ type }) => type === ANSWERS_SUBMISSION_TYPE,
   );
-  const settingLabels = appSettings?.[0].data.labels;
+  const settingLabels = appSettings?.[0]?.data?.labels;
   const lastAnswerAppData = answersAppData?.[answersAppData.length - 1];
-  const answers = lastAnswerAppData?.data.answers;
+  const answers = lastAnswerAppData?.data?.answers;
 
   const retry = (): void => {
     if (settingLabels) {
@@ -116,7 +119,11 @@ const PlayerView = (): JSX.Element => {
   }
 
   if (!image || !settingLabels) {
-    return <Alert severity="error">{t(APP.UNCONFIGURED_ITEM)}</Alert>;
+    return (
+      <Alert severity="error" id={UNCONFIGURED_PLAYER_ALERT_ID}>
+        {t(APP.UNCONFIGURED_ITEM)}
+      </Alert>
+    );
   }
 
   const onLabelMoved = (

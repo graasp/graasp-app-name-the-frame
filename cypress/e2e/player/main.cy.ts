@@ -1,6 +1,6 @@
 import { Context, PermissionLevel } from '@graasp/sdk';
 
-import { PLAYER_VIEW_CY, buildDataCy } from '../../../src/config/selectors';
+import { UNCONFIGURED_PLAYER_ALERT_ID } from '@/config/selectors';
 
 describe('Player View', () => {
   beforeEach(() => {
@@ -14,10 +14,7 @@ describe('Player View', () => {
     cy.visit('/');
   });
 
-  it('App', () => {
-    cy.get(buildDataCy(PLAYER_VIEW_CY)).should(
-      'contain.text',
-      'Player as write',
-    );
+  it('For unconfigured application user should see alert message', () => {
+    cy.get(`#${UNCONFIGURED_PLAYER_ALERT_ID}`).should('be.visible');
   });
 });
