@@ -4,22 +4,12 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Collapse, IconButton, TableCell, TableRow } from '@mui/material';
 
+import { Result } from '@/@types';
+
 import AnswersTable from './AnswersTable';
 
-type Answer = {
-  expected: string;
-  actual: string;
-};
-
 type Props = {
-  result: {
-    id: string;
-    user: string;
-    lastAttempt: string;
-    currentGrade: string;
-    totalAttempts: number;
-    answers: Answer[];
-  };
+  result: Result;
 };
 
 const ResultRow = ({ result }: Props): JSX.Element => {

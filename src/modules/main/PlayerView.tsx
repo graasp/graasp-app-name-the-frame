@@ -13,7 +13,13 @@ import {
 import isEqual from 'lodash.isequal';
 import orderBy from 'lodash.orderby';
 
-import { AnsweredLabel, Label, Settings, SettingsKeys } from '@/@types';
+import {
+  AnsweredLabel,
+  Label,
+  Settings,
+  SettingsKeys,
+  SubmittedAnswer,
+} from '@/@types';
 import { ANSWERS_SUBMISSION_TYPE } from '@/config/constants';
 import { useAppTranslation } from '@/config/i18n';
 import { hooks, mutations } from '@/config/queryClient';
@@ -24,11 +30,6 @@ import {
 import { APP } from '@/langs/constants';
 
 import PlayerFrame from '../common/PlayerFrame';
-
-type SubmittedAnswer = {
-  expectedId: string;
-  actualId?: string;
-};
 
 const PlayerView = (): JSX.Element => {
   const { data: appContext } = hooks.useAppContext();

@@ -26,5 +26,6 @@
   "RESULTS_TABLE_HEAD_LAST_ATTEMPT_TITLE": "Last attempt",
   "RESULTS_TABLE_HEAD_CURRENT_GRADE_TITLE": "Current grade",
   "RESULTS_TABLE_HEAD_EXPECTED_ANSWER_TITLE": "Expected answer",
-  "RESULTS_TABLE_HEAD_ACTUAL_ANSWER_TITLE": "Actual answer"
+  "RESULTS_TABLE_HEAD_ACTUAL_ANSWER_TITLE": "Actual answer",
+  "NO_RESULT_DATA": "No results for this item yet."
 }

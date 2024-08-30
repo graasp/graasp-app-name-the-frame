@@ -4233,6 +4233,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash.groupby@npm:^4":
+  version: 4.6.9
+  resolution: "@types/lodash.groupby@npm:4.6.9"
+  dependencies:
+    "@types/lodash": "npm:*"
+  checksum: 10/b8310a9f89badc42a504887ca0b9619c2a284b3fec8dc505cf72508eb6beba47b822df939c7d57c0f69bc685f51ff5a232e0480ecad6b18b7ab76fecc1d74691
+  languageName: node
+  linkType: hard
+
 "@types/lodash.isequal@npm:^4":
   version: 4.5.8
   resolution: "@types/lodash.isequal@npm:4.5.8"
@@ -8623,6 +8632,7 @@ __metadata:
     "@tanstack/react-query-devtools": "npm:^4.36.1"
     "@trivago/prettier-plugin-sort-imports": "npm:^4.3.0"
     "@types/i18n": "npm:0.13.12"
+    "@types/lodash.groupby": "npm:^4"
     "@types/lodash.isequal": "npm:^4"
     "@types/lodash.orderby": "npm:^4"
     "@types/node": "npm:20.16.5"
@@ -8658,6 +8668,7 @@ __metadata:
     eslint-plugin-react-hooks: "npm:4.6.2"
     husky: "npm:9.1.6"
     i18next: "npm:^23.9.0"
+    lodash.groupby: "npm:^4.6.0"
     lodash.isequal: "npm:^4.5.0"
     lodash.orderby: "npm:^4.6.0"
     miragejs: "npm:^0.1.48"
@@ -9965,6 +9976,13 @@ __metadata:
   version: 4.4.0
   resolution: "lodash.flattendeep@npm:4.4.0"
   checksum: 10/0d0b41d8d86999e8bea94905ac65347404d427aacddbc6654dc2f85905e27cd2b708139671ecea135fa6f0a17ed94b9d4cab8ce12b08eddcbb1ddd83952ee4c2
+  languageName: node
+  linkType: hard
+
+"lodash.groupby@npm:^4.6.0":
+  version: 4.6.0
+  resolution: "lodash.groupby@npm:4.6.0"
+  checksum: 10/98bd04e58ce4cebb2273010352508b5ea12025e94fcfd70c84c8082ef3b0689178e8e6dd53bff919f525fae9bd67b4aba228d606b75a967f30e84ec9610b5de1
   languageName: node
   linkType: hard
 

@@ -24,3 +24,22 @@ export type AnsweredLabel = {
   expected: Label;
   actual: null | Label;
 };
+
+export type SubmittedAnswer = {
+  expectedId: string;
+  actualId?: string;
+};
+
+type Answer = {
+  expected: string;
+  actual: string;
+};
+
+export type Result = {
+  id: string;
+  user: string;
+  lastAttempt: string;
+  currentGrade: string;
+  totalAttempts: number;
+  answers: Answer[];
+};
