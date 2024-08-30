@@ -5,6 +5,7 @@ import { useControls } from 'react-zoom-pan-pinch';
 import { Button, styled } from '@mui/material';
 
 import { Label } from '@/@types';
+import { buildDraggableLabelId } from '@/config/selectors';
 import { LabelsContext } from '@/modules/context/LabelsContext';
 import { useImageDimensionsContext } from '@/modules/context/imageDimensionContext';
 import { PositionConverter } from '@/utils';
@@ -87,6 +88,7 @@ const DraggableLabel = ({ showEditForm, label }: Props): JSX.Element => {
             showEditForm(label);
           }
         }}
+        id={buildDraggableLabelId(label.content)}
       >
         {label.content}
       </StyledLabel>

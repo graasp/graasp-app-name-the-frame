@@ -3,6 +3,8 @@ import { Draggable } from 'react-beautiful-dnd';
 
 import { styled } from '@mui/material';
 
+import { buildDraggableLabelId } from '@/config/selectors';
+
 export const StyledLabel = styled('div')<{
   isDraggable: boolean;
   isSubmitted?: boolean;
@@ -53,6 +55,7 @@ const DraggableLabelToDroppableCont = ({
         isDraggable={dragSnapshot.isDragging}
         isSubmitted={isSubmitted}
         isCorrect={isCorrect}
+        id={buildDraggableLabelId(draggableId)}
       >
         {content}
       </StyledLabel>

@@ -10,6 +10,7 @@ import { v4 } from 'uuid';
 
 import { Label, Position } from '@/@types';
 import { useAppTranslation } from '@/config/i18n';
+import { ADD_LABELS_IMAGE_CONTAINER_ID } from '@/config/selectors';
 import { APP } from '@/langs/constants';
 import { LabelsContext } from '@/modules/context/LabelsContext';
 import { useImageDimensionsContext } from '@/modules/context/imageDimensionContext';
@@ -108,7 +109,11 @@ const AddLabelWithinFrame = (): JSX.Element => {
         />
       )}
       <ImageFrame />
-      <Container onClick={showLabelForm} sx={{ cursor: 'crosshair' }}>
+      <Container
+        onClick={showLabelForm}
+        sx={{ cursor: 'crosshair' }}
+        id={ADD_LABELS_IMAGE_CONTAINER_ID}
+      >
         {labels.map((ele) => (
           <DraggableLabel
             key={ele.id}

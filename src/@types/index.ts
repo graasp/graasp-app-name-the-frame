@@ -3,6 +3,10 @@ export type Settings = {
   labels: Label[];
 };
 
+export type FileSettings = {
+  path: string;
+};
+
 export enum SettingsKeys {
   File = 'file',
   SettingsData = 'settings-data',
