@@ -70,7 +70,7 @@
   "devDependencies": {
     "@commitlint/cli": "19.4.1",
     "@commitlint/config-conventional": "19.2.2",
-    "@cypress/code-coverage": "3.12.46",
+    "@cypress/code-coverage": "3.12.47",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/i18n": "0.13.12",
     "@types/lodash.isequal": "^4",
@@ -82,7 +82,7 @@
     "@vitejs/plugin-react": "^4.2.1",
     "axios": "1.7.5",
     "concurrently": "8.2.2",
-    "cypress": "13.14.0",
+    "cypress": "13.14.1",
     "env-cmd": "10.1.0",
     "eslint": "8.57.0",
     "eslint-config-airbnb": "19.0.4",
