@@ -8,8 +8,6 @@ import Uppy, {
 } from '@uppy/core';
 import XHRUpload from '@uppy/xhr-upload';
 
-import { FILE_UPLOAD_MAX_FILES } from '@/config/constants';
-
 import { API_ROUTES } from '../config/queryClient';
 
 interface UppyConfiguration {
@@ -41,7 +39,7 @@ const configureUppy = ({
 }: UppyConfiguration): Uppy => {
   const uppy = new Uppy({
     restrictions: {
-      maxNumberOfFiles: FILE_UPLOAD_MAX_FILES,
+      maxNumberOfFiles: 1,
       allowedFileTypes: ['image/*'], // Allow only images
     },
     autoProceed: true,

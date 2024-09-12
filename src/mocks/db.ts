@@ -8,21 +8,16 @@ import {
   PermissionLevel,
 } from '@graasp/sdk';
 
+import { AppDataType, SettingsKeys } from '@/@types';
 import { API_HOST } from '@/config/env';
 
 export const mockMembers: CompleteMember[] = [
   MemberFactory({
     id: 'd3b90b7d-2bb4-4329-89b3-099bae00d582',
     name: 'current-member',
-    createdAt: new Date('1996-09-08T19:00:00').toISOString(),
-    updatedAt: new Date().toISOString(),
   }),
-  MemberFactory({
-    id: 'bab43e0a-3267-4b34-86f1-0ef0c1234d7f',
-    name: 'mock-member-2',
-    createdAt: new Date('1996-09-08T19:00:00').toISOString(),
-    updatedAt: new Date().toISOString(),
-  }),
+  MemberFactory(),
+  MemberFactory(),
 ];
 
 export const mockItem: DiscriminatedItem = AppItemFactory({
@@ -40,8 +35,73 @@ export const defaultMockContext: LocalContext = {
   memberId: mockMembers[0].id,
 };
 
-const buildDatabase = (members?: CompleteMember[]): Database => ({
-  appData: [],
+const buildDatabase = (): Database => ({
+  appData: [
+    {
+      id: 'cecc1671-6c9d-4604-a3a2-6d7fad4a5996',
+      type: AppDataType.Answers,
+      member: mockMembers[0],
+      creator: mockMembers[0],
+      visibility: 'item',
+      item: mockItem,
+      data: {
+        answers: [
+          { expectedId: 'id1', actualId: 'id' },
+          { expectedId: 'id', actualId: 'id1' },
+        ],
+      },
+      updatedAt: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
+    },
+    {
+      id: 'becc1671-6c9d-4604-a3a2-6d7fad4a5996',
+      type: AppDataType.Answers,
+      member: mockMembers[1],
+      creator: mockMembers[1],
+      visibility: 'item',
+      item: mockItem,
+      data: {
+        answers: [
+          { expectedId: 'id', actualId: 'id' },
+          { expectedId: 'id1', actualId: 'id1' },
+        ],
+      },
+      updatedAt: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
+    },
+    {
+      id: 'becc1671-6d9d-4604-a3a2-6d7fad4a5996',
+      type: AppDataType.Answers,
+      member: mockMembers[1],
+      creator: mockMembers[1],
+      visibility: 'item',
+      item: mockItem,
+      data: {
+        answers: [
+          { expectedId: 'id1', actualId: 'id' },
+          { expectedId: 'id1', actualId: 'id1' },
+        ],
+      },
+      updatedAt: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
+    },
+    {
+      id: 'becc1671-6c9d-4304-a3a2-6d7fad4a5996',
+      type: AppDataType.Answers,
+      member: mockMembers[2],
+      creator: mockMembers[2],
+      visibility: 'item',
+      item: mockItem,
+      data: {
+        answers: [
+          { expectedId: 'id1', actualId: 'id' },
+          { expectedId: 'id1', actualId: 'id1' },
+        ],
+      },
+      updatedAt: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
+    },
+  ],
   appActions: [
     {
       id: 'cecc1671-6c9d-4604-a3a2-6d7fad4a5996',
@@ -60,10 +120,44 @@ const buildDatabase = (members?: CompleteMember[]): Database => ({
       data: { content: 'other member' },
     },
   ],
-  members: members ?? mockMembers,
-  appSettings: [],
+  members: mockMembers,
+  appSettings: [
+    // complete configuration
+    {
+      id: '2c11a73a-f333-47e1-8572-b8f99fe883b0',
+      item: mockItem,
+      name: SettingsKeys.SettingsData,
+      data: {
+        description: '',
+        labels: [
+          { content: 'content', id: 'id' },
+          { content: 'content1', id: 'id1' },
+        ],
+      },
+      updatedAt: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
+    },
+    // background image setting
+    {
+      id: '0c11a73a-f333-47e1-8572-b8f99fe883b0',
+      item: mockItem,
+      name: SettingsKeys.File,
+      data: {
+        path: `apps/app-setting/${mockItem.id}/0c11a73a-f333-47e1-8572-b8f99fe883b0`,
+      },
+      updatedAt: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
+    },
+  ],
   items: [mockItem],
-  uploadedFiles: [],
+  uploadedFiles: [
+    // background image file
+    {
+      // @ts-ignore this key should be a file object to work 100% perfectly
+      file: 'myfile',
+      id: '0c11a73a-f333-47e1-8572-b8f99fe883b0',
+    },
+  ],
 });
 
 export default buildDatabase;

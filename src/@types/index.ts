@@ -37,9 +37,13 @@ type Answer = {
 
 export type Result = {
   id: string;
-  user: string;
+  name: string;
   lastAttempt: string;
   currentGrade: string;
   totalAttempts: number;
   answers: Answer[];
 };
+
+export enum AppDataType {
+  Answers = 'answers',
+}

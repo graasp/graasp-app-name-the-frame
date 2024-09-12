@@ -28,11 +28,11 @@ const ResultRow = ({ result }: Props): JSX.Element => {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-          {result.user}
+          {result.name}
         </TableCell>
-        <TableCell align="center">{result.totalAttempts}</TableCell>
-        <TableCell align="center">{result.lastAttempt}</TableCell>
-        <TableCell align="center">{result.currentGrade}</TableCell>
+        <TableCell>{result.totalAttempts}</TableCell>
+        <TableCell>{result.lastAttempt}</TableCell>
+        <TableCell>{result.currentGrade}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>

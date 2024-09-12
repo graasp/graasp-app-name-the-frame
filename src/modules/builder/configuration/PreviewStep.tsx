@@ -14,15 +14,13 @@ const PreviewStep = ({
   moveToPrevStep: () => void;
 }): JSX.Element => {
   const { t } = useAppTranslation();
-  const { data: appContext } = hooks.useAppContext();
 
   const { data: appSettings } = hooks.useAppSettings<Settings>({
     name: SettingsKeys.SettingsData,
   });
 
   const [answeredLabels, setAnsweredLabels] = useState<AnsweredLabel[]>([]);
-  // labels will be null only before setting the state as we cannot render all labels within container if not settled yet
-  const [labels, setLabels] = useState<null | Label[]>(null);
+  const [labels, setLabels] = useState<Label[]>([]);
 
   useEffect(() => {
     const settingLabels = appSettings?.[0].data.labels;
@@ -51,9 +49,6 @@ const PreviewStep = ({
       <Alert severity="success">{t(APP.PREVIEW_NOTE)}</Alert>
       <Stack spacing={2} padding={2}>
         <Box>
-          <Typography variant="h5" fontWeight="bold">
-            {appContext?.item?.name}
-          </Typography>
           <Typography variant="body1">
             {appSettings?.[0].data.description}
           </Typography>

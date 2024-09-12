@@ -21,10 +21,10 @@ const AnswersTable = ({ answers }: { answers: Answer[] }): JSX.Element => {
     <Table size="small" aria-label="answers">
       <TableHead>
         <TableRow>
-          <TableCell align="center">
+          <TableCell align="left">
             {t(APP.RESULTS_TABLE_HEAD_EXPECTED_ANSWER_TITLE)}
           </TableCell>
-          <TableCell align="center">
+          <TableCell align="left">
             {t(APP.RESULTS_TABLE_HEAD_ACTUAL_ANSWER_TITLE)}
           </TableCell>
         </TableRow>
@@ -32,8 +32,8 @@ const AnswersTable = ({ answers }: { answers: Answer[] }): JSX.Element => {
       <TableBody>
         {answers.map((answer, idx) => (
           <TableRow key={idx}>
-            <TableCell align="center">{answer.expected}</TableCell>
-            <TableCell align="center">{answer.actual}</TableCell>
+            <TableCell align="left">{answer.expected}</TableCell>
+            <TableCell align="left">{answer.actual}</TableCell>
           </TableRow>
         ))}
       </TableBody>

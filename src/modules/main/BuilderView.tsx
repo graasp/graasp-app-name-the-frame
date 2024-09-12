@@ -7,8 +7,8 @@ import { useAppTranslation } from '@/config/i18n';
 import { BUILDER_VIEW_CY } from '@/config/selectors';
 import { APP } from '@/langs/constants';
 
-import Configurations from '../builder/configuration';
-import BuilderResults from '../builder/results';
+import Configurations from '../builder/configuration/Configurations';
+import BuilderResults from '../builder/results/BuilderResults';
 import { LabelsProvider } from '../context/LabelsContext';
 
 enum BuilderTabs {

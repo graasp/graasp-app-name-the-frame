@@ -15,12 +15,12 @@ import orderBy from 'lodash.orderby';
 
 import {
   AnsweredLabel,
+  AppDataType,
   Label,
   Settings,
   SettingsKeys,
   SubmittedAnswer,
 } from '@/@types';
-import { ANSWERS_SUBMISSION_TYPE } from '@/config/constants';
 import { useAppTranslation } from '@/config/i18n';
 import { hooks, mutations } from '@/config/queryClient';
 import {
@@ -48,7 +48,7 @@ const PlayerView = (): JSX.Element => {
   });
 
   const answersAppData = appData?.filter(
-    ({ type }) => type === ANSWERS_SUBMISSION_TYPE,
+    ({ type }) => type === AppDataType.Answers,
   );
   // we only have one data settings
   const settingLabels = appSettings?.[0]?.data?.labels;
@@ -76,7 +76,7 @@ const PlayerView = (): JSX.Element => {
     }));
     saveAppData({
       data: { answers: submittedAnswers },
-      type: ANSWERS_SUBMISSION_TYPE,
+      type: AppDataType.Answers,
     });
   };
 
