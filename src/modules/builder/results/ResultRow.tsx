@@ -5,6 +5,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Collapse, IconButton, TableCell, TableRow } from '@mui/material';
 
 import { Result } from '@/@types';
+import { RESULT_ROW_MEMBER_CLASSNAME } from '@/config/selectors';
 
 import AnswersTable from './AnswersTable';
 
@@ -17,7 +18,10 @@ const ResultRow = ({ result }: Props): JSX.Element => {
 
   return (
     <>
-      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+      <TableRow
+        className={RESULT_ROW_MEMBER_CLASSNAME}
+        sx={{ '& > *': { borderBottom: 'unset' } }}
+      >
         <TableCell>
           <IconButton
             aria-label="expand row"
@@ -27,9 +31,7 @@ const ResultRow = ({ result }: Props): JSX.Element => {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row">
-          {result.name}
-        </TableCell>
+        <TableCell scope="row">{result.name}</TableCell>
         <TableCell>{result.totalAttempts}</TableCell>
         <TableCell>{result.lastAttempt}</TableCell>
         <TableCell>{result.currentGrade}</TableCell>

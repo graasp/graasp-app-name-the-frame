@@ -1,9 +1,10 @@
-import type { Database, LocalContext } from '@graasp/apps-query-client';
+import type { Database } from '@graasp/apps-query-client';
 import {
   AppItemFactory,
   CompleteMember,
   DiscriminatedItem,
   ItemType,
+  LocalContext,
   MemberFactory,
   PermissionLevel,
 } from '@graasp/sdk';
@@ -40,7 +41,7 @@ const buildDatabase = (): Database => ({
     {
       id: 'cecc1671-6c9d-4604-a3a2-6d7fad4a5996',
       type: AppDataType.Answers,
-      member: mockMembers[0],
+      account: mockMembers[0],
       creator: mockMembers[0],
       visibility: 'item',
       item: mockItem,
@@ -56,7 +57,7 @@ const buildDatabase = (): Database => ({
     {
       id: 'becc1671-6c9d-4604-a3a2-6d7fad4a5996',
       type: AppDataType.Answers,
-      member: mockMembers[1],
+      account: mockMembers[1],
       creator: mockMembers[1],
       visibility: 'item',
       item: mockItem,
@@ -72,7 +73,7 @@ const buildDatabase = (): Database => ({
     {
       id: 'becc1671-6d9d-4604-a3a2-6d7fad4a5996',
       type: AppDataType.Answers,
-      member: mockMembers[1],
+      account: mockMembers[1],
       creator: mockMembers[1],
       visibility: 'item',
       item: mockItem,
@@ -88,7 +89,7 @@ const buildDatabase = (): Database => ({
     {
       id: 'becc1671-6c9d-4304-a3a2-6d7fad4a5996',
       type: AppDataType.Answers,
-      member: mockMembers[2],
+      account: mockMembers[2],
       creator: mockMembers[2],
       visibility: 'item',
       item: mockItem,
@@ -106,7 +107,7 @@ const buildDatabase = (): Database => ({
     {
       id: 'cecc1671-6c9d-4604-a3a2-6d7fad4a5996',
       type: 'admin-action',
-      member: mockMembers[0],
+      account: mockMembers[0],
       createdAt: new Date().toISOString(),
       item: mockItem,
       data: { content: 'hello' },
@@ -114,7 +115,7 @@ const buildDatabase = (): Database => ({
     {
       id: '0c11a63a-f333-47e1-8572-b8f99fe883b0',
       type: 'other-action',
-      member: mockMembers[1],
+      account: mockMembers[1],
       createdAt: new Date().toISOString(),
       item: mockItem,
       data: { content: 'other member' },

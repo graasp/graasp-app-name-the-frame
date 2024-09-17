@@ -30,6 +30,7 @@ const BuilderResults = (): JSX.Element => {
   } = hooks.useAppData<{
     answers: SubmittedAnswer[];
   }>();
+
   const { data: appSetting, isLoading: isSettingsLoading } =
     hooks.useAppSettings<Settings>({
       name: SettingsKeys.SettingsData,
@@ -37,7 +38,7 @@ const BuilderResults = (): JSX.Element => {
 
   if (appData?.length && appSetting?.length) {
     const actionsOrdersByCreatedDate = orderBy(appData, 'createdAt');
-    const actionsByMember = groupBy(actionsOrdersByCreatedDate, 'member.id');
+    const actionsByMember = groupBy(actionsOrdersByCreatedDate, 'account.id');
 
     const labels = appSetting?.[0]?.data.labels.reduce(
       (prev: { [k: string]: string }, curr) => ({
@@ -63,7 +64,7 @@ const BuilderResults = (): JSX.Element => {
 
         return {
           id: lastAnswer.id,
-          name: lastAnswer.member.name,
+          name: lastAnswer.account.name,
           totalAttempts: ele.length,
           currentGrade: `${correctAnswers}/${lastAnswer.data.answers.length}`,
           lastAttempt: formatDate(lastAnswer.createdAt, {

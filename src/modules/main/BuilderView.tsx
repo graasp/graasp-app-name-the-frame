@@ -4,20 +4,16 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Box, Container, Tab } from '@mui/material';
 
 import { useAppTranslation } from '@/config/i18n';
-import { BUILDER_VIEW_CY } from '@/config/selectors';
+import { BUILDER_VIEW_CY, buildBuilderTabClassName } from '@/config/selectors';
 import { APP } from '@/langs/constants';
 
 import Configurations from '../builder/configuration/Configurations';
 import BuilderResults from '../builder/results/BuilderResults';
 import { LabelsProvider } from '../context/LabelsContext';
-
-enum BuilderTabs {
-  CONFIGURATION_VIEW = 'CONFIGURATION_VIEW',
-  RESULTS_VIEW = 'RESULTS_VIEW',
-}
+import { BuilderTab } from './BuilderTab';
 
 const BuilderView = (): JSX.Element => {
-  const [activeTab, setActiveTab] = useState(BuilderTabs.CONFIGURATION_VIEW);
+  const [activeTab, setActiveTab] = useState(BuilderTab.Configuration);
 
   const { t } = useAppTranslation();
 
@@ -28,24 +24,26 @@ const BuilderView = (): JSX.Element => {
           <TabList
             textColor="secondary"
             indicatorColor="secondary"
-            onChange={(_, newTab: BuilderTabs) => setActiveTab(newTab)}
+            onChange={(_, newTab: BuilderTab) => setActiveTab(newTab)}
             centered
           >
             <Tab
-              value={BuilderTabs.CONFIGURATION_VIEW}
+              className={buildBuilderTabClassName(BuilderTab.Configuration)}
+              value={BuilderTab.Configuration}
               label={t(APP.BUILDER_TAB_CONFIGURATION)}
             />
             <Tab
-              value={BuilderTabs.RESULTS_VIEW}
+              className={buildBuilderTabClassName(BuilderTab.Results)}
+              value={BuilderTab.Results}
               label={t(APP.BUILDER_TAB_RESULTS)}
             />
           </TabList>
-          <TabPanel value={BuilderTabs.CONFIGURATION_VIEW}>
+          <TabPanel value={BuilderTab.Configuration}>
             <LabelsProvider>
               <Configurations />
             </LabelsProvider>
           </TabPanel>
-          <TabPanel value={BuilderTabs.RESULTS_VIEW}>
+          <TabPanel value={BuilderTab.Results}>
             <BuilderResults />
           </TabPanel>
         </TabContext>

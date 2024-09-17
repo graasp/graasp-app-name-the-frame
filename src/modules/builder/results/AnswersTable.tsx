@@ -7,6 +7,7 @@ import {
 } from '@mui/material';
 
 import { useAppTranslation } from '@/config/i18n';
+import { ANSWERS_TABLE_CLASSNAME } from '@/config/selectors';
 import { APP } from '@/langs/constants';
 
 type Answer = {
@@ -18,7 +19,11 @@ const AnswersTable = ({ answers }: { answers: Answer[] }): JSX.Element => {
   const { t } = useAppTranslation();
 
   return (
-    <Table size="small" aria-label="answers">
+    <Table
+      className={ANSWERS_TABLE_CLASSNAME}
+      size="small"
+      aria-label="answers"
+    >
       <TableHead>
         <TableRow>
           <TableCell align="left">
