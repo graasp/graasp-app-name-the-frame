@@ -2671,9 +2671,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graasp/apps-query-client@npm:3.5.1":
-  version: 3.5.1
-  resolution: "@graasp/apps-query-client@npm:3.5.1"
+"@graasp/apps-query-client@npm:3.5.2":
+  version: 3.5.2
+  resolution: "@graasp/apps-query-client@npm:3.5.2"
   dependencies:
     "@emotion/react": "npm:11.13.0"
     "@emotion/styled": "npm:11.13.0"
@@ -2694,7 +2694,7 @@ __metadata:
     date-fns: ^3.3.0
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: 10/172c54c482ea016b501975124363f5fe89bd8611708b29e636003cc93cd3abc2313ba2312f22f981dea72b91cdc8d20f0100aad0fe6246650a27a0031f860f0b
+  checksum: 10/bcf267ff6c93e30be76b52d1b61914a18c28d72ad04b419fb71146253884683292f27994c727b9ce9fd2e2969ad154e6cf0549ed47de94356cd5c2a266397d1c
   languageName: node
   linkType: hard
 
@@ -2714,9 +2714,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graasp/sdk@npm:4.25.0":
-  version: 4.25.0
-  resolution: "@graasp/sdk@npm:4.25.0"
+"@graasp/sdk@npm:4.25.1":
+  version: 4.25.1
+  resolution: "@graasp/sdk@npm:4.25.1"
   dependencies:
     "@faker-js/faker": "npm:8.4.1"
     filesize: "npm:10.1.4"
@@ -2725,16 +2725,16 @@ __metadata:
   peerDependencies:
     date-fns: ^3
     uuid: ^9 || ^10.0.0
-  checksum: 10/1ec2b05e95e46cada1531a44a03deb9bdb4796f15b80acd37e1bc1bf75c2791f686ab9b4701337c2ee26abc7c2055cf954ede0a8271618ff3647fad19b7c5488
+  checksum: 10/07bcedf520d3eadd1c8851cb738a4e5d0c00ed719915a78035adfb614e7325897d816c7bacaa2ba56d515e42adb05c4d9e5a5efa5c433d5f020d72de12104148
   languageName: node
   linkType: hard
 
 "@graasp/translations@npm:^1.28.0":
-  version: 1.35.0
-  resolution: "@graasp/translations@npm:1.35.0"
+  version: 1.37.0
+  resolution: "@graasp/translations@npm:1.37.0"
   peerDependencies:
     i18next: ^23.8.1
-  checksum: 10/d5227f2ced80faaa7a852a1b4760c47ac592b8cfc2f8fba63e4bd45e27139f17451a060714020a8eb0f2a988d7e726b164fc609af4a056339a4f634866d45797
+  checksum: 10/a1026d4098cc1a84ced835352fd0672a305cdebe69562d2b885d5ac9bee0cbcfe2894b943855e65b74d464d031e72feaab5296d604e182abe1adf1edc731f791
   languageName: node
   linkType: hard
 
@@ -8532,8 +8532,8 @@ __metadata:
     "@cypress/code-coverage": "npm:3.12.49"
     "@emotion/react": "npm:11.13.3"
     "@emotion/styled": "npm:11.13.0"
-    "@graasp/apps-query-client": "npm:3.5.1"
-    "@graasp/sdk": "npm:4.25.0"
+    "@graasp/apps-query-client": "npm:3.5.2"
+    "@graasp/sdk": "npm:4.25.1"
     "@graasp/translations": "npm:^1.28.0"
     "@graasp/ui": "npm:4.17.1"
     "@mui/icons-material": "npm:5.16.7"

@@ -12,8 +12,8 @@
   "dependencies": {
     "@emotion/react": "11.13.3",
     "@emotion/styled": "11.13.0",
-    "@graasp/apps-query-client": "3.5.1",
-    "@graasp/sdk": "4.25.0",
+    "@graasp/apps-query-client": "3.5.2",
+    "@graasp/sdk": "4.25.1",
     "@graasp/translations": "^1.28.0",
     "@graasp/ui": "4.17.1",
     "@mui/icons-material": "5.16.7",
