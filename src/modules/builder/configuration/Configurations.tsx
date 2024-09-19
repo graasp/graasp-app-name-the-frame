@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Stack, Step, StepButton, Stepper } from '@mui/material';
 
@@ -33,15 +33,15 @@ const Configurations = (): JSX.Element => {
   const settingsData = settings?.[0];
   const [activeStep, setActiveStep] = useState(0);
 
-  const initialSetRef = useRef(false);
+  const [initialSetRef, setInitialSetRef] = useState(false);
 
   useEffect(() => {
     // move to preview step in case all was settled, using Ref to move only within first render, So If i change sth with second step I don't want to move to preview immediately
-    if (!initialSetRef.current && settingsData?.data?.labels) {
-      initialSetRef.current = true;
+    if (!initialSetRef && settingsData?.data?.labels) {
       setActiveStep(2);
+      setInitialSetRef(true);
     }
-  }, [settingsData]);
+  }, [settingsData, initialSetRef]);
 
   const steps = [
     {

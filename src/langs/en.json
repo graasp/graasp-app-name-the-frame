@@ -1,5 +1,6 @@
 {
   "BUILDER_TAB_CONFIGURATION": "Configuration",
+  "BUILDER_TAB_RESULTS": "Results",
   "ADD_IMAGE_STEP_LABEL": "Add the image",
   "ADD_LABELS_STEP_LABEL": "Add the labels",
   "PREVIEW_STEP_LABEL": "Preview",
@@ -19,5 +20,13 @@
   "UNEXPECTED_ERROR": "Sorry, something went wrong!",
   "START_ADDING_LABEL_HELPER_TEXT": "To add a new label, click on the desired location on the image.",
   "RETRY": "Retry",
-  "UNCONFIGURED_ITEM": "The item you are trying to reach is not configured yet!"
+  "UNCONFIGURED_ITEM": "The item you are trying to reach is not configured yet!",
+  "RESULTS_TABLE_HEAD_USER_TITLE": "User",
+  "RESULTS_TABLE_HEAD_TOTAL_ATTEMPTS_TITLE": "Total attempts",
+  "RESULTS_TABLE_HEAD_LAST_ATTEMPT_TITLE": "Last attempt",
+  "RESULTS_TABLE_HEAD_CURRENT_GRADE_TITLE": "Current grade",
+  "RESULTS_TABLE_HEAD_EXPECTED_ANSWER_TITLE": "Expected answer",
+  "RESULTS_TABLE_HEAD_ACTUAL_ANSWER_TITLE": "Actual answer",
+  "NO_RESULT_DATA": "No results for this item yet.",
+  "NO_ANSWER": "No answer"
 }

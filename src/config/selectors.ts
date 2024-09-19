@@ -34,3 +34,7 @@ export const buildDraggableLabelId = (content: string): string =>
 export const ALL_LABELS_CONTAINER_ID = 'all-labels-container-id';
 export const LABELS_WITHIN_FRAME_CONTAINER_ID =
   'labels-within-frame-container-id';
+export const buildBuilderTabClassName = (value: string): string =>
+  `builder-tab-${value}`;
+export const RESULT_ROW_MEMBER_CLASSNAME = 'resultRowMember';
+export const ANSWERS_TABLE_CLASSNAME = 'answersTable';
