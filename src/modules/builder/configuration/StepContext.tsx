@@ -1,6 +1,7 @@
 import {
   Dispatch,
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -15,11 +16,13 @@ import { hooks } from '@/config/queryClient';
 type StepContextType = {
   activeStep: number;
   setActiveStep: Dispatch<number>;
+  goToNextStep: () => void;
 };
 
 const StepContext = createContext<StepContextType>({
   activeStep: 0,
   setActiveStep: () => {},
+  goToNextStep: () => {},
 });
 
 type Props = {
@@ -46,7 +49,14 @@ const StepProvider = ({ children }: Props): JSX.Element => {
     }
   }, [settings, isSuccess, initialSetRef, setInitialSetRef]);
 
-  const value = useMemo(() => ({ activeStep, setActiveStep }), [activeStep]);
+  const goToNextStep = useCallback((): void => {
+    setActiveStep(activeStep + 1);
+  }, [setActiveStep, activeStep]);
+
+  const value = useMemo(
+    () => ({ goToNextStep, activeStep, setActiveStep }),
+    [activeStep, goToNextStep],
+  );
 
   if (isLoading) {
     return <Loader />;

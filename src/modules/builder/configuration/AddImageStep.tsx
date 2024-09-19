@@ -25,7 +25,7 @@ import { useStepContext } from './StepContext';
 const AddImageStep = (): JSX.Element => {
   const { t } = useAppTranslation();
   const { itemId } = useLocalContext();
-  const { setActiveStep } = useStepContext();
+  const { goToNextStep } = useStepContext();
   const token = useContext(TokenContext);
   const { data: imageSetting } = hooks.useAppSettings({
     name: SettingsKeys.File,
@@ -44,7 +44,7 @@ const AddImageStep = (): JSX.Element => {
     const newData = { ...(settings && settings.data), description };
 
     saveSettings(SettingsKeys.Settings, newData);
-    setActiveStep(1);
+    goToNextStep();
   };
 
   useEffect(() => {
