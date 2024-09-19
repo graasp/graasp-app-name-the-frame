@@ -4938,17 +4938,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:1.7.5":
-  version: 1.7.5
-  resolution: "axios@npm:1.7.5"
-  dependencies:
-    follow-redirects: "npm:^1.15.6"
-    form-data: "npm:^4.0.0"
-    proxy-from-env: "npm:^1.1.0"
-  checksum: 10/6cbcfe943a84089f420a900a3a3aeb54ee94dcc9c2b81b150434896357be5d1079eff0b1bbb628597371e79f896b1bc5776df04184756ba99656ff31df9a75bf
-  languageName: node
-  linkType: hard
-
 "axios@npm:1.7.7":
   version: 1.7.7
   resolution: "axios@npm:1.7.7"
@@ -7875,7 +7864,7 @@ __metadata:
     "@uppy/react": "npm:^3.3.1"
     "@uppy/xhr-upload": "npm:^3.6.7"
     "@vitejs/plugin-react": "npm:^4.2.1"
-    axios: "npm:1.7.5"
+    axios: "npm:1.7.7"
     concurrently: "npm:8.2.2"
     cypress: "npm:13.14.2"
     env-cmd: "npm:10.1.0"
