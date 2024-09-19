@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 import { Stack, Step, StepButton, Stepper } from '@mui/material';
 
 import { Settings, SettingsKeys } from '@/@types';
@@ -12,59 +10,48 @@ import {
   CONFIG_STEPPERS_PREVIEW_ID,
 } from '@/config/selectors';
 import { APP } from '@/langs/constants';
+import { LabelsProvider } from '@/modules/context/LabelsContext';
 import { ImageDimensionsProvider } from '@/modules/context/imageDimensionContext';
 
 import AddImageStep from './AddImageStep';
 import AddLabelsStep from './AddLabelsStep/AddLabelsStep';
 import PreviewStep from './PreviewStep';
+import StepProvider, { useStepContext } from './StepContext';
 
 const Configurations = (): JSX.Element => {
   const { t } = useAppTranslation();
+  const { setActiveStep, activeStep } = useStepContext();
 
   const { data: imageSetting } = hooks.useAppSettings({
     name: SettingsKeys.File,
   });
   const { data: settings } = hooks.useAppSettings<Settings>({
-    name: SettingsKeys.SettingsData,
+    name: SettingsKeys.Settings,
   });
 
   const image = imageSetting?.[0];
 
   const settingsData = settings?.[0];
-  const [activeStep, setActiveStep] = useState(0);
-
-  const [initialSetRef, setInitialSetRef] = useState(false);
-
-  useEffect(() => {
-    // move to preview step in case all was settled, using Ref to move only within first render, So If i change sth with second step I don't want to move to preview immediately
-    if (!initialSetRef && settingsData?.data?.labels) {
-      setActiveStep(2);
-      setInitialSetRef(true);
-    }
-  }, [settingsData, initialSetRef]);
 
   const steps = [
     {
-      label: t(APP.ADD_IMAGE_STEP_LABEL),
-      component: <AddImageStep moveToNextStep={() => setActiveStep(1)} />,
+      labelKey: APP.ADD_IMAGE_STEP_LABEL,
+      component: <AddImageStep />,
       id: CONFIG_STEPPERS_ADD_IMG_ID,
     },
     {
-      label: t(APP.ADD_LABELS_STEP_LABEL),
+      labelKey: APP.ADD_LABELS_STEP_LABEL,
       component: (
         <ImageDimensionsProvider>
-          <AddLabelsStep
-            moveToNextStep={() => setActiveStep(2)}
-            moveToPrevStep={() => setActiveStep(0)}
-          />
+          <AddLabelsStep />
         </ImageDimensionsProvider>
       ),
       disabled: !image?.id,
       id: CONFIG_STEPPERS_ADD_LABELS_ID,
     },
     {
-      label: t(APP.PREVIEW_STEP_LABEL),
-      component: <PreviewStep moveToPrevStep={() => setActiveStep(1)} />,
+      labelKey: APP.PREVIEW_STEP_LABEL,
+      component: <PreviewStep />,
       disabled: !settingsData?.data.labels || !image?.id,
       id: CONFIG_STEPPERS_PREVIEW_ID,
     },
@@ -73,15 +60,15 @@ const Configurations = (): JSX.Element => {
   return (
     <Stack spacing={1} id={CONFIGURATION_TAB_ID}>
       <Stepper activeStep={activeStep} nonLinear>
-        {steps.map(({ label, disabled, id }, index) => (
-          <Step key={label}>
+        {steps.map(({ labelKey, disabled, id }, index) => (
+          <Step key={labelKey}>
             <StepButton
               disabled={disabled}
               onClick={() => setActiveStep(index)}
               color="inherit"
               id={id}
             >
-              {label}
+              {t(labelKey)}
             </StepButton>
           </Step>
         ))}
@@ -91,4 +78,12 @@ const Configurations = (): JSX.Element => {
   );
 };
 
-export default Configurations;
+const WrapperComponent = (): JSX.Element => (
+  <StepProvider>
+    <LabelsProvider>
+      <Configurations />
+    </LabelsProvider>
+  </StepProvider>
+);
+
+export default WrapperComponent;

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import {
   Box,
@@ -18,23 +18,21 @@ import { DESCRIPTION_INPUT_ID } from '@/config/selectors';
 import { APP } from '@/langs/constants';
 import ImageDisplay from '@/modules/builder/ImageDisplay';
 import UploadImage from '@/modules/common/UploadImage';
-import { SettingsContext } from '@/modules/context/SettingsContext';
+import { saveSettings } from '@/utils/hooks';
 
-type Props = {
-  moveToNextStep: () => void;
-};
-const AddImageStep = ({ moveToNextStep }: Props): JSX.Element => {
+import { useStepContext } from './StepContext';
+
+const AddImageStep = (): JSX.Element => {
   const { t } = useAppTranslation();
   const { itemId } = useLocalContext();
+  const { setActiveStep } = useStepContext();
   const token = useContext(TokenContext);
   const { data: imageSetting } = hooks.useAppSettings({
     name: SettingsKeys.File,
   });
 
-  const { saveSettings } = useContext(SettingsContext);
-
   const { data: appSetting } = hooks.useAppSettings<Settings>({
-    name: SettingsKeys.SettingsData,
+    name: SettingsKeys.Settings,
   });
 
   const image = imageSetting?.[0];
@@ -45,8 +43,8 @@ const AddImageStep = ({ moveToNextStep }: Props): JSX.Element => {
   const saveData = (): void => {
     const newData = { ...(settings && settings.data), description };
 
-    saveSettings(SettingsKeys.SettingsData, newData);
-    moveToNextStep();
+    saveSettings(SettingsKeys.Settings, newData);
+    setActiveStep(1);
   };
 
   useEffect(() => {

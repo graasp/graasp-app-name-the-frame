@@ -33,7 +33,7 @@ export const defaultMockContext: LocalContext = {
   permission: PermissionLevel.Admin,
   context: 'builder',
   itemId: mockItem.id,
-  memberId: mockMembers[0].id,
+  accountId: mockMembers[0].id,
 };
 
 const buildDatabase = (): Database => ({
@@ -127,7 +127,7 @@ const buildDatabase = (): Database => ({
     {
       id: '2c11a73a-f333-47e1-8572-b8f99fe883b0',
       item: mockItem,
-      name: SettingsKeys.SettingsData,
+      name: SettingsKeys.Settings,
       data: {
         description: '',
         labels: [

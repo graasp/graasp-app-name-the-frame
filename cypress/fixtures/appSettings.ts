@@ -20,7 +20,7 @@ const EMPTY_SETTING: Pick<
 export const MOCK_SETTING_DATA: AppSetting & { data: Settings } = {
   ...EMPTY_SETTING,
   id: v4(),
-  name: SettingsKeys.SettingsData,
+  name: SettingsKeys.Settings,
   data: {
     description: 'item description',
     labels: [],
@@ -40,7 +40,7 @@ export const MOCK_FILE_APP_SETTING: AppSetting & { data: FileSettings } = {
 export const MOCK_SETTING_DATA_WITH_LABELS: AppSetting & { data: Settings } = {
   ...EMPTY_SETTING,
   id: v4(),
-  name: SettingsKeys.SettingsData,
+  name: SettingsKeys.Settings,
   data: {
     description: 'Drag and drop colors within the right place',
     labels: [

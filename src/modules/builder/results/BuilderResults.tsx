@@ -33,7 +33,7 @@ const BuilderResults = (): JSX.Element => {
 
   const { data: appSetting, isLoading: isSettingsLoading } =
     hooks.useAppSettings<Settings>({
-      name: SettingsKeys.SettingsData,
+      name: SettingsKeys.Settings,
     });
 
   if (appData?.length && appSetting?.length) {

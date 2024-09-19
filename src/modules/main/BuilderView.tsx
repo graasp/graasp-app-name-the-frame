@@ -9,7 +9,6 @@ import { APP } from '@/langs/constants';
 
 import Configurations from '../builder/configuration/Configurations';
 import BuilderResults from '../builder/results/BuilderResults';
-import { LabelsProvider } from '../context/LabelsContext';
 import { BuilderTab } from './BuilderTab';
 
 const BuilderView = (): JSX.Element => {
@@ -39,9 +38,7 @@ const BuilderView = (): JSX.Element => {
             />
           </TabList>
           <TabPanel value={BuilderTab.Configuration}>
-            <LabelsProvider>
-              <Configurations />
-            </LabelsProvider>
+            <Configurations />
           </TabPanel>
           <TabPanel value={BuilderTab.Results}>
             <BuilderResults />
