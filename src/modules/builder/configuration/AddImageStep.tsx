@@ -18,7 +18,7 @@ import { DESCRIPTION_INPUT_ID } from '@/config/selectors';
 import { APP } from '@/langs/constants';
 import ImageDisplay from '@/modules/builder/ImageDisplay';
 import UploadImage from '@/modules/common/UploadImage';
-import { saveSettings } from '@/utils/hooks';
+import { saveSettings } from '@/utils/saveSettings';
 
 import { useStepContext } from './StepContext';
 
