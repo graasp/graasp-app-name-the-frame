@@ -1,17 +1,9 @@
-import { Alert, Skeleton, styled } from '@mui/material';
+import { Alert, Box, Skeleton } from '@mui/material';
 
 import { SettingsKeys } from '@/@types';
 import { useAppTranslation } from '@/config/i18n';
 import { hooks } from '@/config/queryClient';
 import { APP } from '@/langs/constants';
-
-const Container = styled('div')(() => ({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'baseline',
-  width: '100%',
-  height: '100%',
-}));
 
 const ImageFrame = (): JSX.Element | null => {
   const {
@@ -31,7 +23,13 @@ const ImageFrame = (): JSX.Element | null => {
 
   if (dataFile) {
     return (
-      <Container>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="baseline"
+        width="100%"
+        height="100%"
+      >
         <img
           src={URL.createObjectURL(dataFile)}
           alt="frame"
@@ -39,11 +37,10 @@ const ImageFrame = (): JSX.Element | null => {
             width: '100%',
             objectFit: 'cover',
             pointerEvents: 'auto',
-            cursor: 'cell',
             maxHeight: '100%',
           }}
         />
-      </Container>
+      </Box>
     );
   }
 

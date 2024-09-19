@@ -1,4 +1,4 @@
-import { Alert, Skeleton, styled } from '@mui/material';
+import { Alert, Box, Skeleton } from '@mui/material';
 
 import { Settings, SettingsKeys } from '@/@types';
 import { useAppTranslation } from '@/config/i18n';
@@ -6,19 +6,11 @@ import { hooks } from '@/config/queryClient';
 import { APP } from '@/langs/constants';
 import { useImageDimensionsContext } from '@/modules/context/imageDimensionContext';
 
-const Container = styled('div')(() => ({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'baseline',
-  width: '100%',
-  height: '100%',
-}));
-
 const ImageFrame = (): JSX.Element | null => {
   const { data: appSettings, isLoading: settingLoading } =
-    hooks.useAppSettings<Settings>();
+    hooks.useAppSettings<Settings>({ name: SettingsKeys.File });
 
-  const image = appSettings?.find(({ name }) => name === SettingsKeys.File);
+  const image = appSettings?.[0];
   const appSettingId = image?.id || '';
 
   const { imgRef } = useImageDimensionsContext();
@@ -34,7 +26,13 @@ const ImageFrame = (): JSX.Element | null => {
 
   if (dataFile) {
     return (
-      <Container>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="baseline"
+        width="100%"
+        height="100%"
+      >
         <img
           src={URL.createObjectURL(dataFile)}
           alt="app-frame"
@@ -44,11 +42,10 @@ const ImageFrame = (): JSX.Element | null => {
             maxHeight: '100%',
             objectFit: 'cover',
             pointerEvents: 'auto',
-            cursor: 'cell',
             width: '100%',
           }}
         />
-      </Container>
+      </Box>
     );
   }
 

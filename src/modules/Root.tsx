@@ -3,7 +3,7 @@ import { I18nextProvider } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 
-import { CssBaseline, ThemeProvider, createTheme, styled } from '@mui/material';
+import { Box, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { grey, orange, pink } from '@mui/material/colors';
 import { StyledEngineProvider } from '@mui/material/styles';
 
@@ -67,15 +67,10 @@ const theme = createTheme({
   },
 });
 
-const RootDiv = styled('div')({
-  flexGrow: 1,
-  height: '100%',
-});
-
 const Root: FC = () => {
   const [mockContext, setMockContext] = useObjectState(defaultMockContext);
   return (
-    <RootDiv>
+    <Box flexGrow={1} height="100%">
       {/* Used to define the order of injected properties between JSS and emotion */}
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={theme}>
@@ -124,7 +119,7 @@ const Root: FC = () => {
           </I18nextProvider>
         </ThemeProvider>
       </StyledEngineProvider>
-    </RootDiv>
+    </Box>
   );
 };
 

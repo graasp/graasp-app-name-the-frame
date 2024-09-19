@@ -27,14 +27,6 @@ const TransformContainer = styled(TransformWrapper)(() => ({
   margin: 'auto',
 }));
 
-const Container = styled('div')(() => ({
-  width: '100%',
-  height: '100%',
-  position: 'absolute',
-  top: '0px',
-  left: '0px',
-}));
-
 const AddLabelWithinFrame = (): JSX.Element => {
   const { labels, isDragging, saveLabelsChanges } = useContext(LabelsContext);
   const { permission } = useLocalContext();
@@ -109,9 +101,14 @@ const AddLabelWithinFrame = (): JSX.Element => {
         />
       )}
       <ImageFrame />
-      <Container
+      <Box
+        width="100%"
+        height="100%"
+        position="absolute"
+        top="0px"
+        left="0px"
         onClick={showLabelForm}
-        sx={{ cursor: 'crosshair' }}
+        sx={{ cursor: 'cell' }}
         id={ADD_LABELS_IMAGE_CONTAINER_ID}
       >
         {labels.map((ele) => (
@@ -121,7 +118,7 @@ const AddLabelWithinFrame = (): JSX.Element => {
             showEditForm={showEditForm}
           />
         ))}
-      </Container>
+      </Box>
     </Box>
   );
 };

@@ -11,7 +11,7 @@ import {
 
 import DraggableLabel from './DraggableLabelToDroppableCont';
 
-export const Container = styled('div')<{
+export const StyledBox = styled('div')<{
   isDraggingOver: boolean;
 }>(({ theme, isDraggingOver }) => ({
   display: 'flex',
@@ -32,7 +32,7 @@ type Props = {
 const AllLabelsContainer = ({ labels }: Props): JSX.Element => (
   <Droppable droppableId={ALL_DROPPABLE_CONTAINER_ID}>
     {(provided, dropSnapshot) => (
-      <Container
+      <StyledBox
         ref={provided.innerRef}
         {...provided.droppableProps}
         isDraggingOver={dropSnapshot.isDraggingOver}
@@ -47,7 +47,7 @@ const AllLabelsContainer = ({ labels }: Props): JSX.Element => (
           />
         ))}
         {provided.placeholder}
-      </Container>
+      </StyledBox>
     )}
   </Droppable>
 );
