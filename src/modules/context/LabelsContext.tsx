@@ -28,7 +28,7 @@ type Props = {
 
 export const LabelsProvider = ({ children }: Props): JSX.Element => {
   const { data: settingsData } = hooks.useAppSettings<Settings>({
-    name: SettingsKeys.SettingsData,
+    name: SettingsKeys.Settings,
   });
 
   const [isDragging, setIsDragging] = useState(false);

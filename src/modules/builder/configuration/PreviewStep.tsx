@@ -8,15 +8,14 @@ import { hooks } from '@/config/queryClient';
 import { APP } from '@/langs/constants';
 import PlayerFrame from '@/modules/common/PlayerFrame';
 
-const PreviewStep = ({
-  moveToPrevStep,
-}: {
-  moveToPrevStep: () => void;
-}): JSX.Element => {
+import { useStepContext } from './StepContext';
+
+const PreviewStep = (): JSX.Element => {
   const { t } = useAppTranslation();
+  const { goToPrevStep } = useStepContext();
 
   const { data: appSettings } = hooks.useAppSettings<Settings>({
-    name: SettingsKeys.SettingsData,
+    name: SettingsKeys.Settings,
   });
 
   const [answeredLabels, setAnsweredLabels] = useState<AnsweredLabel[]>([]);
@@ -59,7 +58,12 @@ const PreviewStep = ({
           onLabelMoved={onLabelMoved}
         />
         <Stack direction="row" gap={1} width="100%" justifyContent="flex-end">
-          <Button size="large" onClick={moveToPrevStep}>
+          <Button
+            size="large"
+            onClick={() => {
+              goToPrevStep();
+            }}
+          >
             {t(APP.BACK)}
           </Button>
         </Stack>

@@ -9,7 +9,7 @@ export type FileSettings = {
 
 export enum SettingsKeys {
   File = 'file',
-  SettingsData = 'settings-data',
+  Settings = 'settings',
 }
 
 // x and y are relative to image size (percentage)

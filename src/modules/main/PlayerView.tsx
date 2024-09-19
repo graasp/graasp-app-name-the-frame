@@ -36,7 +36,7 @@ const PlayerView = (): JSX.Element => {
   const { t } = useAppTranslation();
   const { data: appData } = hooks.useAppData<{ answers: SubmittedAnswer[] }>();
   const { data: appSettings, isLoading } = hooks.useAppSettings<Settings>({
-    name: SettingsKeys.SettingsData,
+    name: SettingsKeys.Settings,
   });
   const { mutate: saveAppData } = mutations.usePostAppData();
   const [answeredLabels, setAnsweredLabels] = useState<AnsweredLabel[]>([]);

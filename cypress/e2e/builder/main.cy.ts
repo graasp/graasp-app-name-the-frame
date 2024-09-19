@@ -50,9 +50,6 @@ describe('Builder View', () => {
         cy.visit('/');
 
         // move to add labels step
-        // TODO: due to an issue, we have to click twice. Remove the second click when the issue is resolved.
-        // for more, see https://github.com/graasp/graasp-app-name-the-frame/issues/167.
-        cy.get(`#${CONFIG_STEPPERS_ADD_LABELS_ID}`).click();
         cy.get(`#${CONFIG_STEPPERS_ADD_LABELS_ID}`).click();
       });
     });
