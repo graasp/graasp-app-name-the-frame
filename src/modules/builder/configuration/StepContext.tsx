@@ -48,10 +48,9 @@ const StepProvider = ({ children }: Props): JSX.Element => {
       // move to preview step in case all was settled, using Ref to move only within first render, So If i change sth with second step I don't want to move to preview immediately
       if (settings?.[0]?.data?.labels) {
         setActiveStep(2);
-      } else {
-        // no label defined, initial state stay at default
-        setInitialSetRef(true);
       }
+      // no label defined, initial state stay at default
+      setInitialSetRef(true);
     }
   }, [settings, isSuccess, initialSetRef, setInitialSetRef]);
 

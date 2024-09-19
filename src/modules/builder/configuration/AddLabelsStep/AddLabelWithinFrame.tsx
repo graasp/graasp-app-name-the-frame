@@ -12,13 +12,13 @@ import { Label, Position } from '@/@types';
 import { useAppTranslation } from '@/config/i18n';
 import { ADD_LABELS_IMAGE_CONTAINER_ID } from '@/config/selectors';
 import { APP } from '@/langs/constants';
+import ImageFrame from '@/modules/common/ImageFrame';
 import { LabelsContext } from '@/modules/context/LabelsContext';
 import { useImageDimensionsContext } from '@/modules/context/imageDimensionContext';
 import { PositionConverter } from '@/utils';
 
 import AddLabelForm from './AddLabelForm';
 import DraggableLabel from './DraggableLabel';
-import ImageFrame from './ImageFrame';
 
 const TransformContainer = styled(TransformWrapper)(() => ({
   width: '100%',
