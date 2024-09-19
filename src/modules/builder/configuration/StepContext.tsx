@@ -17,12 +17,14 @@ type StepContextType = {
   activeStep: number;
   setActiveStep: Dispatch<number>;
   goToNextStep: () => void;
+  goToPrevStep: () => void;
 };
 
 const StepContext = createContext<StepContextType>({
   activeStep: 0,
   setActiveStep: () => {},
   goToNextStep: () => {},
+  goToPrevStep: () => {},
 });
 
 type Props = {
@@ -53,9 +55,13 @@ const StepProvider = ({ children }: Props): JSX.Element => {
     setActiveStep(activeStep + 1);
   }, [setActiveStep, activeStep]);
 
+  const goToPrevStep = useCallback((): void => {
+    setActiveStep(activeStep - 1);
+  }, [setActiveStep, activeStep]);
+
   const value = useMemo(
-    () => ({ goToNextStep, activeStep, setActiveStep }),
-    [activeStep, goToNextStep],
+    () => ({ goToNextStep, activeStep, goToPrevStep, setActiveStep }),
+    [activeStep, goToNextStep, goToPrevStep],
   );
 
   if (isLoading) {

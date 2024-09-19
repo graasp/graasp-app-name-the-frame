@@ -10,27 +10,26 @@ type AllSettingsType = {
 };
 type AllSettingsNameType = SettingsKeys;
 type AllSettingsDataType = AllSettingsType[keyof AllSettingsType];
-export const saveSettings = (
-  name: AllSettingsNameType,
-  newValue: AllSettingsDataType,
-): void => {
+export const useSaveSettings = () => {
   const { mutate: postAppSetting } = mutations.usePostAppSetting();
   const { mutate: patchAppSetting } = mutations.usePatchAppSetting();
   const { data: appSettingsList } = hooks.useAppSettings();
 
-  if (appSettingsList) {
-    const previousSetting = appSettingsList.find((s) => s.name === name);
-    // setting does not exist
-    if (!previousSetting) {
-      postAppSetting({
-        data: newValue,
-        name,
-      });
-    } else {
-      patchAppSetting({
-        id: previousSetting.id,
-        data: newValue,
-      });
+  return (name: AllSettingsNameType, newValue: AllSettingsDataType) => {
+    if (appSettingsList) {
+      const previousSetting = appSettingsList.find((s) => s.name === name);
+      // setting does not exist
+      if (!previousSetting) {
+        postAppSetting({
+          data: newValue,
+          name,
+        });
+      } else {
+        patchAppSetting({
+          id: previousSetting.id,
+          data: newValue,
+        });
+      }
     }
-  }
+  };
 };

@@ -10,7 +10,7 @@ import { useStepContext } from '../StepContext';
 import AddLabelWithinFrame from './AddLabelWithinFrame';
 
 const AddLabelsStep = (): JSX.Element => {
-  const { setActiveStep } = useStepContext();
+  const { goToPrevStep, goToNextStep } = useStepContext();
   const { t } = useAppTranslation();
 
   const { labels } = useContext(LabelsContext);
@@ -22,7 +22,7 @@ const AddLabelsStep = (): JSX.Element => {
         <Button
           size="large"
           onClick={() => {
-            setActiveStep(0);
+            goToPrevStep();
           }}
         >
           {t(APP.BACK)}
@@ -31,7 +31,7 @@ const AddLabelsStep = (): JSX.Element => {
           variant="contained"
           size="large"
           onClick={() => {
-            setActiveStep(2);
+            goToNextStep();
           }}
           disabled={!labels.length}
         >

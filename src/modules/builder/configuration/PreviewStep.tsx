@@ -12,7 +12,7 @@ import { useStepContext } from './StepContext';
 
 const PreviewStep = (): JSX.Element => {
   const { t } = useAppTranslation();
-  const { setActiveStep } = useStepContext();
+  const { goToPrevStep } = useStepContext();
 
   const { data: appSettings } = hooks.useAppSettings<Settings>({
     name: SettingsKeys.Settings,
@@ -61,7 +61,7 @@ const PreviewStep = (): JSX.Element => {
           <Button
             size="large"
             onClick={() => {
-              setActiveStep(1);
+              goToPrevStep();
             }}
           >
             {t(APP.BACK)}
