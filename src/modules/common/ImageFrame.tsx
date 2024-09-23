@@ -5,6 +5,8 @@ import { useAppTranslation } from '@/config/i18n';
 import { hooks } from '@/config/queryClient';
 import { APP } from '@/langs/constants';
 
+import { useImageDimensionsContext } from '../context/imageDimensionContext';
+
 const ImageFrame = (): JSX.Element | null => {
   const {
     data: image,
@@ -13,6 +15,7 @@ const ImageFrame = (): JSX.Element | null => {
   } = hooks.useAppSettings({
     name: SettingsKeys.File,
   });
+  const { imgRef } = useImageDimensionsContext();
 
   const appSettingId = image?.[0]?.id || '';
 
@@ -31,6 +34,7 @@ const ImageFrame = (): JSX.Element | null => {
         height="100%"
       >
         <img
+          ref={imgRef}
           src={URL.createObjectURL(dataFile)}
           alt="frame"
           style={{
