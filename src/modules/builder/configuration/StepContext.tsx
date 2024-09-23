@@ -41,18 +41,18 @@ const StepProvider = ({ children }: Props): JSX.Element => {
     name: SettingsKeys.Settings,
   });
 
-  const [initialSetRef, setInitialSetRef] = useState(false);
+  const [isInitial, setIsInitial] = useState(false);
 
   useEffect(() => {
-    if (isSuccess && !initialSetRef) {
-      // move to preview step in case all was settled, using Ref to move only within first render, So If i change sth with second step I don't want to move to preview immediately
+    if (isSuccess && !isInitial) {
+      // move to preview step in case all was settled,
       if (settings?.[0]?.data?.labels) {
         setActiveStep(2);
       }
       // no label defined, initial state stay at default
-      setInitialSetRef(true);
+      setIsInitial(true);
     }
-  }, [settings, isSuccess, initialSetRef, setInitialSetRef]);
+  }, [settings, isSuccess, isInitial, setIsInitial]);
 
   const goToNextStep = useCallback((): void => {
     setActiveStep(activeStep + 1);
