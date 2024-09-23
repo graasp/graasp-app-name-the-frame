@@ -8,7 +8,7 @@ import { buildDraggableLabelId } from '@/config/selectors';
 
 import DraggableLabelToDroppableCont from './DraggableLabelToDroppableCont';
 
-export const Container = styled('div')<{
+export const Wrapper = styled('div')<{
   top: string;
   left: string;
   isFilled: boolean;
@@ -49,7 +49,7 @@ const DroppableLabel = ({
 }: Props): JSX.Element => (
   <Droppable droppableId={label.expected.id}>
     {(provided, dropSnapshot) => (
-      <Container
+      <Wrapper
         ref={provided.innerRef}
         {...provided.droppableProps}
         top={label.expected.y}
@@ -69,7 +69,7 @@ const DroppableLabel = ({
           />
         )}
         {provided.placeholder}
-      </Container>
+      </Wrapper>
     )}
   </Droppable>
 );
