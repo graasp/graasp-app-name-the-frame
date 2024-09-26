@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useState } from 'react';
 
 import {
   Alert,
@@ -10,7 +10,6 @@ import {
   Typography,
 } from '@mui/material';
 
-import isEqual from 'lodash.isequal';
 import orderBy from 'lodash.orderby';
 
 import {
@@ -32,6 +31,9 @@ import { APP } from '@/langs/constants';
 import PlayerFrame from '../common/PlayerFrame';
 
 const PlayerView = (): JSX.Element => {
+  // show correction
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
   const { data: appContext } = hooks.useAppContext();
   const { t } = useAppTranslation();
   const { data: appData } = hooks.useAppData<{ answers: SubmittedAnswer[] }>();
@@ -39,9 +41,6 @@ const PlayerView = (): JSX.Element => {
     name: SettingsKeys.Settings,
   });
   const { mutate: saveAppData } = mutations.usePostAppData();
-  const [answeredLabels, setAnsweredLabels] = useState<AnsweredLabel[]>([]);
-  // labels will be null only before setting the state as we cannot render all labels within container if not settled yet
-  const [labels, setLabels] = useState<null | Label[]>(null);
 
   const { data: image } = hooks.useAppSettings({
     name: SettingsKeys.File,
@@ -57,51 +56,44 @@ const PlayerView = (): JSX.Element => {
     answersOrdersByCreatedDate?.[answersOrdersByCreatedDate.length - 1];
   const answers = lastAnswerAppData?.data?.answers;
 
+  const lastSubmittedAnsweredLabels = settingLabels?.map((s) => {
+    const actualId = answers?.find(
+      ({ expectedId }) => expectedId === s.id,
+    )?.actualId;
+    return {
+      expected: s,
+      actual: actualId
+        ? (settingLabels.find(({ id }) => id === actualId) ?? null)
+        : null,
+    };
+  });
+
   const retry = (): void => {
     if (settingLabels) {
-      const answered = settingLabels?.map((label) => ({
-        expected: label,
-        actual: null,
+      const submittedAnswers = settingLabels.map((label) => ({
+        expectedId: label,
+        actualId: null,
       }));
-
-      setAnsweredLabels(answered);
-      setLabels(settingLabels);
+      saveAppData({
+        data: { answers: submittedAnswers },
+        type: AppDataType.Answers,
+      });
     }
+    setIsSubmitted(false);
   };
 
   const submit = (): void => {
-    const submittedAnswers = answeredLabels.map(({ expected, actual }) => ({
-      expectedId: expected.id,
-      actualId: actual?.id,
-    }));
-    saveAppData({
-      data: { answers: submittedAnswers },
-      type: AppDataType.Answers,
-    });
+    setIsSubmitted(true);
   };
 
-  const lastSubmittedAnsweredLabels = useMemo(
-    () =>
-      answers?.map(({ expectedId, actualId }: SubmittedAnswer) => ({
-        expected: settingLabels?.find(({ id }) => id === expectedId) as Label,
-        actual: settingLabels?.find(({ id }) => id === actualId) || null,
-      })),
-    [answers, settingLabels],
-  );
-
-  useEffect(() => {
-    if (!settingLabels) {
-      return;
-    }
+  let answeredLabels: AnsweredLabel[] = [];
+  let labels: Label[] = [];
+  if (settingLabels) {
     if (lastSubmittedAnsweredLabels) {
-      setAnsweredLabels(lastSubmittedAnsweredLabels);
-      setLabels(
-        settingLabels.filter(
-          ({ id }) =>
-            !lastSubmittedAnsweredLabels.find(
-              ({ actual }) => actual?.id === id,
-            ),
-        ),
+      answeredLabels = lastSubmittedAnsweredLabels;
+      labels = settingLabels.filter(
+        ({ id }) =>
+          !lastSubmittedAnsweredLabels.find(({ actual }) => actual?.id === id),
       );
     } else {
       const answered = settingLabels.map((label) => ({
@@ -109,15 +101,10 @@ const PlayerView = (): JSX.Element => {
         actual: null,
       }));
 
-      setAnsweredLabels(answered);
-      setLabels(settingLabels);
+      answeredLabels = answered;
+      labels = settingLabels;
     }
-  }, [lastSubmittedAnsweredLabels, settingLabels]);
-
-  const isSubmitted = useMemo(
-    () => isEqual(answeredLabels, lastSubmittedAnsweredLabels),
-    [answeredLabels, lastSubmittedAnsweredLabels],
-  );
+  }
 
   if (isLoading) {
     return <CircularProgress />;
@@ -135,8 +122,15 @@ const PlayerView = (): JSX.Element => {
     newLabels: Label[],
     newAnswers: AnsweredLabel[],
   ): void => {
-    setLabels(newLabels);
-    setAnsweredLabels(newAnswers);
+    const submittedAnswers = newAnswers.map(({ expected, actual }) => ({
+      expectedId: expected.id,
+      actualId: actual?.id,
+    }));
+
+    saveAppData({
+      data: { answers: submittedAnswers },
+      type: AppDataType.Answers,
+    });
   };
 
   return (
@@ -153,18 +147,17 @@ const PlayerView = (): JSX.Element => {
               </Typography>
             )}
           </Box>
-          <Box>
+          <Stack direction="row" gap={1}>
             <Button onClick={retry}>{t(APP.RETRY)}</Button>
-            {!isSubmitted && (
-              <Button
-                onClick={submit}
-                variant="contained"
-                sx={{ height: 'fit-content' }}
-              >
-                {t(APP.SUBMIT)}
-              </Button>
-            )}
-          </Box>
+            <Button
+              onClick={submit}
+              variant="contained"
+              sx={{ height: 'fit-content' }}
+              disabled={isSubmitted}
+            >
+              {t(APP.SUBMIT)}
+            </Button>
+          </Stack>
         </Stack>
         <PlayerFrame
           labels={labels}

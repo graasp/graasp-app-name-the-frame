@@ -40,14 +40,16 @@ type Props = {
   label: AnsweredLabel;
   isDragging?: boolean;
   isSubmitted: boolean;
+  index: number;
 };
 
 const DroppableLabel = ({
   label,
   isDragging,
   isSubmitted,
+  index,
 }: Props): JSX.Element => (
-  <Droppable droppableId={label.expected.id}>
+  <Droppable droppableId={label.expected.id} key={label.expected.id}>
     {(provided, dropSnapshot) => (
       <Wrapper
         ref={provided.innerRef}
@@ -59,15 +61,15 @@ const DroppableLabel = ({
         isDragging={isDragging}
         id={buildDraggableLabelId(label.expected.id)}
       >
-        {label.actual && (
+        {label.actual ? (
           <DraggableLabelToDroppableCont
             isCorrect={label.expected.id === label.actual?.id}
             isSubmitted={isSubmitted}
             content={label.actual.content}
-            index={0}
+            index={index}
             draggableId={label.actual.id}
           />
-        )}
+        ) : null}
         {provided.placeholder}
       </Wrapper>
     )}

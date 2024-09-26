@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
 import { Box, Typography } from '@mui/material';
@@ -68,7 +68,7 @@ const PlayerFrame = ({
               width: '100%',
             }}
           >
-            <AllLabelsContainer labels={labels} />
+            <AllLabelsContainer labels={labels} isSubmitted={isSubmitted} />
           </Box>
         )}
         <DraggableFrameWithLabels

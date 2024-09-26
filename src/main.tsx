@@ -33,8 +33,7 @@ if (MOCK_API) {
   );
 }
 
+// cannot use strict because of beautiful-dnd
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <Root />
-  </React.StrictMode>,
+  <Root />,
 );
