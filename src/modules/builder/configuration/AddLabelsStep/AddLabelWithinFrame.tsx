@@ -100,13 +100,9 @@ const AddLabelWithinFrame = (): JSX.Element => {
           labelToDelete={labelToEdit}
         />
       )}
-      <ImageFrame />
       <Box
         width="100%"
         height="100%"
-        position="absolute"
-        top="0px"
-        left="0px"
         onClick={showLabelForm}
         sx={{ cursor: 'cell' }}
         id={ADD_LABELS_IMAGE_CONTAINER_ID}
@@ -118,6 +114,7 @@ const AddLabelWithinFrame = (): JSX.Element => {
             showEditForm={showEditForm}
           />
         ))}
+        <ImageFrame />
       </Box>
     </Box>
   );
@@ -129,6 +126,9 @@ const AddLabelWithinFrameWrapper = (): JSX.Element => {
   const { isDragging, labels } = useContext(LabelsContext);
   const disabled = isDragging;
 
+  // should start enabled
+  const [disabledPanning, setDisablePanning] = useState(false);
+
   return (
     <Box sx={{ width: '100%' }}>
       {labels.length === 0 && (
@@ -138,12 +138,30 @@ const AddLabelWithinFrameWrapper = (): JSX.Element => {
       <TransformContainer
         doubleClick={{ disabled: true }}
         centerOnInit
-        panning={{ disabled }}
+        panning={{ disabled: disabledPanning }}
         pinch={{ disabled }}
         wheel={{ disabled }}
         zoomAnimation={{ disabled }}
         alignmentAnimation={{ disabled }}
         velocityAnimation={{ disabled }}
+        onPanningStart={(_instance, event) => {
+          // panning start is always called, even when disabled
+
+          // enable panning only if the clicked element is the box
+          if (
+            event.target &&
+            'nodeName' in event.target &&
+            event.target.nodeName === 'IMG'
+          ) {
+            setDisablePanning(false);
+          } else {
+            setDisablePanning(true);
+          }
+        }}
+        onPanningStop={() => {
+          // disable panning again
+          setDisablePanning(false);
+        }}
       >
         <TransformComponent
           wrapperStyle={{
