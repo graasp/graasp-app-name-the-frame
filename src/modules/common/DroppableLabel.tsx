@@ -1,12 +1,14 @@
-import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
+import { useControls } from 'react-zoom-pan-pinch';
 
 import { styled } from '@mui/material';
 
 import { AnsweredLabel } from '@/@types';
 import { buildDraggableLabelId } from '@/config/selectors';
 
-import DraggableLabelToDroppableCont from './DraggableLabelToDroppableCont';
+import DraggableLabelToDroppableCont, {
+  DraggableLabelToDroppableContProps,
+} from './DraggableLabelToDroppableCont';
 
 export const Wrapper = styled('div')<{
   top: string;
@@ -41,6 +43,7 @@ type Props = {
   isDragging?: boolean;
   isSubmitted: boolean;
   index: number;
+  onRemoveLabel: DraggableLabelToDroppableContProps['onRemoveLabel'];
 };
 
 const DroppableLabel = ({
@@ -48,32 +51,40 @@ const DroppableLabel = ({
   isDragging,
   isSubmitted,
   index,
-}: Props): JSX.Element => (
-  <Droppable droppableId={label.expected.id} key={label.expected.id}>
-    {(provided, dropSnapshot) => (
-      <Wrapper
-        ref={provided.innerRef}
-        {...provided.droppableProps}
-        top={label.expected.y}
-        left={label.expected.x}
-        isFilled={Boolean(label.actual)}
-        isDraggingOver={dropSnapshot.isDraggingOver}
-        isDragging={isDragging}
-        id={buildDraggableLabelId(label.expected.id)}
-      >
-        {label.actual ? (
-          <DraggableLabelToDroppableCont
-            isCorrect={label.expected.id === label.actual?.id}
-            isSubmitted={isSubmitted}
-            content={label.actual.content}
-            index={index}
-            draggableId={label.actual.id}
-          />
-        ) : null}
-        {provided.placeholder}
-      </Wrapper>
-    )}
-  </Droppable>
-);
+  onRemoveLabel,
+}: Props): JSX.Element => {
+  // instance exists if within transform wrapper: inside frame
+  const { instance } = useControls();
+
+  return (
+    <Droppable droppableId={label.expected.id} key={label.expected.id}>
+      {(provided, dropSnapshot) => (
+        <Wrapper
+          ref={provided.innerRef}
+          {...provided.droppableProps}
+          top={label.expected.y}
+          left={label.expected.x}
+          isFilled={Boolean(label.actual)}
+          isDraggingOver={dropSnapshot.isDraggingOver}
+          isDragging={isDragging}
+          id={buildDraggableLabelId(label.expected.id)}
+        >
+          {label.actual ? (
+            <DraggableLabelToDroppableCont
+              isCorrect={label.expected.id === label.actual?.id}
+              isSubmitted={isSubmitted}
+              content={label.actual.content}
+              index={index}
+              label={label.actual}
+              isDragDisabled={Boolean(instance)}
+              onRemoveLabel={onRemoveLabel}
+            />
+          ) : null}
+          {provided.placeholder}
+        </Wrapper>
+      )}
+    </Droppable>
+  );
+};
 
 export default DroppableLabel;

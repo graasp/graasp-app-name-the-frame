@@ -1,7 +1,9 @@
 import { Draggable } from 'react-beautiful-dnd';
 
-import { styled } from '@mui/material';
+import { Clear } from '@mui/icons-material';
+import { IconButton, Stack, styled } from '@mui/material';
 
+import { Label } from '@/@types';
 import { buildDraggableLabelId } from '@/config/selectors';
 
 export const StyledLabel = styled('div')<{
@@ -13,6 +15,7 @@ export const StyledLabel = styled('div')<{
   borderRadius: theme.spacing(1),
   border: '1px solid white',
   padding: theme.spacing(1),
+
   ...(isDraggable
     ? {
         background: 'purple',
@@ -27,38 +30,56 @@ export const StyledLabel = styled('div')<{
   }),
 }));
 
-type Props = {
+export type DraggableLabelToDroppableContProps = {
   index: number;
-  draggableId: string;
+  label: Label;
   content: string;
   isSubmitted?: boolean;
   isCorrect?: boolean;
+  /**
+   * whether the label can be dragged
+   * usually labels inside the frame, that are set as an answer
+   */
+  isDragDisabled?: boolean;
+  onRemoveLabel?: (label: Label) => void;
 };
 const DraggableLabelToDroppableCont = ({
-  draggableId,
+  label,
   index,
   content,
   isSubmitted = false,
   isCorrect,
-}: Props): JSX.Element => (
+  isDragDisabled,
+  onRemoveLabel,
+}: DraggableLabelToDroppableContProps): JSX.Element => (
   <Draggable
-    key={draggableId}
-    draggableId={draggableId}
+    key={label.id}
+    draggableId={label.id}
     index={index}
-    isDragDisabled={isSubmitted}
+    isDragDisabled={isDragDisabled}
   >
     {(dragProvided, dragSnapshot) => (
-      <StyledLabel
-        ref={dragProvided.innerRef}
-        {...dragProvided.draggableProps}
-        {...dragProvided.dragHandleProps}
-        isDraggable={dragSnapshot.isDragging}
-        isSubmitted={isSubmitted}
-        isCorrect={isCorrect}
-        id={buildDraggableLabelId(draggableId)}
-      >
-        {content}
-      </StyledLabel>
+      <Stack direction="row" alignItems="center">
+        <StyledLabel
+          ref={dragProvided.innerRef}
+          {...dragProvided.draggableProps}
+          {...dragProvided.dragHandleProps}
+          isDraggable={dragSnapshot.isDragging}
+          isSubmitted={isSubmitted}
+          isCorrect={isCorrect}
+          id={buildDraggableLabelId(label.id)}
+        >
+          {content}
+        </StyledLabel>
+        {isDragDisabled && (
+          <IconButton
+            sx={{ padding: 0 }}
+            onClick={() => onRemoveLabel?.(label)}
+          >
+            <Clear fontSize="small" />
+          </IconButton>
+        )}
+      </Stack>
     )}
   </Draggable>
 );

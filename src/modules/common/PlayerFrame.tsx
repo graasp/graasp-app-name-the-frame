@@ -10,12 +10,14 @@ import { trackLabelsChanges } from '@/utils/dnd';
 
 import AllLabelsContainer from './AllLabelsContainer';
 import DraggableFrameWithLabels from './DraggableFrameWithLabels';
+import { DraggableLabelToDroppableContProps } from './DraggableLabelToDroppableCont';
 
 type Props = {
   labels: null | Label[];
   answeredLabels: AnsweredLabel[];
   isSubmitted?: boolean;
   onLabelMoved: (newLabels: Label[], newAnswers: AnsweredLabel[]) => void;
+  onRemoveLabel: DraggableLabelToDroppableContProps['onRemoveLabel'];
 };
 
 const PlayerFrame = ({
@@ -23,6 +25,7 @@ const PlayerFrame = ({
   answeredLabels,
   isSubmitted = false,
   onLabelMoved,
+  onRemoveLabel,
 }: Props): JSX.Element => {
   const { t } = useAppTranslation();
 
@@ -61,13 +64,7 @@ const PlayerFrame = ({
         onDragStart={() => setIsDragging(true)}
       >
         {labels && (
-          <Box
-            sx={{
-              position: 'relative',
-              marginBottom: 2,
-              width: '100%',
-            }}
-          >
+          <Box position="relative" mb={2}>
             <AllLabelsContainer labels={labels} isSubmitted={isSubmitted} />
           </Box>
         )}
@@ -75,6 +72,7 @@ const PlayerFrame = ({
           labels={answeredLabels}
           isDragging={isDragging}
           isSubmitted={isSubmitted}
+          onRemoveLabel={onRemoveLabel}
         />
       </DragDropContext>
     </Box>

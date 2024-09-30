@@ -8,7 +8,7 @@ import {
   ALL_LABELS_CONTAINER_ID,
 } from '@/config/selectors';
 
-import DraggableLabel from './DraggableLabelToDroppableCont';
+import DraggableLabelToDroppableCont from './DraggableLabelToDroppableCont';
 
 export const StyledBox = styled(Stack)<{
   isDraggingOver: boolean;
@@ -39,12 +39,12 @@ const AllLabelsContainer = ({ labels, isSubmitted }: Props): JSX.Element => (
         isDraggingOver={dropSnapshot.isDraggingOver}
         id={ALL_LABELS_CONTAINER_ID}
       >
-        {labels.map((item, index) => (
-          <DraggableLabel
-            content={item.content}
-            draggableId={item?.id}
+        {labels.map((l, index) => (
+          <DraggableLabelToDroppableCont
+            content={l.content}
+            label={l}
             index={index}
-            key={item?.id}
+            key={l.id}
             isSubmitted={isSubmitted}
           />
         ))}
