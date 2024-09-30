@@ -42,7 +42,7 @@ const PlayerView = (): JSX.Element => {
   const { mutate: postAppData } = mutations.usePostAppData();
   const { mutate: patchAppData } = mutations.usePatchAppData();
 
-  const { data: image } = hooks.useAppSettings({
+  const { data: image, isLoading: isImageLoading } = hooks.useAppSettings({
     name: SettingsKeys.File,
   });
 
@@ -185,7 +185,7 @@ const PlayerView = (): JSX.Element => {
     );
   }
 
-  if (isLoading) {
+  if (isLoading || isImageLoading) {
     return <CircularProgress />;
   }
 
