@@ -131,8 +131,18 @@ const buildDatabase = (): Database => ({
       data: {
         description: '',
         labels: [
-          { content: 'content', id: 'id' },
-          { content: 'content1', id: 'id1' },
+          {
+            content: 'content',
+            id: 'id',
+            x: '40.09919261822376%',
+            y: '17.26830060055186%',
+          },
+          {
+            content: 'content1',
+            id: 'id1',
+            x: '62.09919261822376%',
+            y: '47.26830060055186%',
+          },
         ],
       },
       updatedAt: new Date().toISOString(),

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 
 import { styled } from '@mui/material';
@@ -12,14 +11,10 @@ export const StyledLabel = styled('div')<{
 }>(({ theme, isDraggable, isSubmitted, isCorrect }) => ({
   color: 'white',
   borderRadius: theme.spacing(1),
-  gap: theme.spacing(1),
-  userSelect: 'none',
   border: '1px solid white',
-  padding: theme.spacing(0.5),
+  padding: theme.spacing(1),
   ...(isDraggable
     ? {
-        left: 'initial !important',
-        top: 'initial !important',
         background: 'purple',
       }
     : {
@@ -46,7 +41,12 @@ const DraggableLabelToDroppableCont = ({
   isSubmitted = false,
   isCorrect,
 }: Props): JSX.Element => (
-  <Draggable draggableId={draggableId} index={index}>
+  <Draggable
+    key={draggableId}
+    draggableId={draggableId}
+    index={index}
+    isDragDisabled={isSubmitted}
+  >
     {(dragProvided, dragSnapshot) => (
       <StyledLabel
         ref={dragProvided.innerRef}

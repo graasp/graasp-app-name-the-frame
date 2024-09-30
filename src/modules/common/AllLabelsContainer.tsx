@@ -1,7 +1,6 @@
-import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 
-import { styled } from '@mui/material';
+import { Stack, styled } from '@mui/material';
 
 import { Label } from '@/@types';
 import {
@@ -11,28 +10,30 @@ import {
 
 import DraggableLabel from './DraggableLabelToDroppableCont';
 
-export const StyledBox = styled('div')<{
+export const StyledBox = styled(Stack)<{
   isDraggingOver: boolean;
 }>(({ theme, isDraggingOver }) => ({
-  display: 'flex',
-  gap: theme.spacing(1),
-  flexWrap: 'wrap',
   borderRadius: theme.spacing(1),
   background: isDraggingOver ? 'lightgray' : 'white',
   width: '100%',
-  minHeight: '40px',
-  padding: '2px',
   border: '1px solid black',
+  minHeight: '40px',
 }));
 
 type Props = {
   labels: Label[];
+  isSubmitted?: boolean;
 };
 
-const AllLabelsContainer = ({ labels }: Props): JSX.Element => (
-  <Droppable droppableId={ALL_DROPPABLE_CONTAINER_ID}>
+const AllLabelsContainer = ({ labels, isSubmitted }: Props): JSX.Element => (
+  <Droppable
+    key={ALL_DROPPABLE_CONTAINER_ID}
+    droppableId={ALL_DROPPABLE_CONTAINER_ID}
+    direction="horizontal"
+  >
     {(provided, dropSnapshot) => (
       <StyledBox
+        direction="row"
         ref={provided.innerRef}
         {...provided.droppableProps}
         isDraggingOver={dropSnapshot.isDraggingOver}
@@ -44,6 +45,7 @@ const AllLabelsContainer = ({ labels }: Props): JSX.Element => (
             draggableId={item?.id}
             index={index}
             key={item?.id}
+            isSubmitted={isSubmitted}
           />
         ))}
         {provided.placeholder}

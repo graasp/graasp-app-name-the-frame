@@ -1,4 +1,3 @@
-import React from 'react';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 
 import { Box, styled } from '@mui/material';
@@ -48,8 +47,9 @@ const DraggableFrameWithLabels = ({
       >
         <Box sx={{ width: '100%' }} id={LABELS_WITHIN_FRAME_CONTAINER_ID}>
           <ImageFrame />
-          {labels.map((label) => (
+          {labels.map((label, index) => (
             <DroppableLabel
+              index={index}
               label={label}
               key={label.expected.id}
               isDragging={isDragging}
