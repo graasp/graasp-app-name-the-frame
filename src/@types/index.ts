@@ -27,7 +27,7 @@ export type AnsweredLabel = {
 
 export type SubmittedAnswer = {
   expectedId: string;
-  actualId?: string;
+  actualId?: string | null;
 };
 
 type Answer = {

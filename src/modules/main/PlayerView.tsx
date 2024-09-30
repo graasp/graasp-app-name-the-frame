@@ -34,13 +34,13 @@ const PlayerView = (): JSX.Element => {
   // show correction
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const { data: appContext } = hooks.useAppContext();
   const { t } = useAppTranslation();
   const { data: appData } = hooks.useAppData<{ answers: SubmittedAnswer[] }>();
   const { data: appSettings, isLoading } = hooks.useAppSettings<Settings>({
     name: SettingsKeys.Settings,
   });
-  const { mutate: saveAppData } = mutations.usePostAppData();
+  const { mutate: postAppData } = mutations.usePostAppData();
+  const { mutate: patchAppData } = mutations.usePatchAppData();
 
   const { data: image } = hooks.useAppSettings({
     name: SettingsKeys.File,
@@ -49,13 +49,14 @@ const PlayerView = (): JSX.Element => {
   const answersAppData = appData?.filter(
     ({ type }) => type === AppDataType.Answers,
   );
-  // we only have one data settings
-  const settingLabels = appSettings?.[0]?.data?.labels;
   const answersOrdersByCreatedDate = orderBy(answersAppData, 'createdAt');
   const lastAnswerAppData =
     answersOrdersByCreatedDate?.[answersOrdersByCreatedDate.length - 1];
   const answers = lastAnswerAppData?.data?.answers;
 
+  // we only have one data settings
+  const config = appSettings?.[0]?.data;
+  const settingLabels = config?.labels;
   const lastSubmittedAnsweredLabels = settingLabels?.map((s) => {
     const actualId = answers?.find(
       ({ expectedId }) => expectedId === s.id,
@@ -68,16 +69,27 @@ const PlayerView = (): JSX.Element => {
     };
   });
 
-  const retry = (): void => {
-    if (settingLabels) {
-      const submittedAnswers = settingLabels.map((label) => ({
-        expectedId: label,
-        actualId: null,
-      }));
-      saveAppData({
+  const saveAppData = (submittedAnswers: SubmittedAnswer[]): void => {
+    if (lastAnswerAppData) {
+      patchAppData({
+        id: lastAnswerAppData.id,
+        data: { answers: submittedAnswers },
+      });
+    } else {
+      postAppData({
         data: { answers: submittedAnswers },
         type: AppDataType.Answers,
       });
+    }
+  };
+
+  const retry = (): void => {
+    if (settingLabels) {
+      const submittedAnswers = settingLabels.map((label) => ({
+        expectedId: label.id,
+        actualId: null,
+      }));
+      saveAppData(submittedAnswers);
     }
     setIsSubmitted(false);
   };
@@ -106,18 +118,6 @@ const PlayerView = (): JSX.Element => {
     }
   }
 
-  if (isLoading) {
-    return <CircularProgress />;
-  }
-
-  if (!image || !settingLabels) {
-    return (
-      <Alert severity="error" id={UNCONFIGURED_PLAYER_ALERT_ID}>
-        {t(APP.UNCONFIGURED_ITEM)}
-      </Alert>
-    );
-  }
-
   const onLabelMoved = (
     newLabels: Label[],
     newAnswers: AnsweredLabel[],
@@ -127,46 +127,50 @@ const PlayerView = (): JSX.Element => {
       actualId: actual?.id,
     }));
 
-    saveAppData({
-      data: { answers: submittedAnswers },
-      type: AppDataType.Answers,
-    });
+    saveAppData(submittedAnswers);
   };
 
-  return (
-    <Container data-cy={PLAYER_VIEW_CY}>
-      <Stack spacing={2} padding={2}>
-        <Stack justifyContent="space-between" flexDirection="row">
-          <Box>
-            <Typography variant="h5" fontWeight="bold">
-              {appContext?.item.name}
-            </Typography>
-            {appSettings?.[0]?.data.description && (
-              <Typography variant="body1">
-                {appSettings?.[0]?.data.description}
-              </Typography>
-            )}
-          </Box>
-          <Stack direction="row" gap={1}>
-            <Button onClick={retry}>{t(APP.RETRY)}</Button>
-            <Button
-              onClick={submit}
-              variant="contained"
-              sx={{ height: 'fit-content' }}
-              disabled={isSubmitted}
-            >
-              {t(APP.SUBMIT)}
-            </Button>
+  if (config && image) {
+    return (
+      <Container data-cy={PLAYER_VIEW_CY}>
+        <Stack spacing={2} padding={2}>
+          <Stack justifyContent="space-between" flexDirection="row">
+            <Box>
+              {config.description && (
+                <Typography variant="body1">{config.description}</Typography>
+              )}
+            </Box>
+            <Stack direction="row" gap={1}>
+              <Button onClick={retry}>{t(APP.RETRY)}</Button>
+              <Button
+                onClick={submit}
+                variant="contained"
+                sx={{ height: 'fit-content' }}
+                disabled={isSubmitted}
+              >
+                {t(APP.SUBMIT)}
+              </Button>
+            </Stack>
           </Stack>
+          <PlayerFrame
+            labels={labels}
+            isSubmitted={isSubmitted}
+            answeredLabels={answeredLabels}
+            onLabelMoved={onLabelMoved}
+          />
         </Stack>
-        <PlayerFrame
-          labels={labels}
-          isSubmitted={isSubmitted}
-          answeredLabels={answeredLabels}
-          onLabelMoved={onLabelMoved}
-        />
-      </Stack>
-    </Container>
+      </Container>
+    );
+  }
+
+  if (isLoading) {
+    return <CircularProgress />;
+  }
+
+  return (
+    <Alert severity="error" id={UNCONFIGURED_PLAYER_ALERT_ID}>
+      {t(APP.UNCONFIGURED_ITEM)}
+    </Alert>
   );
 };
 export default PlayerView;
