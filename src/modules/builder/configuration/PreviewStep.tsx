@@ -43,6 +43,18 @@ const PreviewStep = (): JSX.Element => {
     setAnsweredLabels(newAnswers);
   };
 
+  const onRemoveLabel = (label: Label): void => {
+    const newAnsweredLabels = answeredLabels.map((a) => {
+      if (a?.actual?.id === label.id) {
+        return { ...a, actual: null };
+      }
+      return a;
+    });
+
+    setLabels(labels.concat([label]));
+    setAnsweredLabels(newAnsweredLabels);
+  };
+
   return (
     <>
       <Alert severity="success">{t(APP.PREVIEW_NOTE)}</Alert>
@@ -56,6 +68,7 @@ const PreviewStep = (): JSX.Element => {
           labels={labels}
           answeredLabels={answeredLabels}
           onLabelMoved={onLabelMoved}
+          onRemoveLabel={onRemoveLabel}
         />
         <Stack direction="row" gap={1} width="100%" justifyContent="flex-end">
           <Button

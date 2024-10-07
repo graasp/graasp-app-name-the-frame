@@ -3,7 +3,7 @@ import { AppItemExtra, ItemType } from '@graasp/sdk';
 import { MEMBERS } from './members';
 
 export const MOCK_SERVER_ITEM = {
-  id: '123456789',
+  id: '7f165691-6fa8-4712-b4b8-63aa0fdf91ed',
   name: 'app-starter-ts-vite',
   displayName: 'app-starter-ts-vite',
   description: null,

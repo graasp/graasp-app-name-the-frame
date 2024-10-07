@@ -42,7 +42,7 @@ const PlayerView = (): JSX.Element => {
   const { mutate: postAppData } = mutations.usePostAppData();
   const { mutate: patchAppData } = mutations.usePatchAppData();
 
-  const { data: image } = hooks.useAppSettings({
+  const { data: image, isLoading: isImageLoading } = hooks.useAppSettings({
     name: SettingsKeys.File,
   });
 
@@ -130,6 +130,27 @@ const PlayerView = (): JSX.Element => {
     saveAppData(submittedAnswers);
   };
 
+  const onRemoveLabel = (label: Label): void => {
+    if (lastSubmittedAnsweredLabels) {
+      const submittedAnswers = lastSubmittedAnsweredLabels.map((a) => {
+        const { expected, actual } = a;
+        if (actual?.id === label.id) {
+          return {
+            expectedId: expected.id,
+            actualId: null,
+          };
+        }
+
+        return {
+          expectedId: expected.id,
+          actualId: actual?.id,
+        };
+      });
+
+      saveAppData(submittedAnswers);
+    }
+  };
+
   if (config && image) {
     return (
       <Container data-cy={PLAYER_VIEW_CY}>
@@ -157,13 +178,14 @@ const PlayerView = (): JSX.Element => {
             isSubmitted={isSubmitted}
             answeredLabels={answeredLabels}
             onLabelMoved={onLabelMoved}
+            onRemoveLabel={onRemoveLabel}
           />
         </Stack>
       </Container>
     );
   }
 
-  if (isLoading) {
+  if (isLoading || isImageLoading) {
     return <CircularProgress />;
   }
 
