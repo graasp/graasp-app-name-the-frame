@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/graasp/graasp-app-name-the-frame/compare/v1.0.0...v1.0.1) (2024-10-28)
+
+
+### Bug Fixes
+
+* wait for first step to be saved before going to next ([#202](https://github.com/graasp/graasp-app-name-the-frame/issues/202)) ([4a3812e](https://github.com/graasp/graasp-app-name-the-frame/commit/4a3812ef05ee7d43fa9b6ff1d777573ea92366eb))
+
 ## 1.0.0 (2024-10-07)
 
 
