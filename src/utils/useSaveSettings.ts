@@ -10,26 +10,40 @@ type AllSettingsType = {
 };
 type AllSettingsNameType = SettingsKeys;
 type AllSettingsDataType = AllSettingsType[keyof AllSettingsType];
-export const useSaveSettings = () => {
-  const { mutate: postAppSetting } = mutations.usePostAppSetting();
-  const { mutate: patchAppSetting } = mutations.usePatchAppSetting();
+export const useSaveSettings = (): {
+  saveSettings: (
+    name: AllSettingsNameType,
+    newValue: AllSettingsDataType,
+  ) => Promise<void>;
+  isLoading: boolean;
+} => {
+  const { mutateAsync: postAppSetting, isLoading: isPostAppSettingLoading } =
+    mutations.usePostAppSetting();
+  const { mutateAsync: patchAppSetting, isLoading: isPatchAppSettingLoading } =
+    mutations.usePatchAppSetting();
   const { data: appSettingsList } = hooks.useAppSettings();
 
-  return (name: AllSettingsNameType, newValue: AllSettingsDataType) => {
-    if (appSettingsList) {
-      const previousSetting = appSettingsList.find((s) => s.name === name);
-      // setting does not exist
-      if (!previousSetting) {
-        postAppSetting({
-          data: newValue,
-          name,
-        });
-      } else {
-        patchAppSetting({
-          id: previousSetting.id,
-          data: newValue,
-        });
+  return {
+    saveSettings: async (
+      name: AllSettingsNameType,
+      newValue: AllSettingsDataType,
+    ) => {
+      if (appSettingsList) {
+        const previousSetting = appSettingsList.find((s) => s.name === name);
+        // setting does not exist
+        if (!previousSetting) {
+          await postAppSetting({
+            data: newValue,
+            name,
+          });
+        } else {
+          await patchAppSetting({
+            id: previousSetting.id,
+            data: newValue,
+          });
+        }
       }
-    }
+    },
+    isLoading: isPatchAppSettingLoading || isPostAppSettingLoading,
   };
 };
