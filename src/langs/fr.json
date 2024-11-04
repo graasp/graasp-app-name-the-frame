@@ -1,5 +1,32 @@
 {
-  "translations": {
-    "Welcome to the Graasp App Starter Kit": "Bienvenue dans le kit de démarrage de l'application Graasp"
-  }
+  "BUILDER_TAB_CONFIGURATION": "Configuration",
+  "BUILDER_TAB_RESULTS": "Résultats",
+  "ADD_IMAGE_STEP_LABEL": "Ajouter l'image",
+  "ADD_LABELS_STEP_LABEL": "Ajouter les labels",
+  "PREVIEW_STEP_LABEL": "Aperçu",
+  "DESCRIPTION_LABEL": "Description",
+  "DESCRIPTION_DETAILS": "Ajoutez une description (facultatif)",
+  "DROP_IMAGE_LABEL": "Télécharger une image",
+  "DROP_IMAGE_DESCRIPTION": "Ajoutez une image pour laquelle vous souhaitez ajouter des labels",
+  "UPLOAD_IMAGE_NOTE": "Vous pouvez télécharger votre image ici",
+  "DROP_HERE": "Déposez ici ou",
+  "NEXT": "Suivant",
+  "BACK": "Précédent",
+  "REPLACE_IMAGE": "Remplacer l'image",
+  "DRAG_DROP_EXERCISE_TITLE": "Glissez et déposez ces labels dans les emplacements appropriés de l'image",
+  "SUBMIT": "Soumettre",
+  "PREVIEW_NOTE": "Voici à quoi ressemblera l' application en mode lecture. Pour modifier les paramètres, revenez aux étapes précédentes.",
+  "ADD_LABEL": "Ajouter",
+  "UNEXPECTED_ERROR": "Désolé, quelque chose s'est mal passé !",
+  "START_ADDING_LABEL_HELPER_TEXT": "Pour ajouter un nouveau label, cliquez sur l'image.",
+  "RETRY": "Réessayer",
+  "UNCONFIGURED_ITEM": "L'élément que vous essayez d'atteindre n'est pas encore configuré !",
+  "RESULTS_TABLE_HEAD_USER_TITLE": "Utilisateur",
+  "RESULTS_TABLE_HEAD_TOTAL_ATTEMPTS_TITLE": "Nombre total de tentatives",
+  "RESULTS_TABLE_HEAD_LAST_ATTEMPT_TITLE": "Dernière tentative",
+  "RESULTS_TABLE_HEAD_CURRENT_GRADE_TITLE": "Note actuelle",
+  "RESULTS_TABLE_HEAD_EXPECTED_ANSWER_TITLE": "Réponse attendue",
+  "RESULTS_TABLE_HEAD_ACTUAL_ANSWER_TITLE": "Réponse donnée",
+  "NO_RESULT_DATA": "Aucun résultat pour cet élément pour le moment.",
+  "NO_ANSWER": "Pas de réponse"
 }
