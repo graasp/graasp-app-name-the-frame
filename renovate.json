@@ -3,8 +3,8 @@
   "extends": [
     "github>graasp/renovate-config:app"
   ],
-  "assignees": ["swouf"],
-  "reviewers": ["swouf"],
+  "assignees": [],
+  "reviewers": [],
   "packageRules": [
     {
       "matchDepTypes": ["devDependencies"],
