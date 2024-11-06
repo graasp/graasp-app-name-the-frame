@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 export const debounce = (func: Function, delay: number) => {
   let timer: ReturnType<typeof setTimeout>;
   return (...args: unknown[]) => {

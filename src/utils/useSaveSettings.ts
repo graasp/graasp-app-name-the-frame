@@ -2,7 +2,6 @@ import { Settings, SettingsKeys } from '@/@types';
 import { hooks, mutations } from '@/config/queryClient';
 
 // mapping between Setting names and their data type
-// eslint-disable-next-line @typescript-eslint/ban-types
 type AllSettingsType = {
   [SettingsKeys.Settings]: Settings;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
