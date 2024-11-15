@@ -2282,11 +2282,11 @@ __metadata:
   linkType: hard
 
 "@graasp/translations@npm:^1.40.0":
-  version: 1.41.0
-  resolution: "@graasp/translations@npm:1.41.0"
+  version: 1.42.0
+  resolution: "@graasp/translations@npm:1.42.0"
   peerDependencies:
     i18next: ^23.8.1
-  checksum: 10/623246f557a56abfe40eb1b8ec3d1254755db1c0ad6fca26019ce74e3b786763dff1f5aa5163e61bf50d7655fd4d680b34a556e52cc6589f62ac1f47f25b709e
+  checksum: 10/5f09f7facfdd6c6fa434285493a2a3736e305064223df45f9c3203533b429b1c65e167cf2fac054e4fb53ed3aabcd70e31309addd58952edaeae61cbc29e8020
   languageName: node
   linkType: hard
 
