@@ -2331,9 +2331,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graasp/ui@npm:5.4.2":
-  version: 5.4.2
-  resolution: "@graasp/ui@npm:5.4.2"
+"@graasp/ui@npm:5.4.3":
+  version: 5.4.3
+  resolution: "@graasp/ui@npm:5.4.3"
   dependencies:
     http-status-codes: "npm:2.3.0"
     interweave: "npm:13.1.0"
@@ -2354,7 +2354,7 @@ __metadata:
     "@mui/icons-material": ^6
     "@mui/lab": ^6
     "@mui/material": ^6
-    i18next: ^22.4.15 || ^23.0.0
+    i18next: ^22.4.15 || ^23.0.0 || ^24.0.0
     katex: 0.16.11
     lucide-react: ^0
     react: ^18.0.0
@@ -2362,7 +2362,7 @@ __metadata:
     react-i18next: ^15.0.0
     react-router-dom: ^6.11.0
     stylis: ^4.1.3
-  checksum: 10/17a166897c951de64b4961ea8a8ee8c2541a7d714ba1d9339a4a9f145ca76eabe53524a53693772e68ac8bf8979622509424685fbce022f697f741499dcd6161
+  checksum: 10/a9f04023569ad36a6b9784fb7a9cde7a95820962671202b3066228d995c669d23ff5418a29720b65d0a828ebfeee0720d8d88cd35a04332c707816035978f731
   languageName: node
   linkType: hard
 
@@ -6940,7 +6940,7 @@ __metadata:
     "@graasp/sdk": "npm:4.35.0"
     "@graasp/stylis-plugin-rtl": "npm:^2.2.0"
     "@graasp/translations": "npm:^1.40.0"
-    "@graasp/ui": "npm:5.4.2"
+    "@graasp/ui": "npm:5.4.3"
     "@mui/icons-material": "npm:6.1.9"
     "@mui/lab": "npm:6.0.0-beta.17"
     "@mui/material": "npm:6.1.9"
