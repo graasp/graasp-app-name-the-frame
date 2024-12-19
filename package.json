@@ -20,7 +20,7 @@
     "@mui/icons-material": "6.2.1",
     "@mui/lab": "6.0.0-beta.20",
     "@mui/material": "6.2.1",
-    "@sentry/react": "8.45.1",
+    "@sentry/react": "8.47.0",
     "@tanstack/react-query": "^4.36.1",
     "@tanstack/react-query-devtools": "^4.36.1",
     "@types/node": "20.17.10",
