@@ -7009,7 +7009,7 @@ __metadata:
     lodash.groupby: "npm:^4.6.0"
     lodash.isequal: "npm:^4.5.0"
     lodash.orderby: "npm:^4.6.0"
-    lucide-react: "npm:^0.454.0"
+    lucide-react: "npm:^0.474.0"
     miragejs: "npm:^0.1.48"
     nock: "npm:^13.5.5"
     nyc: "npm:17.1.0"
@@ -8301,12 +8301,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide-react@npm:^0.454.0":
-  version: 0.454.0
-  resolution: "lucide-react@npm:0.454.0"
+"lucide-react@npm:^0.474.0":
+  version: 0.474.0
+  resolution: "lucide-react@npm:0.474.0"
   peerDependencies:
-    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
-  checksum: 10/90b40271182e15fefc9cbc6aca4645a49691f73b1887daffb0c9d048f61c89a1c1d7eac1096a37ba627bdce91e8aa49fcf43a5cf0ebd255117ce848d71a56dd1
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10/66370cb601cda7f5df78ed11d14b20b7f2dfac128a88a098f6e70ff98e4e8abc63d4ad7b3dc9ecf9814c5578c9d224fc158127d3ee4df770016cc356464011ec
   languageName: node
   linkType: hard
 
