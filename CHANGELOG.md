@@ -1,5 +1,65 @@
 # Changelog
 
+## [1.1.0](https://github.com/graasp/graasp-app-name-the-frame/compare/v1.0.1...v1.1.0) (2025-03-01)
+
+
+### Features
+
+* add french translations ([#204](https://github.com/graasp/graasp-app-name-the-frame/issues/204)) ([578ea68](https://github.com/graasp/graasp-app-name-the-frame/commit/578ea68da2ddfaa7864d0aed0ef946cebf217a25))
+
+
+### Bug Fixes
+
+* add missing dependency date-fns ([6c28689](https://github.com/graasp/graasp-app-name-the-frame/commit/6c2868912535c7894f78137c7b21fb5e6516f45d))
+* **deps:** update dependency @graasp/apps-query-client to v3.7.3 ([#227](https://github.com/graasp/graasp-app-name-the-frame/issues/227)) ([8802126](https://github.com/graasp/graasp-app-name-the-frame/commit/8802126d7cd31ae84a756fee103d36d6eab73749))
+* **deps:** update dependency @graasp/translations to v1.41.0 ([18cb353](https://github.com/graasp/graasp-app-name-the-frame/commit/18cb353d7e79981c795faf98b564b410a613e570))
+* **deps:** update dependency @graasp/translations to v1.42.0 ([#223](https://github.com/graasp/graasp-app-name-the-frame/issues/223)) ([b069e97](https://github.com/graasp/graasp-app-name-the-frame/commit/b069e97764e7bed1913fef1b5228d70a66070d54))
+* **deps:** update dependency @graasp/translations to v1.43.0 ([#278](https://github.com/graasp/graasp-app-name-the-frame/issues/278)) ([be75f1e](https://github.com/graasp/graasp-app-name-the-frame/commit/be75f1e3ed8e5a2ad02a7f2f638f8b777280552e))
+* **deps:** update dependency @graasp/ui to v5.4.1 ([#222](https://github.com/graasp/graasp-app-name-the-frame/issues/222)) ([b80f41f](https://github.com/graasp/graasp-app-name-the-frame/commit/b80f41fd45e0bbfefb0167ab63eff93ba970ba8d))
+* **deps:** update dependency @graasp/ui to v5.4.2 ([#235](https://github.com/graasp/graasp-app-name-the-frame/issues/235)) ([c2a3f57](https://github.com/graasp/graasp-app-name-the-frame/commit/c2a3f5791a8e2ed352fb673321e2785156844b68))
+* **deps:** update dependency @graasp/ui to v5.4.3 ([#253](https://github.com/graasp/graasp-app-name-the-frame/issues/253)) ([159265e](https://github.com/graasp/graasp-app-name-the-frame/commit/159265eb2ddf055aec6f50e900061ec8340591d8))
+* **deps:** update dependency @graasp/ui to v5.4.4 ([#254](https://github.com/graasp/graasp-app-name-the-frame/issues/254)) ([483b321](https://github.com/graasp/graasp-app-name-the-frame/commit/483b3216a24e8ce0beafd8b83327099914523bf7))
+* **deps:** update dependency @graasp/ui to v5.4.5 ([#274](https://github.com/graasp/graasp-app-name-the-frame/issues/274)) ([3b2e989](https://github.com/graasp/graasp-app-name-the-frame/commit/3b2e9893e7bd3539504455a61998c72d1ec053c2))
+* **deps:** update dependency @graasp/ui to v5.4.7 ([#276](https://github.com/graasp/graasp-app-name-the-frame/issues/276)) ([3a4f893](https://github.com/graasp/graasp-app-name-the-frame/commit/3a4f893d691d3cfb456445fdc1d9d6b7c6bffe82))
+* **deps:** update dependency @mui/lab to v6.0.0-beta.19 ([#272](https://github.com/graasp/graasp-app-name-the-frame/issues/272)) ([6af8dac](https://github.com/graasp/graasp-app-name-the-frame/commit/6af8daca96ea48d7591475623fc9f5d0669a430d))
+* **deps:** update dependency @sentry/react to v8.38.0 ([#220](https://github.com/graasp/graasp-app-name-the-frame/issues/220)) ([92a1c74](https://github.com/graasp/graasp-app-name-the-frame/commit/92a1c7422ba1c0f899a19cd63c6f1a85abf0528f))
+* **deps:** update dependency @sentry/react to v8.40.0 ([#230](https://github.com/graasp/graasp-app-name-the-frame/issues/230)) ([f5aaf9a](https://github.com/graasp/graasp-app-name-the-frame/commit/f5aaf9ae29cf6e752730ddb7409d7ed6ca88bcd9))
+* **deps:** update dependency @sentry/react to v8.41.0 ([#250](https://github.com/graasp/graasp-app-name-the-frame/issues/250)) ([5935dc6](https://github.com/graasp/graasp-app-name-the-frame/commit/5935dc695eadab3b4c2a6c0793a96b3b237d16ed))
+* **deps:** update dependency @sentry/react to v8.42.0 ([#259](https://github.com/graasp/graasp-app-name-the-frame/issues/259)) ([6857291](https://github.com/graasp/graasp-app-name-the-frame/commit/68572910db3bf85c9f0a42546611f54dcccb3cb4))
+* **deps:** update dependency @sentry/react to v8.45.0 ([#279](https://github.com/graasp/graasp-app-name-the-frame/issues/279)) ([8783da8](https://github.com/graasp/graasp-app-name-the-frame/commit/8783da8b66fa197d310e00a9e22f0fcaf2a319a9))
+* **deps:** update dependency @sentry/react to v8.45.1 ([#284](https://github.com/graasp/graasp-app-name-the-frame/issues/284)) ([87c1202](https://github.com/graasp/graasp-app-name-the-frame/commit/87c120212b3dd7157dd955e1a9f378a7bfe98fc5))
+* **deps:** update dependency @sentry/react to v8.47.0 ([#289](https://github.com/graasp/graasp-app-name-the-frame/issues/289)) ([2fa301a](https://github.com/graasp/graasp-app-name-the-frame/commit/2fa301a4fe974ce4f1fc4e42308f0aadc99372b4))
+* **deps:** update dependency @types/node to v20.17.10 ([#275](https://github.com/graasp/graasp-app-name-the-frame/issues/275)) ([ebdb383](https://github.com/graasp/graasp-app-name-the-frame/commit/ebdb383785ef496a6d20113a6b8be7359fcf1e68))
+* **deps:** update dependency @types/node to v20.17.7 ([#240](https://github.com/graasp/graasp-app-name-the-frame/issues/240)) ([38b716e](https://github.com/graasp/graasp-app-name-the-frame/commit/38b716e280e338bce709064ebc954c969a6d2f7c))
+* **deps:** update dependency @types/node to v20.17.8 ([#245](https://github.com/graasp/graasp-app-name-the-frame/issues/245)) ([8f6ef24](https://github.com/graasp/graasp-app-name-the-frame/commit/8f6ef24da7cc3128ce2682f633e59c7be7637ef0))
+* **deps:** update dependency @types/node to v20.17.9 ([#252](https://github.com/graasp/graasp-app-name-the-frame/issues/252)) ([9a075a8](https://github.com/graasp/graasp-app-name-the-frame/commit/9a075a82126a1b2f7c5f34401d6eef94e658eb52))
+* **deps:** update dependency @types/react to v18.3.13 ([#263](https://github.com/graasp/graasp-app-name-the-frame/issues/263)) ([51edfe1](https://github.com/graasp/graasp-app-name-the-frame/commit/51edfe10c35d065e0c8806918ece4a600ee703c8))
+* **deps:** update dependency @types/react to v18.3.17 ([#286](https://github.com/graasp/graasp-app-name-the-frame/issues/286)) ([c2deafc](https://github.com/graasp/graasp-app-name-the-frame/commit/c2deafc6bf4d1b255bcbd8704ab806753befc088))
+* **deps:** update dependency @types/react to v18.3.18 ([#292](https://github.com/graasp/graasp-app-name-the-frame/issues/292)) ([38539fb](https://github.com/graasp/graasp-app-name-the-frame/commit/38539fb939583bec04a6ed60f4ba4c33043021db))
+* **deps:** update dependency i18next to v23.16.5 ([#214](https://github.com/graasp/graasp-app-name-the-frame/issues/214)) ([eef1afa](https://github.com/graasp/graasp-app-name-the-frame/commit/eef1afade39fc906d139736662406898eac585d1))
+* **deps:** update dependency i18next to v23.16.6 ([#229](https://github.com/graasp/graasp-app-name-the-frame/issues/229)) ([9b8a28d](https://github.com/graasp/graasp-app-name-the-frame/commit/9b8a28d4695749cfff6beb10d06e24a82766e361))
+* **deps:** update dependency i18next to v23.16.8 ([#233](https://github.com/graasp/graasp-app-name-the-frame/issues/233)) ([c410ba5](https://github.com/graasp/graasp-app-name-the-frame/commit/c410ba52f9b8a6d52eb1de7ef54888cffde03201))
+* **deps:** update dependency react-i18next to v15.1.1 ([#213](https://github.com/graasp/graasp-app-name-the-frame/issues/213)) ([6b61bb2](https://github.com/graasp/graasp-app-name-the-frame/commit/6b61bb2471bb292e221da076e373f8ae11016922))
+* **deps:** update dependency react-i18next to v15.1.2 ([#248](https://github.com/graasp/graasp-app-name-the-frame/issues/248)) ([2a918c0](https://github.com/graasp/graasp-app-name-the-frame/commit/2a918c09cca48fe6b4bce7df989b36ffdac6243c))
+* **deps:** update dependency react-i18next to v15.1.3 ([#255](https://github.com/graasp/graasp-app-name-the-frame/issues/255)) ([ad643a6](https://github.com/graasp/graasp-app-name-the-frame/commit/ad643a6909462cde3e31ad174f7235b8915e3a04))
+* **deps:** update dependency react-i18next to v15.1.4 ([#273](https://github.com/graasp/graasp-app-name-the-frame/issues/273)) ([969241f](https://github.com/graasp/graasp-app-name-the-frame/commit/969241f84b403d489494220ee2c19388c93a3be1))
+* **deps:** update dependency react-i18next to v15.2.0 ([#280](https://github.com/graasp/graasp-app-name-the-frame/issues/280)) ([ba43ee7](https://github.com/graasp/graasp-app-name-the-frame/commit/ba43ee75579d3788cca475a0802662b76b10ff02))
+* **deps:** update dependency react-router-dom to v6.28.0 ([#212](https://github.com/graasp/graasp-app-name-the-frame/issues/212)) ([f29dc87](https://github.com/graasp/graasp-app-name-the-frame/commit/f29dc878a8d51313075d9b3be80a25ef1d9a4c07))
+* **deps:** update dependency react-router-dom to v6.28.1 ([#293](https://github.com/graasp/graasp-app-name-the-frame/issues/293)) ([629dcaa](https://github.com/graasp/graasp-app-name-the-frame/commit/629dcaa2cca8f0ec0ed64ae4d762a0ef8f89ed99))
+* **deps:** update dependency typescript to v5.7.2 ([#239](https://github.com/graasp/graasp-app-name-the-frame/issues/239)) ([5f77283](https://github.com/graasp/graasp-app-name-the-frame/commit/5f77283c848da62fe215d2e44eaf71c5d92a311c))
+* **deps:** update emotion monorepo to v11.13.5 ([#232](https://github.com/graasp/graasp-app-name-the-frame/issues/232)) ([2024ffb](https://github.com/graasp/graasp-app-name-the-frame/commit/2024ffb4b38574936871be9e513ab4f0c07b12d1))
+* **deps:** update emotion monorepo to v11.14.0 ([#269](https://github.com/graasp/graasp-app-name-the-frame/issues/269)) ([478a9eb](https://github.com/graasp/graasp-app-name-the-frame/commit/478a9eb049033adad8131b3a1f175a8b7935957f))
+* **deps:** update mui (non-major) ([#221](https://github.com/graasp/graasp-app-name-the-frame/issues/221)) ([3440163](https://github.com/graasp/graasp-app-name-the-frame/commit/3440163dd3a5166b0554f40feaff21ebe8986b1a))
+* **deps:** update mui (non-major) ([#234](https://github.com/graasp/graasp-app-name-the-frame/issues/234)) ([7585ad0](https://github.com/graasp/graasp-app-name-the-frame/commit/7585ad0b1c3f1454c985d30fbc2262289a1203c9))
+* **deps:** update mui (non-major) ([#249](https://github.com/graasp/graasp-app-name-the-frame/issues/249)) ([a440d6a](https://github.com/graasp/graasp-app-name-the-frame/commit/a440d6ab0ee548efaba2c16f6324bc58427b80f2))
+* **deps:** update mui (non-major) ([#251](https://github.com/graasp/graasp-app-name-the-frame/issues/251)) ([6fd640f](https://github.com/graasp/graasp-app-name-the-frame/commit/6fd640fd7a2341134bb728725416836f075de7d4))
+* **deps:** update mui (non-major) ([#287](https://github.com/graasp/graasp-app-name-the-frame/issues/287)) ([334fbde](https://github.com/graasp/graasp-app-name-the-frame/commit/334fbde369667bd9357b31d8baf5bb18c57e3f99))
+* **deps:** update mui (non-major) to v6.2.0 ([#281](https://github.com/graasp/graasp-app-name-the-frame/issues/281)) ([676af96](https://github.com/graasp/graasp-app-name-the-frame/commit/676af96975835852184f5c4f65469436373630ea))
+* **deps:** update react monorepo ([#267](https://github.com/graasp/graasp-app-name-the-frame/issues/267)) ([540f959](https://github.com/graasp/graasp-app-name-the-frame/commit/540f9595ed2b8f06192b0cf2d8280f179d80857e))
+* **deps:** update react monorepo ([#271](https://github.com/graasp/graasp-app-name-the-frame/issues/271)) ([e6e4644](https://github.com/graasp/graasp-app-name-the-frame/commit/e6e4644485663f53a9cad923ce4b83bde5c68c8b))
+* update dependencies ([5d57709](https://github.com/graasp/graasp-app-name-the-frame/commit/5d577098d06f2d467a1122b5ea8cf931f180e978))
+* update dependencies ([58515f6](https://github.com/graasp/graasp-app-name-the-frame/commit/58515f61b716f48f4e8fa4eba97974171a5dc060))
+
 ## [1.0.1](https://github.com/graasp/graasp-app-name-the-frame/compare/v1.0.0...v1.0.1) (2024-10-28)
 
 
