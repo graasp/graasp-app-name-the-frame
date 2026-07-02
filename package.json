@@ -44,7 +44,7 @@
     "react-dom": "18.3.1",
     "react-draggable": "^4.4.6",
     "react-i18next": "15.2.0",
-    "react-router-dom": "^6.27.0",
+    "react-router-dom": "^7.0.0",
     "react-toastify": "10.0.6",
     "react-zoom-pan-pinch": "^3.6.1",
     "typescript": "5.7.2"
