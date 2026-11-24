@@ -1436,7 +1436,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.23.2, @babel/runtime@npm:^7.25.0, @babel/runtime@npm:^7.26.0, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.8.7, @babel/runtime@npm:^7.9.2":
+"@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.25.0, @babel/runtime@npm:^7.26.0, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.8.7, @babel/runtime@npm:^7.9.2":
   version: 7.26.0
   resolution: "@babel/runtime@npm:7.26.0"
   dependencies:
@@ -7478,7 +7478,7 @@ __metadata:
     eslint-plugin-react: "npm:^7.37.2"
     eslint-plugin-react-hooks: "npm:5.1.0"
     husky: "npm:9.1.7"
-    i18next: "npm:^23.16.4"
+    i18next: "npm:^26.0.0"
     lodash.groupby: "npm:^4.6.0"
     lodash.isequal: "npm:^4.5.0"
     lodash.orderby: "npm:^4.6.0"
@@ -7719,12 +7719,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next@npm:^23.16.4":
-  version: 23.16.8
-  resolution: "i18next@npm:23.16.8"
-  dependencies:
-    "@babel/runtime": "npm:^7.23.2"
-  checksum: 10/d5c38011de4d3b4aa466fac6773520eb28007b9d6138e03432bfbfc0d041c04df45e15c67d96f22cd660088cc9b24d3eda32cddc9fb4c6508c5afada6c2e6290
+"i18next@npm:^26.0.0":
+  version: 26.7.2
+  resolution: "i18next@npm:26.7.2"
+  peerDependencies:
+    typescript: ^5 || ^6 || ^7
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 10/43bc0c79b4590108c81887dcf0cf583107bf6052fb7d658281fdabb5a8e7304a1869031acab7dd3cfeb267bb445dfa6f967643a39098666fcfdfcb1d9a494b82
   languageName: node
   linkType: hard
 
